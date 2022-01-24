@@ -1,0 +1,23 @@
+{
+  "root": "libs/mex-editor",
+  "sourceRoot": "libs/mex-editor/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-editor/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/mex-editor"],
+      "options": {
+        "jestConfig": "libs/mex-editor/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
