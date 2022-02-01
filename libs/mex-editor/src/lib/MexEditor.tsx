@@ -1,17 +1,17 @@
-import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 import {
+  Options,
+  PlaceholderProps,
   Plate,
   PlatePlugin,
-  SelectEditorOptions,
-  PlaceholderProps,
-  Options,
   selectEditor,
+  SelectEditorOptions,
   usePlateEditorRef,
 } from '@udecode/plate';
+import useMemoizedPlugins from './plugins';
+import { ComboboxConfig } from './components/ComboBox/types';
 import { EditableProps } from 'slate-react/dist/components/editable';
-import useMemoizedPlugins from './plugins/plugins';
-import useEditorPluginConfig from './plugins/useEditorPluginConfig';
-import { useEffect } from 'react';
+import { useComboboxConfig } from './components/ComboBox/config';
 
 export type MexEditorValue = Array<any>;
 
@@ -22,22 +22,28 @@ export interface MexEditorOptions {
   withBallonToolbar?: boolean;
 }
 
-/* eslint-disable-next-line */
-export interface MexEditorProps {
-  editorId: string;
-  className?: string;
-  value: MexEditorValue;
-  placeholders?: Options<Array<PlaceholderProps>>; // * Array of objects with `placeholder` text and element `key
-  onChange?: (value: MexEditorValue) => void;
-  options?: MexEditorOptions;
-  plugins?: Array<PlatePlugin>;
-  exlude?: Array<string>; // * Array of elements name extracted from MEX_EDITOR_ELEMENTS
+export interface MetaData {
+  parentId?: string;
+  delimiter?: string;
 }
 
-const StyledMexEditor = styled.div``;
+/* eslint-disable-next-line */
+export interface MexEditorProps {
+  comboboxConfig?: ComboboxConfig;
+  editorId: string; // * Unique ID for the Mex Editor
+  className?: string; // * Pass className to styled Mex Editor
+  value: MexEditorValue; // * Initial value of editor, to set onChange content, use `editor.children = content`
+  placeholders?: Options<Array<PlaceholderProps>>; // * Array of objects with `placeholder` text and element `key
+  onChange?: (value: MexEditorValue) => void; // * Callback on change
+  options?: MexEditorOptions; // * Power the editor with options
+  meta?: MetaData; // * MetaData of current editor
+  plugins?: Array<PlatePlugin>; // * Core of editor
+  exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
+}
 
 export function MexEditor(props: MexEditorProps) {
   const editorRef = usePlateEditorRef();
+  const [content, setContent] = useState<MexEditorValue>([]);
 
   useEffect(() => {
     if (editorRef && props?.options?.focusOptions) {
@@ -45,33 +51,42 @@ export function MexEditor(props: MexEditorProps) {
     }
   }, [editorRef, props.editorId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { pluginConfigs, comboConfigData } = useEditorPluginConfig(
-    props.editorId
+  const { comboOnChangeConfig, comboOnKeydownConfig } = useComboboxConfig(
+    props.editorId,
+    props.meta
   );
 
-  // We get memoized plugins
   const prePlugins = useMemoizedPlugins();
-  const plugins = [
-    ...prePlugins,
-    {
-      key: 'MULTI_COMBOBOX',
-      handlers: {
-        onChange: pluginConfigs.combobox.onChange,
-        onKeyDown: pluginConfigs.combobox.onKeyDown,
-      },
-    },
-  ];
+
+  // const plugins = [
+  //   ...prePlugins,
+  //   {
+  //     key: 'MULTI_COMBOBOX',
+  //     handlers: {
+  //       onChange: pluginConfigs.combobox.onChange,
+  //       onKeyDown: pluginConfigs.combobox.onKeyDown,
+  //     },
+  //   },
+  // ];
+
+  const onChange = (value: MexEditorValue) => {
+    setContent(value);
+    if (props.onChange) {
+      props.onChange(value);
+    }
+  };
 
   return (
-    <StyledMexEditor>
+    <>
       <Plate
         id={props.editorId}
         value={props.value}
-        onChange={props.onChange}
+        onChange={onChange}
         editableProps={props?.options?.editableProps}
-        plugins={props.plugins ?? plugins}
+        plugins={prePlugins}
       />
-    </StyledMexEditor>
+      <pre>{JSON.stringify(content, null, 2)}</pre>
+    </>
   );
 }
 

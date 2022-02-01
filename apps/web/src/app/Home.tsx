@@ -1,5 +1,5 @@
 import React from 'react';
-import { MexEditor, Plate } from '@mexin/mex-editor';
+import { MexEditor, } from '@mexin/mex-editor';
 import { StyledHome } from './components/home.style';
 
 type HomeProps = {
@@ -25,6 +25,10 @@ const Home = ({ title }: HomeProps) => {
                   editableProps: {
                     placeholder: "Let's try something here...",
                     autoFocus: true,
+                  },
+                  focusOptions: {
+                    edge: 'start',
+                    focus: true
                   },
                 }}
                 editorId="wd-mex-editor"
