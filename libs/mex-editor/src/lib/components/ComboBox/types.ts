@@ -1,22 +1,23 @@
-import { RenderFunction } from '@udecode/plate';
+import { PlateEditor, RenderFunction } from '@udecode/plate';
+import { ComboboxKey } from '../../store/combobox';
 
 export interface ComboboxKeyDownConfig {
   keys: Record<string, ComboboxItemType>;
   slashCommands: Record<string, SlashCommandConfig>;
 }
 
-export interface ComboboxOnChangeConfig {
-  key: string;
+export interface ComboboxItemOnChangeConfig {
+  cbKey: ComboboxKey;
   trigger: string;
   data: Array<any>;
-  icon: string;
+  icon?: string;
 }
 
 export interface SlashCommandConfig {
   command: string;
   slateElementType: string;
   options?: any;
-  getData?: (element: any) => Record<string, any>;
+  getData?: (element: IComboboxItem) => Record<string, any>;
 }
 
 export interface IComboboxItem {
@@ -69,16 +70,24 @@ export enum ComboboxElementType {
 }
 
 export interface ComboboxItemProps {
-  item: any;
+  item: IComboboxItem;
 }
 
 export interface ComboboxItemType {
   slateElementType: string;
-  onCreate: (item: string, options: { parentId?: string }) => void;
+  newItemHandler: (item: string, options: { parentId?: string }) => void;
   itemRenderer: RenderFunction<ComboboxItemProps>;
 }
+
+export type ComboboxOnChangeConfig = Record<string, ComboboxItemOnChangeConfig>;
 
 export interface ComboboxConfig {
   onKeyDownConfig: ComboboxKeyDownConfig;
   onChangeConfig: ComboboxOnChangeConfig;
+}
+
+export interface ComboboxProps {
+  isSlash?: boolean;
+  onSelectItem: (editor: PlateEditor, item: string) => void;
+  onRenderItem?: RenderFunction<ComboboxItemProps>;
 }

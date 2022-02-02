@@ -1,12 +1,15 @@
 import React from 'react';
-import { MexEditor, } from '@mexin/mex-editor';
+import { MexEditor } from '@mexin/mex-editor';
 import { StyledHome } from './components/home.style';
+import { gruvboxTheme } from './theme/theme';
 
 type HomeProps = {
   title: string;
 };
 
 const Home = ({ title }: HomeProps) => {
+  const comboConfig = {};
+
   return (
     <StyledHome>
       <div className="wrapper">
@@ -21,6 +24,18 @@ const Home = ({ title }: HomeProps) => {
           <div id="mex-editor-container" className="rounded">
             <div className="text-container">
               <MexEditor
+                theme={gruvboxTheme}
+                comboboxConfig={{
+                  onKeyDownConfig: {
+                    keys: {},
+                    slashCommands: {},
+                  },
+                  onChangeConfig: {},
+                }}
+                meta={{
+                  parentPath: 'documentation',
+                  path: 'documentation.first',
+                }}
                 options={{
                   editableProps: {
                     placeholder: "Let's try something here...",
@@ -28,7 +43,7 @@ const Home = ({ title }: HomeProps) => {
                   },
                   focusOptions: {
                     edge: 'start',
-                    focus: true
+                    focus: true,
                   },
                 }}
                 editorId="wd-mex-editor"

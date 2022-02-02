@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "mex-editor": "libs/mex-editor",
+    "something": "libs/something",
     "web": "apps/web",
     "web-e2e": "apps/web-e2e"
   }

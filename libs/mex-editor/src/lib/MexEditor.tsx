@@ -12,6 +12,9 @@ import useMemoizedPlugins from './plugins';
 import { ComboboxConfig } from './components/ComboBox/types';
 import { EditableProps } from 'slate-react/dist/components/editable';
 import { useComboboxConfig } from './components/ComboBox/config';
+import { MultiComboboxContainer } from './components/MultiCombobox/multiComboboxContainer';
+import { DefaultTheme, ThemeProvider } from 'styled-components';
+import { useMexEditorStore } from './store/editor';
 
 export type MexEditorValue = Array<any>;
 
@@ -23,13 +26,15 @@ export interface MexEditorOptions {
 }
 
 export interface MetaData {
-  parentId?: string;
+  path: string;
+  parentPath: string;
   delimiter?: string;
 }
 
 /* eslint-disable-next-line */
 export interface MexEditorProps {
-  comboboxConfig?: ComboboxConfig;
+  theme: DefaultTheme;
+  comboboxConfig: ComboboxConfig;
   editorId: string; // * Unique ID for the Mex Editor
   className?: string; // * Pass className to styled Mex Editor
   value: MexEditorValue; // * Initial value of editor, to set onChange content, use `editor.children = content`
@@ -44,30 +49,33 @@ export interface MexEditorProps {
 export function MexEditor(props: MexEditorProps) {
   const editorRef = usePlateEditorRef();
   const [content, setContent] = useState<MexEditorValue>([]);
+  const setMetaData = useMexEditorStore((s) => s.setMetaData);
 
   useEffect(() => {
     if (editorRef && props?.options?.focusOptions) {
       selectEditor(editorRef, props.options.focusOptions);
     }
+    setMetaData(props.meta);
   }, [editorRef, props.editorId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { comboOnChangeConfig, comboOnKeydownConfig } = useComboboxConfig(
+  const { pluginsConfig, comboOnKeydownConfig } = useComboboxConfig(
     props.editorId,
-    props.meta
+    props.meta,
+    props.comboboxConfig
   );
 
   const prePlugins = useMemoizedPlugins();
 
-  // const plugins = [
-  //   ...prePlugins,
-  //   {
-  //     key: 'MULTI_COMBOBOX',
-  //     handlers: {
-  //       onChange: pluginConfigs.combobox.onChange,
-  //       onKeyDown: pluginConfigs.combobox.onKeyDown,
-  //     },
-  //   },
-  // ];
+  const plugins = [
+    ...prePlugins,
+    {
+      key: 'MULTI_COMBOBOX',
+      handlers: {
+        onChange: pluginsConfig.combobox.onChange,
+        onKeyDown: pluginsConfig.combobox.onKeyDown,
+      },
+    },
+  ];
 
   const onChange = (value: MexEditorValue) => {
     setContent(value);
@@ -77,16 +85,21 @@ export function MexEditor(props: MexEditorProps) {
   };
 
   return (
-    <>
+    <ThemeProvider theme={props.theme}>
       <Plate
         id={props.editorId}
         value={props.value}
         onChange={onChange}
         editableProps={props?.options?.editableProps}
-        plugins={prePlugins}
-      />
+        plugins={plugins}
+      >
+        <MultiComboboxContainer
+          keys={comboOnKeydownConfig.keys}
+          slashCommands={comboOnKeydownConfig.slashCommands}
+        />
+      </Plate>
       <pre>{JSON.stringify(content, null, 2)}</pre>
-    </>
+    </ThemeProvider>
   );
 }
 

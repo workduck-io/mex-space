@@ -8,6 +8,6 @@ export type EditorStateType = {
 };
 
 export const useMexEditorStore = createStore()<EditorStateType>((set) => ({
-  key: {},
-  setKey: setStoreValue(set, 'metaData', 'setMetaData'),
+  metaData: {},
+  setMetaData: setStoreValue(set, 'metaData', 'setMetaData'),
 }));

@@ -46,6 +46,8 @@ import {
   ELEMENT_PARAGRAPH,
 } from '@udecode/plate';
 
+import { createQuickLinkPlugin } from './QuickLink/createQuickLinkPlugin';
+
 // import { withStyledDraggables } from './lib/wrappers/withDraggable';
 // import { withStyledPlaceHolders } from '../../../../../../lib/wrappers/withPlaceholder';
 // import components from '../../../../../../lib/components/components';
@@ -69,6 +71,7 @@ import {
   optionsSelectOnBackspacePlugin,
   optionsSoftBreakPlugin,
 } from './options';
+import { createTagPlugin } from './Tags/createTagPlugin';
 // import TableWrapper from '../components/TableWrapper';
 
 export const generatePlugins = () => {
@@ -152,7 +155,7 @@ export const generatePlugins = () => {
 
     // createNodeIdPlugin(optionsCreateNodeIdPlugin),
     // // mex custom plugins
-    // createTagPlugin(),
+    createTagPlugin(),
     createQuickLinkPlugin(),
     // createSyncBlockPlugin(),
     // createInlineBlockPlugin(),

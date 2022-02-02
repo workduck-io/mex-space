@@ -2,7 +2,7 @@
  * Checks for links that start with  the separator (.) and returns key and whether it is a child node i.e. starting with the separator
  * Also removes multiple separator invocations like "a.b....c..d"
  */
-export const withoutContinuousDelimiter = (text: string, delimiter = '.') => {
+export const withoutDelimiter = (text: string, delimiter = '.') => {
   const key = text
     .split(delimiter)
     .filter((ch) => ch !== '')

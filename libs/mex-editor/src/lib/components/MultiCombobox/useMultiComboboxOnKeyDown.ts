@@ -2,20 +2,21 @@ import {
   getBlockAbove,
   getPluginType,
   insertNodes,
-  PEditor,
   PlateEditor,
   TElement,
 } from '@udecode/plate';
 import { Editor, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { useComboboxOnKeyDown } from '../../hooks/useComboboxOnKeyDown';
 import { useComboboxStore, ComboboxKey } from '../../store/combobox';
 import { useMexEditorStore } from '../../store/editor';
-import { IComboboxItem } from '../ComboBox/types';
+import { withoutDelimiter } from '../../utils/helper';
 import {
-  ComboConfigData,
-  ConfigDataSlashCommands,
-  SingleComboboxConfig,
-} from './multiComboboxContainer';
+  ComboboxItemType,
+  ComboboxKeyDownConfig,
+  IComboboxItem,
+  SlashCommandConfig,
+} from '../ComboBox/types';
+import { useSlashCommandOnChange } from '../SlashCommands/useSlashCommandOnChange';
 
 export interface ComboTypeHandlers {
   slateElementType: string;
@@ -23,7 +24,7 @@ export interface ComboTypeHandlers {
 }
 
 export const useElementOnChange = (
-  elementComboType: SingleComboboxConfig,
+  elementComboType: ComboboxItemType,
   keys?: Array<any>
 ) => {
   const closeMenu = useComboboxStore((state) => state.closeMenu);
@@ -55,7 +56,7 @@ export const useElementOnChange = (
           Transforms.insertText(editor, ' ');
         }
 
-        const { key, isChild } = withoutContinuousDelimiter(item.text);
+        const { key, isChild } = withoutDelimiter(item.text);
 
         let itemValue;
         if (key) itemValue = isChild ? `${parentPath}${key}` : key;
@@ -90,28 +91,21 @@ export const useElementOnChange = (
 
 export const useOnSelectItem = (
   comboboxKey: string,
-  slashCommands: ConfigDataSlashCommands,
-  singleComboConfig: SingleComboboxConfig
+  slashCommands: Record<string, SlashCommandConfig>,
+  singleComboConfig: ComboboxItemType
 ) => {
   const slashCommandOnChange = useSlashCommandOnChange(slashCommands);
   const elementOnChange = useElementOnChange(singleComboConfig);
 
   const isSlash = comboboxKey === ComboboxKey.SLASH_COMMAND;
 
-  let elementChangeHandler: (
-    editor: PEditor & ReactEditor,
-    item: IComboboxItem
-  ) => any;
+  const changeHandler = (editor: PlateEditor, item: IComboboxItem) =>
+    isSlash ? slashCommandOnChange : elementOnChange;
 
-  if (isSlash) {
-    elementChangeHandler = slashCommandOnChange;
-  } else {
-    elementChangeHandler = elementOnChange;
-  }
-  return { elementChangeHandler, isSlash };
+  return { changeHandler, isSlash };
 };
 
-const useMultiComboboxOnKeyDown = (config: ComboConfigData) => {
+const useMultiComboboxOnKeyDown = (config: ComboboxKeyDownConfig) => {
   return useComboboxOnKeyDown(config);
 };
 

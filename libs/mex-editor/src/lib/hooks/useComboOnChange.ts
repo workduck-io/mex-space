@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { TEditor } from '@udecode/plate';
-import { useComboboxStore } from '../useComboboxStore';
-import { ComboboxType } from '../../multi-combobox/types';
-import getTextFromTriggers from '../../multi-combobox/getMultiTextFromTrigger';
+import getTextFromTriggers from '../components/MultiCombobox/getMultiTextFromTrigger';
+import { useComboboxStore } from '../store/combobox';
+import { ComboboxType } from '../components/MultiCombobox/types';
 
 /**
  * If the cursor is after the trigger and at the end of the word:
