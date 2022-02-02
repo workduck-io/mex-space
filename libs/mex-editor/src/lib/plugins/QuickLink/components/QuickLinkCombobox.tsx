@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Combobox } from '../../../components/ComboBox';
 import { useOnSelectItem } from '../../../hooks/useOnSelectItem';
 import { useComboboxStore, ComboboxKey } from '../../../store/combobox';
-import { ILinkComboboxItem } from './ILinkComboboxItem';
+import { QuickLinkComboboxItem } from './QuickLinkComboboxItem';
 
 export const ILinkComboboxComponent = () => {
   const onSelectItem = useOnSelectItem();
@@ -10,7 +10,7 @@ export const ILinkComboboxComponent = () => {
   return (
     <Combobox
       onSelectItem={onSelectItem as any}
-      onRenderItem={ILinkComboboxItem}
+      onRenderItem={QuickLinkComboboxItem}
     />
   );
 };

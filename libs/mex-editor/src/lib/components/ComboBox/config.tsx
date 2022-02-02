@@ -1,10 +1,10 @@
 import { MetaData } from '../../MexEditor';
-import { COMET_QUICK_LINK } from '../../plugins/QuickLink';
-import { ILinkComboboxItem } from '../../plugins/QuickLink/components/ILinkComboboxItem';
-import QuickLinkElement from '../../plugins/QuickLink/QuickLinkElement';
+import useMemoizedPlugins from '../../plugins';
+import { QuickLinkComboboxItem } from '../../plugins/QuickLink/components/QuickLinkComboboxItem';
 import { TagComboboxItem } from '../../plugins/Tags/components/TagComboboxItem';
 import { COMET_TAG } from '../../plugins/Tags/createTagPlugin';
 import { ComboboxKey } from '../../store/combobox';
+import { COMET_QUICK_LINK } from '../../types/elements';
 import useMultiComboboxOnChange from '../MultiCombobox/useMultiComboboxChange';
 import useMultiComboboxOnKeyDown from '../MultiCombobox/useMultiComboboxOnKeyDown';
 import {
@@ -23,7 +23,7 @@ export const useComboboxConfig = (
       ilink: {
         slateElementType: COMET_QUICK_LINK,
         newItemHandler: (item) => console.log(item),
-        itemRenderer: ILinkComboboxItem,
+        itemRenderer: QuickLinkComboboxItem,
       },
       tag: {
         slateElementType: COMET_TAG,
@@ -57,15 +57,21 @@ export const useComboboxConfig = (
     },
   };
 
-  const pluginsConfig = {
-    combobox: {
-      onChange: useMultiComboboxOnChange(editorId, comboOnChangeConfig),
-      onKeyDown: useMultiComboboxOnKeyDown(comboOnKeydownConfig),
+  const prePlugins = useMemoizedPlugins();
+
+  const plugins = [
+    ...prePlugins,
+    {
+      key: 'MULTI_COMBOBOX',
+      handlers: {
+        onChange: useMultiComboboxOnChange(editorId, comboOnChangeConfig),
+        onKeyDown: useMultiComboboxOnKeyDown(comboOnKeydownConfig),
+      },
     },
-  };
+  ];
 
   return {
-    pluginsConfig,
+    plugins,
     comboOnKeydownConfig,
   };
 };

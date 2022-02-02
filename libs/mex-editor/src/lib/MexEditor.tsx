@@ -8,7 +8,6 @@ import {
   SelectEditorOptions,
   usePlateEditorRef,
 } from '@udecode/plate';
-import useMemoizedPlugins from './plugins';
 import { ComboboxConfig } from './components/ComboBox/types';
 import { EditableProps } from 'slate-react/dist/components/editable';
 import { useComboboxConfig } from './components/ComboBox/config';
@@ -58,24 +57,11 @@ export function MexEditor(props: MexEditorProps) {
     setMetaData(props.meta);
   }, [editorRef, props.editorId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { pluginsConfig, comboOnKeydownConfig } = useComboboxConfig(
+  const { plugins, comboOnKeydownConfig } = useComboboxConfig(
     props.editorId,
     props.meta,
     props.comboboxConfig
   );
-
-  const prePlugins = useMemoizedPlugins();
-
-  const plugins = [
-    ...prePlugins,
-    {
-      key: 'MULTI_COMBOBOX',
-      handlers: {
-        onChange: pluginsConfig.combobox.onChange,
-        onKeyDown: pluginsConfig.combobox.onKeyDown,
-      },
-    },
-  ];
 
   const onChange = (value: MexEditorValue) => {
     setContent(value);

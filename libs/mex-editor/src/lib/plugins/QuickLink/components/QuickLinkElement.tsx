@@ -5,18 +5,13 @@ import { useFocused, useSelected } from 'slate-react';
 import styled from 'styled-components';
 import { useHotkeys } from '../../../hooks/useHotKeys';
 import { useOnMouseClick } from '../../../hooks/useOnMouseClick';
-import { SILink, SILinkRoot } from './ILinkElement.styles';
-import { ILinkElementProps, ILinkProps } from './ILinkElement.types';
-
-/**
- * ILinkElement with no default styles.
- * [Use the `styles` API to add your own styles.](https://github.com/OfficeDev/office-ui-fabric-react/wiki/Component-Styling)
- */
+import { SILink, SILinkRoot } from './QuickLinkElement.styles';
+import { ILinkElementProps, ILinkProps } from './QuickLink.types';
 
 const StyledIcon = styled(Icon)`
   margin-right: 4px;
 `;
-export const ILinkElement = ({
+export const QuickLinkElement = ({
   attributes,
   children,
   element,

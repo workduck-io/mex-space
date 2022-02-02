@@ -1,2 +1,2 @@
 export * from './QuickLinkElement';
-export * from './types';
+export * from './createQuickLinkPlugin';

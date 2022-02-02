@@ -172,7 +172,6 @@ export const generatePlugins = () => {
 const useMemoizedPlugins = () => {
   return createPlugins(generatePlugins(), {
     components: createPlateUI(),
-    // components: withStyledPlaceHolders(withStyledDraggables(components)),
   });
 };
 
