@@ -2,14 +2,13 @@ import React from 'react';
 import { MexEditor } from '@mexin/mex-editor';
 import { StyledHome } from './components/home.style';
 import { gruvboxTheme } from './theme/theme';
+import { ThemeProvider } from 'styled-components';
 
 type HomeProps = {
   title: string;
 };
 
 const Home = ({ title }: HomeProps) => {
-  const comboConfig = {};
-
   return (
     <StyledHome>
       <div className="wrapper">
@@ -23,32 +22,34 @@ const Home = ({ title }: HomeProps) => {
 
           <div id="mex-editor-container" className="rounded">
             <div className="text-container">
-              <MexEditor
-                theme={gruvboxTheme}
-                comboboxConfig={{
-                  onKeyDownConfig: {
-                    keys: {},
-                    slashCommands: {},
-                  },
-                  onChangeConfig: {},
-                }}
-                meta={{
-                  parentPath: 'documentation',
-                  path: 'documentation.first',
-                }}
-                options={{
-                  editableProps: {
-                    placeholder: "Let's try something here...",
-                    autoFocus: true,
-                  },
-                  focusOptions: {
-                    edge: 'start',
-                    focus: true,
-                  },
-                }}
-                editorId="wd-mex-editor"
-                value={[{ type: 'p', children: [{ text: '' }] }]}
-              />
+              <ThemeProvider theme={gruvboxTheme}>
+                <MexEditor
+                  comboboxConfig={{
+                    onKeyDownConfig: {
+                      keys: {},
+                      slashCommands: {},
+                    },
+                    onChangeConfig: {},
+                  }}
+                  meta={{
+                    parentPath: 'documentation',
+                    path: 'documentation.first',
+                  }}
+                  options={{
+                    editableProps: {
+                      readOnly: false,
+                      placeholder: "Let's try something here...",
+                      autoFocus: true,
+                    },
+                    focusOptions: {
+                      edge: 'start',
+                      focus: true,
+                    },
+                  }}
+                  editorId="wd-mex-editor"
+                  value={[{ type: 'p', children: [{ text: '' }] }]}
+                />
+              </ThemeProvider>
             </div>
           </div>
         </div>

@@ -34,10 +34,8 @@ export const Combobox = ({
   const isOpen = useComboboxIsOpen();
   const search = useComboboxStore((state) => state.search);
 
-  const ref = React.useRef<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const ref = React.useRef<any>(null); // eslint-disable-line @typescript-eslint/no -explicit-any
   const editor = useEditorState();
-  // const _editor = usePlateEditorState(usePlateEventId('focus'));
-  // console.log(editor === _editor);
 
   useEffect(() => {
     // Throws error when the combobox is open and editor is switched or removed

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Options,
   PlaceholderProps,
@@ -32,7 +32,6 @@ export interface MetaData {
 
 /* eslint-disable-next-line */
 export interface MexEditorProps {
-  theme: DefaultTheme;
   comboboxConfig: ComboboxConfig;
   editorId: string; // * Unique ID for the Mex Editor
   className?: string; // * Pass className to styled Mex Editor
@@ -71,7 +70,7 @@ export function MexEditor(props: MexEditorProps) {
   };
 
   return (
-    <ThemeProvider theme={props.theme}>
+    <>
       <Plate
         id={props.editorId}
         value={props.value}
@@ -85,7 +84,7 @@ export function MexEditor(props: MexEditorProps) {
         />
       </Plate>
       <pre>{JSON.stringify(content, null, 2)}</pre>
-    </ThemeProvider>
+    </>
   );
 }
 

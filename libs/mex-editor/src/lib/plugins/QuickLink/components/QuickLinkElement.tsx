@@ -7,6 +7,7 @@ import { useHotkeys } from '../../../hooks/useHotKeys';
 import { useOnMouseClick } from '../../../hooks/useOnMouseClick';
 import { SILink, SILinkRoot } from './QuickLinkElement.styles';
 import { ILinkElementProps, ILinkProps } from './QuickLink.types';
+import React from 'react';
 
 const StyledIcon = styled(Icon)`
   margin-right: 4px;

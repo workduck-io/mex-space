@@ -30,8 +30,11 @@ export const useComboboxConfig = (
         newItemHandler: (item) => console.log(item),
         itemRenderer: TagComboboxItem,
       },
+      ...config.onKeyDownConfig.keys,
     },
-    slashCommands: {},
+    slashCommands: {
+      ...config.onKeyDownConfig.slashCommands,
+    },
   };
 
   const comboOnChangeConfig: ComboboxOnChangeConfig = {
@@ -55,6 +58,7 @@ export const useComboboxConfig = (
       ),
       icon: 'ri:hashtag',
     },
+    ...config.onChangeConfig,
   };
 
   const prePlugins = useMemoizedPlugins();
