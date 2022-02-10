@@ -1,2 +1,2 @@
-export const COMET_QUICK_LINK = 'ilink';
-export const COMET_TAG = 'tag';
+export const ELEMENT_ILINK = 'ilink';
+export const ELEMENT_TAG = 'tag';

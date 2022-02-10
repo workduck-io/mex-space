@@ -1,9 +1,9 @@
 import { getNextWrappingIndex, PlateEditor } from '@udecode/plate';
 import { KeyboardHandler } from '@udecode/plate-core';
-import { IComboboxItem } from '../components/ComboBox/types';
+import { ComboboxKey, IComboboxItem } from '../components/ComboBox/types';
 import { useElementOnChange } from '../components/MultiCombobox/useMultiComboboxOnKeyDown';
 import { useSlashCommandOnChange } from '../components/SlashCommands/useSlashCommandOnChange';
-import { ComboboxKey, useComboboxStore } from '../store/combobox';
+import { useComboboxStore } from '../store/combobox';
 import { useMexEditorStore } from '../store/editor';
 
 const pure = (id: string) => {

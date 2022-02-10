@@ -1,14 +1,7 @@
 import { UseComboboxReturnValue } from 'downshift';
 import { Range } from 'slate';
-import { IComboboxItem } from '../components/ComboBox/types';
+import { ComboboxKey, IComboboxItem } from '../components/ComboBox/types';
 import { createStore, setStoreValue } from '../utils/store.utils';
-
-export enum ComboboxKey {
-  TAG = 'tag',
-  ILINK = 'ilink',
-  INLINE_BLOCK = 'inline_block',
-  SLASH_COMMAND = 'slash_command',
-}
 
 export type ComboboxState = {
   // Combobox key

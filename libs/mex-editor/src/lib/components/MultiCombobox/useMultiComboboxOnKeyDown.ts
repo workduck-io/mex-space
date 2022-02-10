@@ -7,11 +7,12 @@ import {
 } from '@udecode/plate';
 import { Editor, Transforms } from 'slate';
 import { useComboboxOnKeyDown } from '../../hooks/useComboboxOnKeyDown';
-import { useComboboxStore, ComboboxKey } from '../../store/combobox';
+import { useComboboxStore } from '../../store/combobox';
 import { useMexEditorStore } from '../../store/editor';
 import { withoutDelimiter } from '../../utils/helper';
 import {
   ComboboxItemType,
+  ComboboxKey,
   ComboboxKeyDownConfig,
   IComboboxItem,
   SlashCommandConfig,

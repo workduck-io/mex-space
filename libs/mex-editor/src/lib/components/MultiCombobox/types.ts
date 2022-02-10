@@ -1,4 +1,4 @@
-import { ComboboxKey } from '../../store/combobox';
+import { ComboboxKey } from '../../types';
 
 export interface ComboboxItem {
   text: string;

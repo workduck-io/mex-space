@@ -1,9 +1,9 @@
 import { OnChange, usePlateEditorRef } from '@udecode/plate';
 import { useCallback } from 'react';
 import { useComboboxOnChange } from '../../hooks/useComboOnChange';
-import { useComboboxStore, ComboboxKey } from '../../store/combobox';
+import { useComboboxStore } from '../../store/combobox';
 import { fuzzySearch } from '../../utils/lib';
-import { IComboboxItem } from '../ComboBox/types';
+import { ComboboxKey, IComboboxItem } from '../ComboBox/types';
 import { ComboboxType } from './types';
 
 // * Handle multiple combobox

@@ -1,5 +1,4 @@
 import { PlateEditor, RenderFunction } from '@udecode/plate';
-import { ComboboxKey } from '../../store/combobox';
 
 export interface ComboboxKeyDownConfig {
   keys: Record<string, ComboboxItemType>;
@@ -67,6 +66,13 @@ export enum ComboboxElementType {
   Normal = 0,
   Divider = 1,
   Header = 2,
+}
+
+export enum ComboboxKey {
+  TAG = 'tag',
+  ILINK = 'ilink',
+  INLINE_BLOCK = 'inline_block',
+  SLASH_COMMAND = 'slash_command',
 }
 
 export interface ComboboxItemProps {

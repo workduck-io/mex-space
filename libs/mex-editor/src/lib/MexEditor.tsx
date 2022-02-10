@@ -1,48 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Options,
-  PlaceholderProps,
-  Plate,
-  PlatePlugin,
-  selectEditor,
-  SelectEditorOptions,
-  usePlateEditorRef,
-} from '@udecode/plate';
-import { ComboboxConfig } from './components/ComboBox/types';
-import { EditableProps } from 'slate-react/dist/components/editable';
+import { Plate, selectEditor, usePlateEditorRef } from '@udecode/plate';
 import { useComboboxConfig } from './components/ComboBox/config';
 import { MultiComboboxContainer } from './components/MultiCombobox/multiComboboxContainer';
-import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { useMexEditorStore } from './store/editor';
-
-export type MexEditorValue = Array<any>;
-
-export interface MexEditorOptions {
-  editableProps?: EditableProps;
-  focusOptions?: SelectEditorOptions;
-  withDraggable?: boolean;
-  withBallonToolbar?: boolean;
-}
-
-export interface MetaData {
-  path: string;
-  parentPath: string;
-  delimiter?: string;
-}
-
-/* eslint-disable-next-line */
-export interface MexEditorProps {
-  comboboxConfig: ComboboxConfig;
-  editorId: string; // * Unique ID for the Mex Editor
-  className?: string; // * Pass className to styled Mex Editor
-  value: MexEditorValue; // * Initial value of editor, to set onChange content, use `editor.children = content`
-  placeholders?: Options<Array<PlaceholderProps>>; // * Array of objects with `placeholder` text and element `key
-  onChange?: (value: MexEditorValue) => void; // * Callback on change
-  options?: MexEditorOptions; // * Power the editor with options
-  meta?: MetaData; // * MetaData of current editor
-  plugins?: Array<PlatePlugin>; // * Core of editor
-  exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
-}
+import Toolbar from './components/Toolbar/Toolbar';
+import { MexEditorProps, MexEditorValue } from './types/editor';
 
 export function MexEditor(props: MexEditorProps) {
   const editorRef = usePlateEditorRef();
@@ -58,8 +20,9 @@ export function MexEditor(props: MexEditorProps) {
 
   const { plugins, comboOnKeydownConfig } = useComboboxConfig(
     props.editorId,
-    props.meta,
-    props.comboboxConfig
+    props.comboboxConfig,
+    props.plugins,
+    props.pluginOptions
   );
 
   const onChange = (value: MexEditorValue) => {
@@ -82,6 +45,7 @@ export function MexEditor(props: MexEditorProps) {
           keys={comboOnKeydownConfig.keys}
           slashCommands={comboOnKeydownConfig.slashCommands}
         />
+        {props.options?.withBallonToolbar && <Toolbar />}
       </Plate>
       <pre>{JSON.stringify(content, null, 2)}</pre>
     </>

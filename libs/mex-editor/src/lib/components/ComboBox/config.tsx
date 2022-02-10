@@ -1,32 +1,36 @@
-import { MetaData } from '../../MexEditor';
+import { PlatePlugin } from '@udecode/plate';
 import useMemoizedPlugins from '../../plugins';
 import { QuickLinkComboboxItem } from '../../plugins/QuickLink/components/QuickLinkComboboxItem';
 import { TagComboboxItem } from '../../plugins/Tags/components/TagComboboxItem';
-import { COMET_TAG } from '../../plugins/Tags/createTagPlugin';
-import { ComboboxKey } from '../../store/combobox';
-import { COMET_QUICK_LINK } from '../../types/elements';
+import { ELEMENT_ILINK, ELEMENT_TAG } from '../../types';
+import { PluginOptions } from '../../types/editor';
 import useMultiComboboxOnChange from '../MultiCombobox/useMultiComboboxChange';
 import useMultiComboboxOnKeyDown from '../MultiCombobox/useMultiComboboxOnKeyDown';
 import {
   ComboboxConfig,
+  ComboboxKey,
   ComboboxKeyDownConfig,
   ComboboxOnChangeConfig,
 } from './types';
 
 export const useComboboxConfig = (
   editorId: string,
-  meta: MetaData | undefined,
-  config: ComboboxConfig
+  config: ComboboxConfig,
+  customPlugins: Array<PlatePlugin> = [],
+  pluginOptions: PluginOptions = {
+    ilink: { key: ELEMENT_ILINK },
+    tag: { key: ELEMENT_TAG },
+  }
 ) => {
   const comboOnKeydownConfig: ComboboxKeyDownConfig = {
     keys: {
       ilink: {
-        slateElementType: COMET_QUICK_LINK,
+        slateElementType: ELEMENT_ILINK,
         newItemHandler: (item) => console.log(item),
         itemRenderer: QuickLinkComboboxItem,
       },
       tag: {
-        slateElementType: COMET_TAG,
+        slateElementType: ELEMENT_TAG,
         newItemHandler: (item) => console.log(item),
         itemRenderer: TagComboboxItem,
       },
@@ -61,10 +65,11 @@ export const useComboboxConfig = (
     ...config.onChangeConfig,
   };
 
-  const prePlugins = useMemoizedPlugins();
+  const prePlugins = useMemoizedPlugins(pluginOptions);
 
   const plugins = [
     ...prePlugins,
+    ...customPlugins,
     {
       key: 'MULTI_COMBOBOX',
       handlers: {

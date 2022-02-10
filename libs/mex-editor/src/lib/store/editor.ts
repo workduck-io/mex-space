@@ -1,4 +1,4 @@
-import { MetaData } from '../MexEditor';
+import { MetaData } from '../types/editor';
 import { createStore, setStoreValue } from '../utils/store.utils';
 
 export type EditorStateType = {
