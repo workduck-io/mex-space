@@ -43,25 +43,10 @@ import {
   ELEMENT_H6,
   createPlateUI,
   ELEMENT_PARAGRAPH,
+  PlatePluginComponent,
 } from '@udecode/plate';
 
 import { createQuickLinkPlugin } from './QuickLink/createQuickLinkPlugin';
-
-// import { withStyledDraggables } from './lib/wrappers/withDraggable';
-// import { withStyledPlaceHolders } from '../../../../../../lib/wrappers/withPlaceholder';
-// import components from '../../../../../../lib/components/components';
-
-// import {
-//   createExcalidrawPlugin,
-//   ELEMENT_EXCALIDRAW,
-// } from '@udecode/plate-excalidraw';
-// import { ExcalidrawElement } from '../../../../../../lib/components/Excalidraw';
-
-// import { createILinkPlugin } from '../../../../../../lib/components/ilink/createILinkPlugin';
-// import { createInlineBlockPlugin } from '../../../../../../lib/components/InlineBlock/createInlineBlockPlugin';
-// import { createSyncBlockPlugin } from '../../../../../../lib/components/SyncBlock/createSyncBlockPlugin';
-// import { createTagPlugin } from '../../../../../../lib/components/tag/createTagPlugin';
-// import { createBlurSelectionPlugin } from '../../../../../../lib/plugins/blurSelection';
 
 import {
   optionsAutoFormatRule,
@@ -72,12 +57,9 @@ import {
   optionsSoftBreakPlugin,
 } from './options';
 import { createTagPlugin } from './Tags/createTagPlugin';
-import { PluginOptions } from '../types/editor';
-// import TableWrapper from '../components/TableWrapper';
 
-export const generatePlugins = (options: PluginOptions) => {
+export const generatePlugins = () => {
   const Plugins: PlatePlugin[] = [
-    // editor
 
     // elements
     createParagraphPlugin(),
@@ -98,7 +80,6 @@ export const generatePlugins = (options: PluginOptions) => {
     createImagePlugin(),
     createLinkPlugin(),
     createListPlugin(),
-    // createTablePlugin({ component: TableWrapper }), // Table
 
     // Editing Plugins
     createSoftBreakPlugin(optionsSoftBreakPlugin),
@@ -152,27 +133,22 @@ export const generatePlugins = (options: PluginOptions) => {
     }),
     createDndPlugin(),
     createMediaEmbedPlugin(),
-    // createBlurSelectionPlugin() as PlatePlugin<PEditor>,
 
-    createNodeIdPlugin(optionsCreateNodeIdPlugin),
+    // createNodeIdPlugin(optionsCreateNodeIdPlugin),
+
     // // mex custom plugins
-    createTagPlugin(options.tag),
-    createQuickLinkPlugin(options.ilink),
-    // createSyncBlockPlugin(),
-    // createInlineBlockPlugin(),
-    // createExcalidrawPlugin({
-    //   component: ExcalidrawElement,
-    // }),
-
+    createTagPlugin(),
+    createQuickLinkPlugin(),
+ 
     createSelectOnBackspacePlugin(optionsSelectOnBackspacePlugin),
   ];
 
   return Plugins;
 };
 
-const useMemoizedPlugins = (options: PluginOptions) => {
-  return createPlugins(generatePlugins(options), {
-    components: createPlateUI(),
+const useMemoizedPlugins = (plugins: Array<PlatePlugin>, components: Record<string,PlatePluginComponent<any | undefined>>) => {
+  return createPlugins(plugins, {
+    components: createPlateUI(components),
   });
 };
 

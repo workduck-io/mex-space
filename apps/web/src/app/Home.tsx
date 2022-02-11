@@ -1,5 +1,5 @@
 import React from 'react';
-import { MexEditor } from '@mexin/mex-editor';
+import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor';
 import { StyledHome } from './components/home.style';
 import { gruvboxTheme } from './theme/theme';
 import { ThemeProvider } from 'styled-components';
@@ -26,13 +26,32 @@ const Home = ({ title }: HomeProps) => {
                 <MexEditor
                   comboboxConfig={{
                     onKeyDownConfig: {
-                      keys: {},
+                      keys: {
+                        ilink: {
+                          newItemHandler: (ilink: string) =>
+                            console.log('New Ilink: ', ilink),
+                        },
+                        tag: {
+                          newItemHandler: (tag: string) =>
+                            console.log('New Tag: ', tag),
+                        },
+                      },
                       slashCommands: {},
                     },
-                    onChangeConfig: {},
+                    onChangeConfig: {
+                      ilink: {
+                        cbKey: ComboboxKey.ILINK,
+                        data: [],
+                        trigger: '[[',
+                      },
+                      tag: {
+                        cbKey: ComboboxKey.TAG,
+                        data: [],
+                        trigger: '#',
+                      },
+                    },
                   }}
                   meta={{
-                    parentPath: 'documentation',
                     path: 'documentation.first',
                   }}
                   options={{
@@ -41,6 +60,7 @@ const Home = ({ title }: HomeProps) => {
                       placeholder: "Let's try something here...",
                       autoFocus: true,
                     },
+
                     withBallonToolbar: true,
                     focusOptions: {
                       edge: 'start',

@@ -1,5 +1,5 @@
 {
-  "name": "@mexin/mex-editor",
+  "name": "@workduck-io/mex-editor",
   "version": "0.1.0",
   "dependencies": {
     "@udecode/plate": "^10.0.0",
@@ -9,7 +9,8 @@
     "hotkeys-js": "^3.8.7",
     "immer": "^9.0.12",
     "polished": "^4.1.4",
-    "ramda": "^0.28.0"
+    "ramda": "^0.28.0",
+    "fast-equals": "^2.0.4"
   },
   "peerDependencies": {
     "react": ">=17.0.2",

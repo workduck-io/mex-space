@@ -1,11 +1,5 @@
 import styled, { css } from 'styled-components'
 
-// const classNames = {
-//   root: 'slate-TagCombobox',
-//   tagItem: 'slate-TagCombobox-tagItem',
-//   tagItemHighlighted: 'slate-TagCombobox-tagItemHighlighted',
-// };
-
 export const ComboboxRoot = styled.ul<{ isOpen: boolean }>`
   ${({ isOpen, theme }) =>
     isOpen &&
@@ -26,7 +20,7 @@ export const ComboboxRoot = styled.ul<{ isOpen: boolean }>`
 export const ItemTitle = styled.div``
 export const ItemRightIcons = styled.div`
   display: flex;
-  flex-gap: ${({ theme }) => theme.spacing.tiny};
+  gap: ${({ theme }) => theme.spacing.tiny};
 `
 
 export const ItemDesc = styled.div`

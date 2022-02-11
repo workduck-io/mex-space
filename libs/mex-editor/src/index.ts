@@ -1,2 +1,1 @@
-export * from './lib/MexEditor';
-// export * from '@udecode/plate';
+export * from './lib';

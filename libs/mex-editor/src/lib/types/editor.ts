@@ -2,6 +2,7 @@ import {
   Options,
   PlaceholderProps,
   PlatePlugin,
+  PlatePluginComponent,
   SelectEditorOptions,
 } from '@udecode/plate';
 import { EditableProps } from 'slate-react/dist/components/editable';
@@ -25,13 +26,13 @@ export interface MexEditorOptions {
 
 export interface MetaData {
   path: string;
-  parentPath: string;
   delimiter?: string;
 }
 
 /* eslint-disable-next-line */
 export interface MexEditorProps {
   comboboxConfig: ComboboxConfig;
+  components?: Record<string, PlatePluginComponent<any | undefined>>; // * Pass components which you want to replace
   editorId: string; // * Unique ID for the Mex Editor
   className?: string; // * Pass className to styled Mex Editor
   value: MexEditorValue; // * Initial value of editor, to set onChange content, use `editor.children = content`
@@ -39,7 +40,7 @@ export interface MexEditorProps {
   onChange?: (value: MexEditorValue) => void; // * Callback on change
   options?: MexEditorOptions; // * Power the editor with options
   meta?: MetaData; // * MetaData of current editor
-  plugins?: Array<PlatePlugin>; // * Core of editor
-  pluginOptions?: PluginOptions;
+  plugins?: Array<PlatePlugin>; // * Plugins to power the editor
+  debug?: boolean; // * Debug mode for content
   exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
 }

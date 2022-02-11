@@ -1,7 +1,8 @@
 import { PlateEditor, RenderFunction } from '@udecode/plate';
+import { CustomElements } from '../../types/editor';
 
 export interface ComboboxKeyDownConfig {
-  keys: Record<string, ComboboxItemType>;
+  keys: Record<CustomElements, ComboboxItemType>;
   slashCommands: Record<string, SlashCommandConfig>;
 }
 
@@ -80,12 +81,12 @@ export interface ComboboxItemProps {
 }
 
 export interface ComboboxItemType {
-  slateElementType: string;
+  slateElementType?: string;
   newItemHandler: (item: string, options: { parentId?: string }) => void;
-  itemRenderer: RenderFunction<ComboboxItemProps>;
+  itemRenderer?: RenderFunction<ComboboxItemProps>;
 }
 
-export type ComboboxOnChangeConfig = Record<string, ComboboxItemOnChangeConfig>;
+export type ComboboxOnChangeConfig = Record<CustomElements, ComboboxItemOnChangeConfig>;
 
 export interface ComboboxConfig {
   onKeyDownConfig: ComboboxKeyDownConfig;

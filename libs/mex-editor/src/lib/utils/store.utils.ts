@@ -38,8 +38,6 @@ export const combineAndImmer = <PrimaryState extends State>(
 
 export const createStore = () => pipe(immer, create);
 
-// export const action = (type: string) =>
-
 export const action = <T>(
   draft: T & { actionType?: string },
   actionType: string

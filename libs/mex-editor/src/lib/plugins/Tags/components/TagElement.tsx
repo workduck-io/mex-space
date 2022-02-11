@@ -11,7 +11,7 @@ import { useOnMouseClick } from '../../../hooks/useOnMouseClick';
  * TagElement with no default styles.
  * [Use the `styles` API to add your own styles.](https://github.com/OfficeDev/office-ui-fabric-react/wiki/Component-Styling)
  */
-export const TagElement = ({
+const TagElement = ({
   attributes,
   children,
   element,
@@ -59,3 +59,5 @@ export const TagElement = ({
     </STagRoot>
   );
 };
+
+export default TagElement;

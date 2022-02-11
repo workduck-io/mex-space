@@ -1,7 +1,6 @@
-/*
- * Checks for links that start with  the separator (.) and returns key and whether it is a child node i.e. starting with the separator
- * Also removes multiple separator invocations like "a.b....c..d"
- */
+import { deepEqual } from 'fast-equals';
+import { SEPARATOR } from './constants';
+
 export const withoutDelimiter = (text: string, delimiter = '.') => {
   const key = text
     .split(delimiter)
@@ -24,3 +23,20 @@ export const removeNulls = (obj: any): any => {
   }
   return obj;
 };
+
+export const removeLink = <T>(item: T, list: T[]): T[] => {
+  return list.filter((l) => !deepEqual(l, item));
+};
+
+export const getAllParentIds = (id: string) =>
+  id
+    .split(SEPARATOR)
+    .reduce(
+      (p, c) => [...p, p.length > 0 ? `${p[p.length - 1]}${SEPARATOR}${c}` : c],
+      [] as Array<string>
+    );
+
+export const typeInvert = (type: string) => (type === 'from' ? 'to' : 'from');
+
+// * Returns an array of unique values via Set
+export const Settify = <T>(arr: T[]): T[] => Array.from(new Set(arr));

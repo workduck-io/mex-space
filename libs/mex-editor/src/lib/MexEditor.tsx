@@ -20,9 +20,9 @@ export function MexEditor(props: MexEditorProps) {
 
   const { plugins, comboOnKeydownConfig } = useComboboxConfig(
     props.editorId,
-    props.comboboxConfig,
-    props.plugins,
-    props.pluginOptions
+    props?.comboboxConfig,
+    props?.components,
+    props?.plugins
   );
 
   const onChange = (value: MexEditorValue) => {
@@ -47,7 +47,7 @@ export function MexEditor(props: MexEditorProps) {
         />
         {props.options?.withBallonToolbar && <Toolbar />}
       </Plate>
-      <pre>{JSON.stringify(content, null, 2)}</pre>
+      {props.debug && <pre>{JSON.stringify(content, null, 2)}</pre>}
     </>
   );
 }

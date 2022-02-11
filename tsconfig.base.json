@@ -16,7 +16,7 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "@mexin/mex-editor": ["libs/mex-editor/src/index.ts"]
+      "@workduck-io/mex-editor": ["libs/mex-editor/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

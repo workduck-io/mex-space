@@ -6,13 +6,15 @@ import styled from 'styled-components';
 import { useHotkeys } from '../../../hooks/useHotKeys';
 import { useOnMouseClick } from '../../../hooks/useOnMouseClick';
 import { SILink, SILinkRoot } from './QuickLinkElement.styles';
-import { ILinkElementProps, ILinkProps } from './QuickLink.types';
+import { ILinkProps } from './QuickLink.types';
 import React from 'react';
 
 const StyledIcon = styled(Icon)`
   margin-right: 4px;
 `;
-export const QuickLinkElement = ({
+
+
+const QuickLinkElement = ({
   attributes,
   children,
   element,
@@ -36,9 +38,9 @@ export const QuickLinkElement = ({
     [selected, focused]
   );
 
-  const onClickProps = useOnMouseClick(() => {
-    onClick();
-  });
+  // const onClickProps = useOnMouseClick(() => {
+  //   onClick();
+  // });
 
   useHotkeys(
     'delete',
@@ -54,9 +56,9 @@ export const QuickLinkElement = ({
     <SILinkRoot
       {...attributes}
       id={`ILINK_${element.value}`}
-      data-tour="mex-onboarding-ilink"
       data-slate-value={element.value}
       contentEditable={false}
+      onClick={onClick}
     >
       {isArchived ? (
         <SILink focused={selected} archived={true}>
@@ -74,7 +76,7 @@ export const QuickLinkElement = ({
         //   previewRef={editor}
         //   nodeid={nodeid}
         // >
-        <SILink focused={selected} {...onClickProps}>
+        <SILink focused={selected} >
           <span className="ILink_decoration ILink_decoration_left">[[</span>
           <span className="ILink_decoration ILink_decoration_value">
             {' '}
@@ -88,5 +90,7 @@ export const QuickLinkElement = ({
     </SILinkRoot>
   );
 };
+
+export default QuickLinkElement
 
 const isPreview = (id: string) => id.startsWith('__preview__');

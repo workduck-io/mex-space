@@ -1,5 +1,5 @@
 import { getSlateClass, createPluginFactory } from '@udecode/plate-core';
-import { TagElement } from './components/TagElement';
+import TagElement from './components/TagElement';
 export const COMET_TAG = 'tag';
 /**
  * Enables support for hypertags.

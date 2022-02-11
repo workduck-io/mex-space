@@ -1,9 +1,8 @@
-import { PlatePlugin } from '@udecode/plate';
-import useMemoizedPlugins from '../../plugins';
+import { PlatePlugin, PlatePluginComponent } from '@udecode/plate';
+import useMemoizedPlugins, { generatePlugins } from '../../plugins';
 import { QuickLinkComboboxItem } from '../../plugins/QuickLink/components/QuickLinkComboboxItem';
 import { TagComboboxItem } from '../../plugins/Tags/components/TagComboboxItem';
 import { ELEMENT_ILINK, ELEMENT_TAG } from '../../types';
-import { PluginOptions } from '../../types/editor';
 import useMultiComboboxOnChange from '../MultiCombobox/useMultiComboboxChange';
 import useMultiComboboxOnKeyDown from '../MultiCombobox/useMultiComboboxOnKeyDown';
 import {
@@ -16,60 +15,49 @@ import {
 export const useComboboxConfig = (
   editorId: string,
   config: ComboboxConfig,
-  customPlugins: Array<PlatePlugin> = [],
-  pluginOptions: PluginOptions = {
-    ilink: { key: ELEMENT_ILINK },
-    tag: { key: ELEMENT_TAG },
-  }
+  components: Record<string, PlatePluginComponent<any | undefined>> = {},
+  customPlugins?: Array<PlatePlugin>
 ) => {
+  const keys = config.onKeyDownConfig.keys;
+
   const comboOnKeydownConfig: ComboboxKeyDownConfig = {
     keys: {
       ilink: {
         slateElementType: ELEMENT_ILINK,
-        newItemHandler: (item) => console.log(item),
+        newItemHandler: keys.ilink.newItemHandler,
         itemRenderer: QuickLinkComboboxItem,
       },
       tag: {
         slateElementType: ELEMENT_TAG,
-        newItemHandler: (item) => console.log(item),
+        newItemHandler: keys.tag.newItemHandler,
         itemRenderer: TagComboboxItem,
       },
-      ...config.onKeyDownConfig.keys,
     },
-    slashCommands: {
-      ...config.onKeyDownConfig.slashCommands,
-    },
+    slashCommands: config.onKeyDownConfig.slashCommands,
   };
 
   const comboOnChangeConfig: ComboboxOnChangeConfig = {
     ilink: {
       cbKey: ComboboxKey.ILINK,
       trigger: '[[',
-      data: [
-        { path: 'documentation.one', nodeid: 'ilink1', icon: 'something' },
-        {
-          path: 'documentation.libraries',
-          nodeid: 'ilink1',
-          icon: 'something',
-        },
-      ].map((l) => ({ ...l, value: l.path, text: l.path })),
+      data: [],
     },
     tag: {
       cbKey: ComboboxKey.TAG,
       trigger: '#',
-      data: [{ value: 'dinesh' }, { value: 'first' }, { value: 'second' }].map(
-        (t) => ({ ...t, text: t.value })
-      ),
+      data: [],
       icon: 'ri:hashtag',
     },
-    ...config.onChangeConfig,
+    ...(config.onChangeConfig as any),
   };
 
-  const prePlugins = useMemoizedPlugins(pluginOptions);
+  const prePlugins = useMemoizedPlugins(
+    customPlugins ?? generatePlugins(),
+    components
+  );
 
   const plugins = [
     ...prePlugins,
-    ...customPlugins,
     {
       key: 'MULTI_COMBOBOX',
       handlers: {

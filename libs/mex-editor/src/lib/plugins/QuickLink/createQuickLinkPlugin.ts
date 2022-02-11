@@ -1,6 +1,6 @@
 import { createPluginFactory, getSlateClass } from '@udecode/plate';
 import { ELEMENT_ILINK } from '../../types';
-import { QuickLinkElement } from './components/QuickLinkElement';
+import QuickLinkElement from './components/QuickLinkElement';
 
 /**
  * Enables support for Internal links.

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Combobox } from '../../../components/ComboBox';
 import { useOnSelectItem } from '../../../hooks/useOnSelectItem';
-import { useComboboxStore, ComboboxKey } from '../../../store/combobox';
+import { useComboboxStore } from '../../../store/combobox';
+import { ComboboxKey } from '../../../types';
 import { TagComboboxItem } from './TagComboboxItem';
 
 export const TagComboboxComponent = () => {
