@@ -82,11 +82,14 @@ export interface ComboboxItemProps {
 
 export interface ComboboxItemType {
   slateElementType?: string;
-  newItemHandler: (item: string, options: { parentId?: string }) => void;
+  newItemHandler: (item: string, parentId?: string) => void;
   itemRenderer?: RenderFunction<ComboboxItemProps>;
 }
 
-export type ComboboxOnChangeConfig = Record<CustomElements, ComboboxItemOnChangeConfig>;
+export type ComboboxOnChangeConfig = Record<
+  CustomElements,
+  ComboboxItemOnChangeConfig
+>;
 
 export interface ComboboxConfig {
   onKeyDownConfig: ComboboxKeyDownConfig;

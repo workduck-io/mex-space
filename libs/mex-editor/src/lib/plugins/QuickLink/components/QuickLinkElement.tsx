@@ -4,7 +4,6 @@ import { Transforms } from 'slate';
 import { useFocused, useSelected } from 'slate-react';
 import styled from 'styled-components';
 import { useHotkeys } from '../../../hooks/useHotKeys';
-import { useOnMouseClick } from '../../../hooks/useOnMouseClick';
 import { SILink, SILinkRoot } from './QuickLinkElement.styles';
 import { ILinkProps } from './QuickLink.types';
 import React from 'react';
@@ -12,7 +11,6 @@ import React from 'react';
 const StyledIcon = styled(Icon)`
   margin-right: 4px;
 `;
-
 
 const QuickLinkElement = ({
   attributes,
@@ -76,7 +74,7 @@ const QuickLinkElement = ({
         //   previewRef={editor}
         //   nodeid={nodeid}
         // >
-        <SILink focused={selected} >
+        <SILink focused={selected}>
           <span className="ILink_decoration ILink_decoration_left">[[</span>
           <span className="ILink_decoration ILink_decoration_value">
             {' '}
@@ -91,6 +89,6 @@ const QuickLinkElement = ({
   );
 };
 
-export default QuickLinkElement
+export default QuickLinkElement;
 
 const isPreview = (id: string) => id.startsWith('__preview__');

@@ -19,6 +19,7 @@ import {
 } from './styled';
 import { setElementPositionByRange } from '../../utils/setElementPositionByRange';
 import { ComboboxProps } from './types';
+import { mog } from '../../utils';
 
 export const Combobox = ({
   onSelectItem,
@@ -67,6 +68,7 @@ export const Combobox = ({
       <ComboboxRoot {...menuProps} ref={multiRef} isOpen={isOpen}>
         {isOpen &&
           items.map((item, index) => {
+            mog('ITEM', { item });
             const Item = onRenderItem ? onRenderItem({ item }) : item.text;
             const text = item.text;
 

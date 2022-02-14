@@ -1,0 +1,53 @@
+name: Merge on main
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  build:
+    if: "!contains(github.event.commits.*.message, '[skip-ci]')"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      # Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Make sure we have all branches
+      - name: Fetch other branches
+        run: git fetch --no-tags --prune --depth=5 origin main
+
+      # Setup node
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Run Install
+      - name: Install environment
+        run: |
+          rm -rf node_modules && rm -rf dist
+          npm ci
+
+      # Run versioning on affected libraries
+      - name: Version
+        env:
+          YARN_TOKEN: ${{ secrets.YARN_TOKEN }}
+        run: ./.github/scripts/library-version.sh
+
+      # Build the libraries
+      - name: Build
+        env:
+          YARN_TOKEN: ${{ secrets.YARN_TOKEN }}
+        run: ./.github/scripts/library-build.sh
+
+      # Deploy the library to the Github NPM repository
+      - name: Deploy To Github NPM
+        env:
+          YARN_TOKEN: ${{ secrets.YARN_TOKEN }}
+        run: ./.github/scripts/library-publish.sh

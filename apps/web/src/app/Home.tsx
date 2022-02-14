@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor';
 import { StyledHome } from './components/home.style';
 import { gruvboxTheme } from './theme/theme';
@@ -9,6 +9,7 @@ type HomeProps = {
 };
 
 const Home = ({ title }: HomeProps) => {
+  const [ilinks, setIlinks] = useState<Array<any>>([]);
   return (
     <StyledHome>
       <div className="wrapper">
@@ -18,6 +19,11 @@ const Home = ({ title }: HomeProps) => {
               <span> Hello there, </span>
               Welcome {title} 👋
             </h1>
+            <pre>
+              {ilinks.map((i) => (
+                <div>{i.path}</div>
+              ))}
+            </pre>
           </div>
 
           <div id="mex-editor-container" className="rounded">
@@ -29,7 +35,16 @@ const Home = ({ title }: HomeProps) => {
                       keys: {
                         ilink: {
                           newItemHandler: (ilink: string) =>
-                            console.log('New Ilink: ', ilink),
+                            setIlinks((prev) => [
+                              ...prev,
+                              {
+                                path: ilink,
+                                value: ilink,
+                                text: ilink,
+                                nodeid: 'ilink1',
+                                icon: 'something',
+                              },
+                            ]),
                         },
                         tag: {
                           newItemHandler: (tag: string) =>
@@ -41,7 +56,7 @@ const Home = ({ title }: HomeProps) => {
                     onChangeConfig: {
                       ilink: {
                         cbKey: ComboboxKey.ILINK,
-                        data: [],
+                        data: ilinks,
                         trigger: '[[',
                       },
                       tag: {

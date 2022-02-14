@@ -60,7 +60,6 @@ import { createTagPlugin } from './Tags/createTagPlugin';
 
 export const generatePlugins = () => {
   const Plugins: PlatePlugin[] = [
-
     // elements
     createParagraphPlugin(),
     createBlockquotePlugin(),
@@ -139,14 +138,17 @@ export const generatePlugins = () => {
     // // mex custom plugins
     createTagPlugin(),
     createQuickLinkPlugin(),
- 
+
     createSelectOnBackspacePlugin(optionsSelectOnBackspacePlugin),
   ];
 
   return Plugins;
 };
 
-const useMemoizedPlugins = (plugins: Array<PlatePlugin>, components: Record<string,PlatePluginComponent<any | undefined>>) => {
+const useMemoizedPlugins = (
+  plugins: Array<PlatePlugin>,
+  components: Record<string, PlatePluginComponent<any | undefined>>
+) => {
   return createPlugins(plugins, {
     components: createPlateUI(components),
   });

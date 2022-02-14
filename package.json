@@ -5,7 +5,13 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "affected": "nx affected",
+    "affected:apps": "nx affected:apps",
+    "affected:build": "nx affected:build",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected:libs": "nx affected:libs",
+    "affected:lint": "nx affected:lint"
   },
   "private": true,
   "dependencies": {
