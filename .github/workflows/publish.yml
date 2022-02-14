@@ -1,5 +1,8 @@
 name: Merge on main
 on:
+  push:
+    branches:
+      - test
   pull_request:
     branches:
       - main
@@ -7,7 +10,7 @@ on:
 
 jobs:
   build:
-    if: "!contains(github.event.commits.*.message, '[skip-ci]')"
+    # if: "!contains(github.event.commits[0].message, '[skip-ci]')"
     runs-on: ubuntu-latest
     strategy:
       matrix:
