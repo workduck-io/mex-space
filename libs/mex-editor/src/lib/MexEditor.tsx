@@ -5,6 +5,7 @@ import { MultiComboboxContainer } from './components/MultiCombobox/multiCombobox
 import { useMexEditorStore } from './store/editor';
 import Toolbar from './components/Toolbar/Toolbar';
 import { MexEditorProps, MexEditorValue } from './types/editor';
+import { usePlugins } from './hooks/usePlugins';
 
 export function MexEditor(props: MexEditorProps) {
   const editorRef = usePlateEditorRef();
@@ -18,11 +19,15 @@ export function MexEditor(props: MexEditorProps) {
     setMetaData(props.meta);
   }, [editorRef, props.editorId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { plugins, comboOnKeydownConfig } = useComboboxConfig(
-    props.editorId,
-    props?.comboboxConfig,
-    props?.components,
-    props?.plugins
+  const { comboboxPlugin, comboOnKeydownConfig } = useComboboxConfig(
+    props?.comboboxConfig
+  );
+
+  const { plugins } = usePlugins(
+    props.components,
+    props.options?.withMexPlugins ?? true,
+    props.plugins,
+    comboboxPlugin
   );
 
   const onChange = (value: MexEditorValue) => {
@@ -41,10 +46,9 @@ export function MexEditor(props: MexEditorProps) {
         editableProps={props?.options?.editableProps}
         plugins={plugins}
       >
-        <MultiComboboxContainer
-          keys={comboOnKeydownConfig.keys}
-          slashCommands={comboOnKeydownConfig.slashCommands}
-        />
+        {!props.options?.withoutCombobox && (
+          <MultiComboboxContainer {...comboOnKeydownConfig} />
+        )}
         {props.options?.withBallonToolbar && <Toolbar />}
       </Plate>
       {props.debug && <pre>{JSON.stringify(content, null, 2)}</pre>}

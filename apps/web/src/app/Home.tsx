@@ -21,7 +21,7 @@ const Home = ({ title }: HomeProps) => {
             </h1>
             <pre>
               {ilinks.map((i) => (
-                <div>{i.path}</div>
+                <div key={i.path}>{i.path}</div>
               ))}
             </pre>
           </div>
@@ -34,7 +34,7 @@ const Home = ({ title }: HomeProps) => {
                     onKeyDownConfig: {
                       keys: {
                         ilink: {
-                          newItemHandler: (ilink: string) =>
+                          newItemHandler: (ilink: string) => {
                             setIlinks((prev) => [
                               ...prev,
                               {
@@ -44,11 +44,15 @@ const Home = ({ title }: HomeProps) => {
                                 nodeid: 'ilink1',
                                 icon: 'something',
                               },
-                            ]),
+                            ]);
+
+                            return ilink;
+                          },
                         },
                         tag: {
-                          newItemHandler: (tag: string) =>
-                            console.log('New Tag: ', tag),
+                          newItemHandler: (tag: string) => {
+                            return tag;
+                          },
                         },
                       },
                       slashCommands: {},
@@ -66,6 +70,7 @@ const Home = ({ title }: HomeProps) => {
                       },
                     },
                   }}
+                  debug
                   meta={{
                     path: 'documentation.first',
                   }}
@@ -75,7 +80,7 @@ const Home = ({ title }: HomeProps) => {
                       placeholder: "Let's try something here...",
                       autoFocus: true,
                     },
-
+                    withoutCombobox: true,
                     withBallonToolbar: true,
                     focusOptions: {
                       edge: 'start',

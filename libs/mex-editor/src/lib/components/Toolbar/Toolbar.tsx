@@ -12,9 +12,6 @@ import {
   ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
-  ELEMENT_OL,
-  ELEMENT_UL,
-  ListToolbarButton,
 } from '@udecode/plate';
 import React from 'react';
 import { Separator } from './Seperator';

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const SILinkRoot = styled.div`
+export const SILinkRoot = styled.span`
   display: inline-block;
   line-height: 1.2;
 `;
@@ -10,7 +10,7 @@ interface SILinkProps {
   archived?: boolean;
 }
 
-export const SILink = styled.div<SILinkProps>`
+export const SILink = styled.span<SILinkProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;

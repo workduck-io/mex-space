@@ -1,4 +1,5 @@
 import { deepEqual } from 'fast-equals';
+import { ELEMENT_FLOW_BLOCK } from '../types';
 import { SEPARATOR } from './constants';
 
 export const withoutDelimiter = (text: string, delimiter = '.') => {
@@ -26,6 +27,17 @@ export const removeNulls = (obj: any): any => {
 
 export const removeLink = <T>(item: T, list: T[]): T[] => {
   return list.filter((l) => !deepEqual(l, item));
+};
+
+export const isFlowBlock = (node: any): boolean => {
+  if (node.type === ELEMENT_FLOW_BLOCK) return true;
+  if (node.children) {
+    if (node.children.length > 0)
+      return node.children
+        .map(isFlowBlock)
+        .reduce((p: boolean, c: boolean) => p || c, false);
+  }
+  return false;
 };
 
 export const getAllParentIds = (id: string) =>

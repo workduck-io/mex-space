@@ -8,7 +8,6 @@ export type QuickLinkComboboxItemData =
   | undefined;
 
 export const QuickLinkComboboxItem = ({ item }: ComboboxItemProps) => {
-  // console.log({ item })
   return !(item.data as QuickLinkComboboxItemData)?.isNew ? (
     item.text
   ) : (

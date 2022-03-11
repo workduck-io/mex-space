@@ -82,7 +82,7 @@ export interface ComboboxItemProps {
 
 export interface ComboboxItemType {
   slateElementType?: string;
-  newItemHandler: (item: string, parentId?: string) => void;
+  newItemHandler: (item: string, parentId?: string) => string;
   itemRenderer?: RenderFunction<ComboboxItemProps>;
 }
 

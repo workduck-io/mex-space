@@ -24,7 +24,7 @@ export const ElementComboboxComponent = ({
     slashCommands,
     comboRenderType
   );
-  // console.log({ slashCommands })
+
   const onNewItem = (newItem, parentId?) => {
     comboRenderType.newItemHandler(newItem, parentId);
   };
@@ -41,8 +41,8 @@ export const ElementComboboxComponent = ({
 };
 
 // Handle multiple combobox
-export const MultiComboboxContainer = (props: ComboboxKeyDownConfig) => {
+export const MultiComboboxContainer = (config: ComboboxKeyDownConfig) => {
   useComboboxControls(true);
 
-  return <ElementComboboxComponent {...props} />;
+  return <ElementComboboxComponent {...config} />;
 };

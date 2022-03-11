@@ -1,5 +1,3 @@
-import { PlatePlugin, PlatePluginComponent } from '@udecode/plate';
-import useMemoizedPlugins, { generatePlugins } from '../../plugins';
 import { QuickLinkComboboxItem } from '../../plugins/QuickLink/components/QuickLinkComboboxItem';
 import { TagComboboxItem } from '../../plugins/Tags/components/TagComboboxItem';
 import { ELEMENT_ILINK, ELEMENT_TAG } from '../../types';
@@ -12,12 +10,7 @@ import {
   ComboboxOnChangeConfig,
 } from './types';
 
-export const useComboboxConfig = (
-  editorId: string,
-  config: ComboboxConfig,
-  components: Record<string, PlatePluginComponent<any | undefined>> = {},
-  customPlugins?: Array<PlatePlugin>
-) => {
+export const useComboboxConfig = (config: ComboboxConfig) => {
   const keys = config.onKeyDownConfig.keys;
 
   const comboOnKeydownConfig: ComboboxKeyDownConfig = {
@@ -51,24 +44,16 @@ export const useComboboxConfig = (
     ...(config.onChangeConfig as any),
   };
 
-  const prePlugins = useMemoizedPlugins(
-    customPlugins ?? generatePlugins(),
-    components
-  );
-
-  const plugins = [
-    ...prePlugins,
-    {
-      key: 'MULTI_COMBOBOX',
-      handlers: {
-        onChange: useMultiComboboxOnChange(editorId, comboOnChangeConfig),
-        onKeyDown: useMultiComboboxOnKeyDown(comboOnKeydownConfig),
-      },
+  const comboboxPlugin = {
+    key: 'MULTI_COMBOBOX',
+    handlers: {
+      onChange: useMultiComboboxOnChange(comboOnChangeConfig),
+      onKeyDown: useMultiComboboxOnKeyDown(comboOnKeydownConfig),
     },
-  ];
+  };
 
   return {
-    plugins,
+    comboboxPlugin,
     comboOnKeydownConfig,
   };
 };

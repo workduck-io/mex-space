@@ -20,8 +20,9 @@ export type PluginOptions = Record<CustomElements, PlatePlugin>;
 export interface MexEditorOptions {
   editableProps?: EditableProps;
   focusOptions?: SelectEditorOptions;
-  withDraggable?: boolean;
   withBallonToolbar?: boolean;
+  withoutCombobox?: boolean;
+  withMexPlugins?: boolean;
 }
 
 export interface MetaData {
@@ -30,6 +31,7 @@ export interface MetaData {
 }
 
 /* eslint-disable-next-line */
+
 export interface MexEditorProps {
   comboboxConfig: ComboboxConfig;
   components?: Record<string, PlatePluginComponent<any | undefined>>; // * Pass components which you want to replace
@@ -42,5 +44,6 @@ export interface MexEditorProps {
   meta?: MetaData; // * MetaData of current editor
   plugins?: Array<PlatePlugin>; // * Plugins to power the editor
   debug?: boolean; // * Debug mode for content
+  showAsBlocks?: boolean;
   exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
 }

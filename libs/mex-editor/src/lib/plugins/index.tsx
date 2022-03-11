@@ -58,7 +58,13 @@ import {
 } from './options';
 import { createTagPlugin } from './Tags/createTagPlugin';
 
-export const generatePlugins = () => {
+export const createMexPlugins = () => {
+  return [createTagPlugin(), createQuickLinkPlugin()];
+};
+
+export const generatePlugins = (withMexPlugins: boolean) => {
+  const mexPlugins = withMexPlugins ? createMexPlugins() : [];
+
   const Plugins: PlatePlugin[] = [
     // elements
     createParagraphPlugin(),
@@ -134,24 +140,11 @@ export const generatePlugins = () => {
     createMediaEmbedPlugin(),
 
     // createNodeIdPlugin(optionsCreateNodeIdPlugin),
-
-    // // mex custom plugins
-    createTagPlugin(),
-    createQuickLinkPlugin(),
-
     createSelectOnBackspacePlugin(optionsSelectOnBackspacePlugin),
+
+    //* Mex custom plugins
+    ...mexPlugins,
   ];
 
   return Plugins;
 };
-
-const useMemoizedPlugins = (
-  plugins: Array<PlatePlugin>,
-  components: Record<string, PlatePluginComponent<any | undefined>>
-) => {
-  return createPlugins(plugins, {
-    components: createPlateUI(components),
-  });
-};
-
-export default useMemoizedPlugins;

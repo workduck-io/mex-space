@@ -8,15 +8,11 @@ import { ComboboxType } from './types';
 
 // * Handle multiple combobox
 const useMultiComboboxOnChange = (
-  editorId: string,
-  keys: {
-    [type: string]: ComboboxType;
-  }
+  keys: Record<string, ComboboxType>
 ): OnChange => {
-  const editor = usePlateEditorRef(editorId)!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  const editor = usePlateEditorRef();
 
   const closeMenu = useComboboxStore((state) => state.closeMenu);
-
   const setItems = useComboboxStore((state) => state.setItems);
 
   const comboboxOnChange = useComboboxOnChange({

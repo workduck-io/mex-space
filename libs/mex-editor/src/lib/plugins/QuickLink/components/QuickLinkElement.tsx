@@ -36,10 +36,6 @@ const QuickLinkElement = ({
     [selected, focused]
   );
 
-  // const onClickProps = useOnMouseClick(() => {
-  //   onClick();
-  // });
-
   useHotkeys(
     'delete',
     () => {
