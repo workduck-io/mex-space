@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-editor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
@@ -15,12 +15,12 @@
     "@udecode/plate": "^10.0.0",
     "color-scheme": "^1.0.1",
     "core-js": "^3.21.0",
+    "fast-equals": "^2.0.4",
     "fuse.js": "^6.5.3",
     "hotkeys-js": "^3.8.7",
     "immer": "^9.0.12",
     "polished": "^4.1.4",
-    "ramda": "^0.28.0",
-    "fast-equals": "^2.0.4"
+    "ramda": "^0.28.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
