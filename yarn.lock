@@ -1119,6 +1119,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@excalidraw/excalidraw-next@0.8.0-69b6fbb":
+  version "0.8.0-69b6fbb"
+  resolved "https://registry.yarnpkg.com/@excalidraw/excalidraw-next/-/excalidraw-next-0.8.0-69b6fbb.tgz#4b5c73fc27132992229e0546465706f16bdb19ce"
+  integrity sha512-DGuFgoZVcJ/PeEzBd5eyRfiMVL002ooZYMUT8A6QV9X7Vm4r50Tu57cmxMbCjDiLkdO68wDC4l+QsGWdCa1PdA==
+
 "@fluentui/dom-utilities@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@fluentui/dom-utilities/-/dom-utilities-1.1.2.tgz#1a53e51e1ab1d40696ae7d355a970c68d496845f"
@@ -2753,6 +2758,24 @@
     use-deep-compare "1.1.0"
     zustand "3.6.7"
 
+"@udecode/plate-core@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-core/-/plate-core-8.3.0.tgz#ab5eaecaa19a70f311ba61e1605ddf852dcf396e"
+  integrity sha512-JL1b16oMxWQGevEhyylrVBsBcYAwmG/XpeWWI+xXB9IwUaVofYhgGUKVILHWKOrrBeM1QszGPH6LxxtEXwNPZw==
+  dependencies:
+    clsx "^1.1.1"
+    lodash "^4.17.21"
+    zustand "^3.4.2"
+
+"@udecode/plate-excalidraw@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-excalidraw/-/plate-excalidraw-8.3.0.tgz#f1ab52358c8a26bd195bd1062f635d1d936db536"
+  integrity sha512-eHu/WXbkQfqVlav0N28bBZPeH6DxEc1wG+QnFRvzSFA6d43+WWEAmk4KEcZ70T/jCrXKZpvp9EDGUsRdBA0cpw==
+  dependencies:
+    "@excalidraw/excalidraw-next" "0.8.0-69b6fbb"
+    "@udecode/plate-core" "8.3.0"
+    "@udecode/plate-styled-components" "8.3.0"
+
 "@udecode/plate-find-replace@10.0.0":
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/@udecode/plate-find-replace/-/plate-find-replace-10.0.0.tgz#9176cf597aa8eb9ec06fa3814ed43756fc79f83f"
@@ -2983,6 +3006,14 @@
   integrity sha512-4iZCYwnzaWoEiktVEEBM4qJqkogQLiM99Gxq2o8B7IKAgwHx/j2Ag/dQzCTmYokW1Yvw9FDHyafe5KzmW6PMaQ==
   dependencies:
     "@udecode/plate-core" "10.0.0"
+    clsx "^1.1.1"
+
+"@udecode/plate-styled-components@8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@udecode/plate-styled-components/-/plate-styled-components-8.3.0.tgz#96d75b1b4539b8fd915aa916945ba5bf1af928c3"
+  integrity sha512-RBlGkrhZSJM9+wlVYmSGkfC5OyVESVutTGhIt6BuhmSn8y5+xKsvm7syOi/AFL8kyoeS5pzfVcZ+HnuXe5r6bw==
+  dependencies:
+    "@udecode/plate-core" "8.3.0"
     clsx "^1.1.1"
 
 "@udecode/plate-table@10.0.0":
@@ -11276,3 +11307,8 @@ zustand@3.6.7:
   version "3.6.7"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.6.7.tgz#aab5ac0a9d6d21dce752aecd390f373ed9c9d70a"
   integrity sha512-bYWKXMfoJwZyliFgidcQ3tJC/F2f2hHq1+lhTk8dVPX2k28i4VnpnKjBGNxAd2QNliV0m455Vm+gDL8LShrV3g==
+
+zustand@^3.4.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.7.2.tgz#7b44c4f4a5bfd7a8296a3957b13e1c346f42514d"
+  integrity sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==
