@@ -1,10 +1,10 @@
 import { getNextWrappingIndex, PlateEditor } from '@udecode/plate';
 import { KeyboardHandler } from '@udecode/plate-core';
 import { ComboboxKey, IComboboxItem } from '../components/ComboBox/types';
-import { useElementOnChange } from '../components/MultiCombobox/useMultiComboboxOnKeyDown';
 import { useSlashCommandOnChange } from '../components/SlashCommands/useSlashCommandOnChange';
 import { useComboboxStore } from '../store/combobox';
 import { useMexEditorStore } from '../store/editor';
+import { useElementOnChange } from './useElementOnChange';
 
 const pure = (id: string) => {
   if (id.endsWith(']]')) {

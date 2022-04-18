@@ -18,7 +18,7 @@ export const useSlashCommandOnChange = (keys: {
   return (editor: PlateEditor, item: IComboboxItem) => {
     const targetRange = useComboboxStore.getState().targetRange;
     const commandKey = Object.keys(keys).filter(
-      (k) => keys[k].command === item.text
+      (k) => keys[k].command === item.key
     )[0];
 
     const commandConfig = keys[commandKey];
@@ -32,7 +32,7 @@ export const useSlashCommandOnChange = (keys: {
           pathAbove &&
           Editor.isEnd(editor, editor.selection.anchor, pathAbove);
 
-        if (item.text === 'table') {
+        if (item.key === 'table') {
           Transforms.select(editor, targetRange);
           insertTable(editor, { header: true });
         } else {

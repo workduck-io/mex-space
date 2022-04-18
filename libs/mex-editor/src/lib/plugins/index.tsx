@@ -44,6 +44,7 @@ import {
   createPlateUI,
   ELEMENT_PARAGRAPH,
   PlatePluginComponent,
+  createTablePlugin,
 } from '@udecode/plate';
 
 import { createQuickLinkPlugin } from './QuickLink/createQuickLinkPlugin';
@@ -79,6 +80,7 @@ export const generatePlugins = () => {
     createImagePlugin(),
     createLinkPlugin(),
     createListPlugin(),
+    createTablePlugin(),
 
     // Editing Plugins
     createSoftBreakPlugin(optionsSoftBreakPlugin),

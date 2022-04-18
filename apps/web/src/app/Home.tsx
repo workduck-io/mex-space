@@ -3,10 +3,33 @@ import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor';
 import { StyledHome } from './components/home.style';
 import { gruvboxTheme } from './theme/theme';
 import { ThemeProvider } from 'styled-components';
+import { ELEMENT_MEDIA_EMBED, ELEMENT_TABLE } from '@udecode/plate';
+import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw';
 
 type HomeProps = {
   title: string;
 };
+
+const commands = [
+  {
+    command: 'table',
+    text: 'Insert Table',
+    icon: 'ri:table-line',
+    type: 'Quick Actions',
+  },
+  {
+    command: 'canvas',
+    text: 'Insert Drawing canvas',
+    icon: 'ri:markup-line',
+    type: 'Quick Actions',
+  },
+  {
+    command: 'webem',
+    text: 'Insert Web embed',
+    icon: 'ri:global-line',
+    type: 'Quick Actions',
+  },
+];
 
 const Home = ({ title }: HomeProps) => {
   const [ilinks, setIlinks] = useState<Array<any>>([]);
@@ -50,8 +73,27 @@ const Home = ({ title }: HomeProps) => {
                           newItemHandler: (tag: string) =>
                             console.log('New Tag: ', tag),
                         },
+                        slash_command: {
+                          newItemHandler: () => undefined,
+                        },
                       },
-                      slashCommands: {},
+                      slashCommands: {
+                        webem: {
+                          slateElementType: ELEMENT_MEDIA_EMBED,
+                          command: 'webem',
+                          options: {
+                            url: 'http://example.com/',
+                          },
+                        },
+                        excalidraw: {
+                          slateElementType: ELEMENT_EXCALIDRAW,
+                          command: 'canvas',
+                        },
+                        table: {
+                          slateElementType: ELEMENT_TABLE,
+                          command: 'table',
+                        },
+                      },
                     },
                     onChangeConfig: {
                       ilink: {
@@ -63,6 +105,11 @@ const Home = ({ title }: HomeProps) => {
                         cbKey: ComboboxKey.TAG,
                         data: [],
                         trigger: '#',
+                      },
+                      slash_command: {
+                        cbKey: ComboboxKey.SLASH_COMMAND,
+                        data: commands.map((l) => ({ ...l, value: l.command })),
+                        trigger: '/',
                       },
                     },
                   }}

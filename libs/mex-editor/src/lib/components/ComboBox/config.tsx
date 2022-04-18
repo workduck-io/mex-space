@@ -5,6 +5,7 @@ import { TagComboboxItem } from '../../plugins/Tags/components/TagComboboxItem';
 import { ELEMENT_ILINK, ELEMENT_TAG } from '../../types';
 import useMultiComboboxOnChange from '../MultiCombobox/useMultiComboboxChange';
 import useMultiComboboxOnKeyDown from '../MultiCombobox/useMultiComboboxOnKeyDown';
+import { SlashComboboxItem } from '../SlashCommands/SlashComboboxItem';
 import {
   ComboboxConfig,
   ComboboxKey,
@@ -32,6 +33,11 @@ export const useComboboxConfig = (
         newItemHandler: keys.tag.newItemHandler,
         itemRenderer: TagComboboxItem,
       },
+      slash_command: {
+        slateElementType: 'slash_command',
+        newItemHandler: keys.slash_command.newItemHandler,
+        itemRenderer: SlashComboboxItem,
+      },
     },
     slashCommands: config.onKeyDownConfig.slashCommands,
   };
@@ -47,6 +53,12 @@ export const useComboboxConfig = (
       trigger: '#',
       data: [],
       icon: 'ri:hashtag',
+    },
+    slash_command: {
+      cbKey: ComboboxKey.SLASH_COMMAND,
+      trigger: '/',
+      icon: 'ri:flask-line',
+      data: [],
     },
     ...(config.onChangeConfig as any),
   };

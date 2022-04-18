@@ -13,6 +13,7 @@ export type MexEditorValue = Array<any>;
 export enum CustomElements {
   ILINK = 'ilink',
   TAG = 'tag',
+  SLASH_COMMAND = 'slash_command',
 }
 
 export type PluginOptions = Record<CustomElements, PlatePlugin>;
