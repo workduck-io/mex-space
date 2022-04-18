@@ -45,7 +45,7 @@ export function MexEditor(props: MexEditorProps) {
           keys={comboOnKeydownConfig.keys}
           slashCommands={comboOnKeydownConfig.slashCommands}
         />
-        {props.options?.withBallonToolbar && <Toolbar />}
+        {props.options?.withBalloonToolbar && props.BalloonMarkToolbarButtons}
       </Plate>
       {props.debug && <pre>{JSON.stringify(content, null, 2)}</pre>}
     </>
