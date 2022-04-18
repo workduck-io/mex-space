@@ -122,8 +122,7 @@ const Home = ({ title }: HomeProps) => {
                       placeholder: "Let's try something here...",
                       autoFocus: true,
                     },
-
-                    withBallonToolbar: true,
+                    withBalloonToolbar: true,
                     focusOptions: {
                       edge: 'start',
                       focus: true,

@@ -5,6 +5,7 @@ import {
   PlatePluginComponent,
   SelectEditorOptions,
 } from '@udecode/plate';
+import React, { ReactElement } from 'react';
 import { EditableProps } from 'slate-react/dist/components/editable';
 import { ComboboxConfig } from '.';
 
@@ -22,7 +23,7 @@ export interface MexEditorOptions {
   editableProps?: EditableProps;
   focusOptions?: SelectEditorOptions;
   withDraggable?: boolean;
-  withBallonToolbar?: boolean;
+  withBalloonToolbar?: boolean;
 }
 
 export interface MetaData {
@@ -44,4 +45,5 @@ export interface MexEditorProps {
   plugins?: Array<PlatePlugin>; // * Plugins to power the editor
   debug?: boolean; // * Debug mode for content
   exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
+  BalloonMarkToolbarButtons?: ReactElement;
 }
