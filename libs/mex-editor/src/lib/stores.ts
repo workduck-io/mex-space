@@ -6,7 +6,7 @@ import { MexEditorProps, MexEditorValue } from './types/editor';
 type Todo = { text: MexEditorValue };
 
 // Create your SyncedStore store
-export const store = syncedStore({ content: [] as Todo[], fragment: "xml" });
+export const store = syncedStore({ test: [] as Todo[], fragment: "xml" });
 
 // Create a document that syncs automatically using Y-WebRTC
 const doc = getYjsValue(store);

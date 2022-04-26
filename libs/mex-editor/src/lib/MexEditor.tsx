@@ -61,7 +61,7 @@ export function MexEditor(props: MexEditorProps) {
       // state.content.push({ text: value });
     // }
 
-    state.content.push({ text: value });
+    state.test.push({ text: value });
 
     setContent(value);
     if (props.onChange) {
