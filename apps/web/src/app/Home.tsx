@@ -129,7 +129,7 @@ const Home = ({ title }: HomeProps) => {
                     },
                   }}
                   editorId="wd-mex-editor"
-                  value={[{ type: 'p', children: [{ text: '' }] }]}
+                  value={[{ type: 'p', children: [{ text: 'sdfgsdf' }] }]}
                 />
               </ThemeProvider>
             </div>
