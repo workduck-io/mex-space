@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+
+// QuillJS Modules
+import { ImageDrop } from "quill-image-drop-module";
+import MagicUrl from "quill-magic-url";
+import BlotFormatter from "quill-blot-formatter";
+
+import "react-quill/dist/quill.snow.css";
 import { Plate, selectEditor, usePlateEditorRef } from '@udecode/plate';
 import { useComboboxConfig } from './components/ComboBox/config';
 import { MultiComboboxContainer } from './components/MultiCombobox/multiComboboxContainer';
@@ -6,16 +13,61 @@ import { useMexEditorStore } from './store/editor';
 import Toolbar from './components/Toolbar/Toolbar';
 import { MexEditorProps, MexEditorValue } from './types/editor';
 
+import  { Quill } from "react-quill";
+
+const ReactQuill = require('react-quill');
+import Connection from "./Connection";
+
 export function MexEditor(props: MexEditorProps) {
+  Quill.register("modules/imageDrop", ImageDrop);
+  Quill.register("modules/magicUrl", MagicUrl);
+  Quill.register("modules/blotFormatter", BlotFormatter);
+
   const editorRef = usePlateEditorRef();
+  const [data, setDelta] = React.useState({});
   const [content, setContent] = useState<MexEditorValue>([]);
   const setMetaData = useMexEditorStore((s) => s.setMetaData);
+
+  const connection = Connection.get("examples", "richtext");
+
+  const modules = {
+    imageDrop: true,
+    magicUrl: true,
+    blotFormatter: {},
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      ["blockquote", "code-block"],
+      [{ align: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["link", "image", "clean"]
+    ]
+  };
 
   useEffect(() => {
     if (editorRef && props?.options?.focusOptions) {
       selectEditor(editorRef, props.options.focusOptions);
     }
     setMetaData(props.meta);
+
+    connection.subscribe(function(error) {
+      if (error) {
+        console.log("Error:", error);
+      }
+
+      // set initial data of the document
+      setDelta(connection.data);
+      connection.on("op", function(op, source) {
+        if (source === true) {
+          return;
+        }
+
+        setDelta(op);
+      });
+    });
   }, [editorRef, props.editorId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { plugins, comboOnKeydownConfig } = useComboboxConfig(
@@ -32,8 +84,17 @@ export function MexEditor(props: MexEditorProps) {
     }
   };
 
+
+  const handleChange = (delta, oldDelta, source) => {
+    if (source !== "user") {
+      return;
+    }
+    connection.submitOp(delta);
+  };
+
   return (
-    <>
+    <div>
+      <ReactQuill value={data} onChange={handleChange} modules={modules} />
       <Plate
         id={props.editorId}
         value={props.value}
@@ -48,7 +109,7 @@ export function MexEditor(props: MexEditorProps) {
         {props.options?.withBalloonToolbar && props.BalloonMarkToolbarButtons}
       </Plate>
       {props.debug && <pre>{JSON.stringify(content, null, 2)}</pre>}
-    </>
+    </div>
   );
 }
 
