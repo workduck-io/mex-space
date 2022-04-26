@@ -7,7 +7,6 @@ import Toolbar from './components/Toolbar/Toolbar';
 import { MexEditorProps, MexEditorValue } from './types/editor';
 import { useSyncedStore } from "@syncedstore/react";
 import { store } from "./stores";
-import { clear } from 'console';
 
 export function MexEditor(props: MexEditorProps) {
   const editorRef = usePlateEditorRef();
@@ -17,27 +16,6 @@ export function MexEditor(props: MexEditorProps) {
 
 
   const state = useSyncedStore(store);
-
-  // for(let key in state.content) {
-  //   delete state.content[key]
-  // }
-
-  // let doc = JSON.parse(JSON.stringify(state.content));
-
-  // // if (doc.length > 1) {
-  // //   console.log('doc length ' + JSON.stringify(doc[doc.length -1].text));
-  // // }
-  // if (doc.length === 0) {
-  //   doc = [{text: [{ type: 'p', children: [{ text: '' }] }] }];
-  // }
-
-  // let doc = JSON.parse(JSON.stringify(state.content));
-  // if (doc == null) {
-  //   console.log('doc is null');
-  //   doc = [{ type: 'p', children: [{ text: '' }] }];
-  // }
-
-  // console.log('state' + JSON.stringify(doc[doc.length -1]) + ' ' + doc.length);
 
 
 
@@ -56,10 +34,6 @@ export function MexEditor(props: MexEditorProps) {
   );
 
   const onChange = (value: MexEditorValue) => {
-    // if (JSON.stringify(value) != "[{\"type\":\"p\",\"children\":[{\"text\":\"\"}]}]") {
-    //   console.log("Pushing value " + JSON.stringify(value));
-      // state.content.push({ text: value });
-    // }
 
     state.test.push({ text: value });
 
