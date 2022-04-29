@@ -58,6 +58,7 @@ import {
   optionsSoftBreakPlugin,
 } from './options';
 import { createTagPlugin } from './Tags/createTagPlugin';
+import { createTodoPlugin } from './createTodoPlugin';
 
 export const generatePlugins = () => {
   const Plugins: PlatePlugin[] = [
@@ -81,6 +82,7 @@ export const generatePlugins = () => {
     createLinkPlugin(),
     createListPlugin(),
     createTablePlugin(),
+    createTodoPlugin(),
 
     // Editing Plugins
     createSoftBreakPlugin(optionsSoftBreakPlugin),
