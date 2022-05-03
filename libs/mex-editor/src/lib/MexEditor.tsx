@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo} from 'react';
 
 // QuillJS Modules
 import { ImageDrop } from "quill-image-drop-module";
@@ -7,6 +7,13 @@ import BlotFormatter from "quill-blot-formatter";
 
 import "react-quill/dist/quill.snow.css";
 import { Plate, selectEditor, usePlateEditorRef } from '@udecode/plate';
+import {
+  serializeHtml,
+  TDescendant,
+  withPlate,
+} from '@udecode/plate-core'
+import { BaseSelection, createEditor, Transforms } from 'slate'
+import {  Operation } from 'slate'
 import { useComboboxConfig } from './components/ComboBox/config';
 import { MultiComboboxContainer } from './components/MultiCombobox/multiComboboxContainer';
 import { useMexEditorStore } from './store/editor';
@@ -17,6 +24,8 @@ import  { Quill } from "react-quill";
 
 const ReactQuill = require('react-quill');
 import Connection from "./Connection";
+
+type TCustomOperation = Operation
 
 export function MexEditor(props: MexEditorProps) {
   Quill.register("modules/imageDrop", ImageDrop);
@@ -46,6 +55,11 @@ export function MexEditor(props: MexEditorProps) {
       ["link", "image", "clean"]
     ]
   };
+
+  // const editor = useMemo(
+  //   () => withHistory(withReact(createEditor() as any)),
+  //   []
+  // )
 
   useEffect(() => {
     if (editorRef && props?.options?.focusOptions) {
@@ -77,7 +91,16 @@ export function MexEditor(props: MexEditorProps) {
     props?.plugins
   );
 
+  const editor = useMemo(
+    () =>
+      withPlate(createEditor(), { id: props.editorId, plugins: plugins }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   const onChange = (value: MexEditorValue) => {
+    // const op: TCustomOperation = editorRef.operations[0]
+          console.log(JSON.stringify(editor.operations));
     setContent(value);
     if (props.onChange) {
       props.onChange(value);
@@ -94,8 +117,9 @@ export function MexEditor(props: MexEditorProps) {
 
   return (
     <div>
-      <ReactQuill value={data} onChange={handleChange} modules={modules} />
+      {/* <ReactQuill value={data} onChange={handleChange} modules={modules} /> */}
       <Plate
+      editor={editor}
         id={props.editorId}
         value={props.value}
         onChange={onChange}

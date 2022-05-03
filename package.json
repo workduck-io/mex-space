@@ -20,7 +20,7 @@
   "private": true,
   "dependencies": {
     "@iconify/icons-fluent": "^1.2.6",
-    "@udecode/plate": "10.2.2",
+    "@udecode/plate": "^10.7.0",
     "@udecode/plate-excalidraw": "^8.3.0",
     "@uifabric/styling": "^7.20.0",
     "color-scheme": "^1.0.1",
