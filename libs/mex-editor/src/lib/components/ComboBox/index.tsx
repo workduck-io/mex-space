@@ -25,6 +25,7 @@ export const Combobox = ({
   onSelectItem,
   onRenderItem,
   isSlash,
+  portalElement,
 }: ComboboxProps) => {
   // TODO clear the error-esque warnings for 'type inference'
   const at = useComboboxStore((state) => state.targetRange);
@@ -64,7 +65,7 @@ export const Combobox = ({
   };
 
   return (
-    <PortalBody>
+    <PortalBody element={portalElement}>
       <ComboboxRoot {...menuProps} ref={multiRef} isOpen={isOpen}>
         {isOpen &&
           items.map((item, index) => {
