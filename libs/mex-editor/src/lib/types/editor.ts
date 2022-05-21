@@ -46,4 +46,5 @@ export interface MexEditorProps {
   debug?: boolean; // * Debug mode for content
   exlude?: Array<string>; // * Array of elements from MEX_EDITOR_ELEMENTS
   BalloonMarkToolbarButtons?: ReactElement;
+  portalElement?: Element;
 }
