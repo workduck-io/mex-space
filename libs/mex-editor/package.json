@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-editor",
-  "version": "0.5.0-alpha.2",
+  "version": "0.5.0",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
