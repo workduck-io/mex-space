@@ -16,6 +16,7 @@ export interface SingleComboboxConfig {
 export const ElementComboboxComponent = ({
   keys,
   slashCommands,
+  portalElement,
 }: ComboboxKeyDownConfig) => {
   const comboboxKey: string = useComboboxStore.getState().key;
   const comboRenderType = keys[comboboxKey];
@@ -36,6 +37,7 @@ export const ElementComboboxComponent = ({
       isSlash={isSlash}
       onSelectItem={isSlash ? (onSelectItem as any) : creatableOnSelectItem}
       onRenderItem={comboRenderType.itemRenderer}
+      portalElement={portalElement}
     />
   );
 };

@@ -44,6 +44,7 @@ export function MexEditor(props: MexEditorProps) {
         <MultiComboboxContainer
           keys={comboOnKeydownConfig.keys}
           slashCommands={comboOnKeydownConfig.slashCommands}
+          portalElement={props?.portalElement}
         />
         {props.options?.withBalloonToolbar && props.BalloonMarkToolbarButtons}
       </Plate>

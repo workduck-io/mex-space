@@ -4,6 +4,7 @@ import { CustomElements } from '../../types/editor';
 export interface ComboboxKeyDownConfig {
   keys: Record<CustomElements, ComboboxItemType>;
   slashCommands: Record<string, SlashCommandConfig>;
+  portalElement?: Element;
 }
 
 export interface ComboboxItemOnChangeConfig {
@@ -100,4 +101,5 @@ export interface ComboboxProps {
   isSlash?: boolean;
   onSelectItem: (editor: PlateEditor, item: string) => void;
   onRenderItem?: RenderFunction<ComboboxItemProps>;
+  portalElement?: Element;
 }
