@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "mex-components": "libs/mex-components",
     "mex-editor": "libs/mex-editor",
     "mex-utils": "libs/mex-utils",
     "web": "apps/web"
