@@ -12,7 +12,9 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
-    "polished": "^4.1.4"
+    "polished": "^4.1.4",
+        "zustand": "^3.6.9"
+
   },
   "peerDependencies": {
     "react": ">=17.0.2",
