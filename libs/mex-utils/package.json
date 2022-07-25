@@ -1,5 +1,18 @@
 {
   "name": "@workduck-io/mex-utils",
   "version": "0.0.1",
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/workduck-io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workduck-io/mex-space.git"
+  },
+  "dependencies": {
+    "nanoid": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.1"
+  }
 }
