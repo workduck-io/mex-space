@@ -51,7 +51,7 @@ interface ThemeTokens {
 }
 
 interface BaseElementStyle {
-  background?: string;
+  surface?: string;
   text?: {
     size?: string;
     color?: string;
@@ -78,6 +78,8 @@ interface EmbedViewStyle {
   toolbar: {
     wrapper: BaseElementStyle;
     icon: BaseElementStyle;
+    input: BaseElementStyle;
+    button: BaseElementStyle;
   };
 }
 
@@ -133,55 +135,82 @@ interface LayoutTheme {
       wrapper: GenericElementStyle;
       title: GenericElementStyle;
       button: GenericElementStyle;
+      balloonToolbar: {
+        wrapper: GenericElementStyle;
+        button: GenericElementStyle;
+        separator: GenericElementStyle;
+      };
     };
 
     metadata: GenericElementStyle;
     content: GenericElementStyle;
-    preview: GenericElementStyle;
-    heading: {
-      h1: GenericElementStyle;
-      h2: GenericElementStyle;
-      h3: GenericElementStyle;
-      h4: GenericElementStyle;
-      h5: GenericElementStyle;
-      h6: GenericElementStyle;
-    };
-    list: {
-      ul: ListStyle;
-      ol: ListStyle;
+    preview: {
+      wrapper: GenericElementStyle;
+      header: GenericElementStyle;
+      editor: GenericElementStyle;
     };
     dnd: GenericElementStyle;
-    tag: GenericElementStyle;
-    mention: {
-      self: GenericElementStyle;
-      invited: GenericElementStyle;
-      default: GenericElementStyle;
-    };
-    todo: {
-      self: GenericElementStyle;
-      checkbox: GenericElementStyle;
-      actions: GenericElementStyle; // Better name maybe
-    };
-    ilink: {
-      preview: {
-        wrapper: GenericElementStyle;
-        content: GenericElementStyle;
-        header: GenericElementStyle;
-        close: GenericElementStyle;
+    elements: {
+      paragraph: GenericElementStyle;
+      heading: {
+        h1: GenericElementStyle;
+        h2: GenericElementStyle;
+        h3: GenericElementStyle;
+        h4: GenericElementStyle;
+        h5: GenericElementStyle;
+        h6: GenericElementStyle;
       };
-      default: GenericElementStyle;
-      missing: GenericElementStyle;
-      archived: GenericElementStyle;
-      shared: GenericElementStyle;
+      marks: {
+        highlight: GenericElementStyle;
+        bold: GenericElementStyle;
+        code: GenericElementStyle;
+        italic: GenericElementStyle;
+        strikethrough: GenericElementStyle;
+      };
+      list: {
+        ul: ListStyle;
+        ol: ListStyle;
+      };
+      tag: GenericElementStyle;
+      mention: {
+        self: GenericElementStyle;
+        invited: GenericElementStyle;
+        default: GenericElementStyle;
+      };
+      todo: {
+        self: GenericElementStyle;
+        checkbox: GenericElementStyle;
+        actions: GenericElementStyle; // Better name maybe
+      };
+      ilink: {
+        preview: {
+          wrapper: GenericElementStyle;
+          content: GenericElementStyle;
+          header: GenericElementStyle;
+          close: GenericElementStyle;
+        };
+        default: GenericElementStyle;
+        missing: GenericElementStyle;
+        archived: GenericElementStyle;
+        shared: GenericElementStyle;
+      };
+      weblink: GenericElementStyle;
+      code: GenericElementStyle;
+      blockquote: GenericElementStyle;
+      codeblock: GenericElementStyle;
+      table: {
+        tr: GenericElementStyle;
+        td: GenericElementStyle;
+        th: GenericElementStyle;
+      };
+      image: {
+        image: GenericElementStyle;
+        caption: GenericElementStyle;
+      };
+      webEmbed: EmbedViewStyle;
+      canvas: EmbedViewStyle;
+      qaBlock: GenericElementStyle;
     };
-    weblink: GenericElementStyle;
-    code: GenericElementStyle;
-    blockquote: GenericElementStyle;
-    codeblock: GenericElementStyle;
-    table: GenericElementStyle;
-    image: GenericElementStyle;
-    webEmbed: EmbedViewStyle;
-    canvas: EmbedViewStyle;
     combobox: {
       wrapper: GenericElementStyle;
       item: {
