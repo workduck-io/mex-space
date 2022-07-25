@@ -11,10 +11,7 @@
       "options": {
         "outputPath": "dist/libs/mex-utils",
         "main": "libs/mex-utils/src/index.ts",
-        "tsConfig": "libs/mex-utils/tsconfig.lib.json",
-        "assets": [
-          "libs/mex-utils/*.md"
-        ]
+        "tsConfig": "libs/mex-utils/tsconfig.lib.json"
       }
     },
     "lint": {
