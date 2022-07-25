@@ -34,6 +34,18 @@
         "jestConfig": "libs/mex-utils/jest.config.json",
         "passWithNoTests": true
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-utils:build",
+          "cp .npmrc dist/libs/mex-utils",
+          "cd dist/libs/mex-utils&& npm publish"
+        ],
+        "parallel": false
+      }
     }
   },
   "tags": []
