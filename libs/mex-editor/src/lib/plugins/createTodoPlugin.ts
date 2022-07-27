@@ -1,34 +1,33 @@
 import {
   createPluginFactory,
   HotkeyPlugin,
-  onKeyDownToggleElement,
-  // PlateEditor,
+  onKeyDownToggleElement // PlateEditor,
   // WithOverride
-} from '@udecode/plate-core';
+} from '@udecode/plate-core'
 
-export const ELEMENT_TODO_LI = 'action_item';
+export const ELEMENT_TODO_LI = 'action_item'
 
 export const createTodoPlugin = createPluginFactory<HotkeyPlugin>({
   key: ELEMENT_TODO_LI,
   isElement: true,
   handlers: {
-    onKeyDown: onKeyDownToggleElement,
+    onKeyDown: onKeyDownToggleElement
   },
   options: {
-    hotkey: ['mod+opt+4', 'mod+shift+4'],
+    hotkey: ['mod+opt+4', 'mod+shift+4']
   },
   // withOverrides: withTodos,
   deserializeHtml: {
     attributeNames: ['data-nodeid'],
     getNode: (el, node) => {
-      if (node['type'] !== ELEMENT_TODO_LI) return;
+      if (node['type'] !== ELEMENT_TODO_LI) return
 
       return {
         id: el.id,
         type: node['type'],
         nodeid: el.getAttribute('data-nodeid'),
-        checked: el.getAttribute('data-slate-value'),
-      };
-    },
-  },
-});
+        checked: el.getAttribute('data-slate-value')
+      }
+    }
+  }
+})

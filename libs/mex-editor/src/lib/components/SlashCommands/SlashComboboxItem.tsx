@@ -1,11 +1,11 @@
-import { ComboboxItemProps } from '../ComboBox/types';
+import { ComboboxItemProps } from '../ComboBox/types'
 
 export type ISlashComboboxItemData =
   | {
-      isNew?: boolean;
+      isNew?: boolean
     }
-  | undefined;
+  | undefined
 
 export const SlashComboboxItem = ({ item }: ComboboxItemProps) => {
-  return !(item.data as ISlashComboboxItemData)?.isNew ? item.text : null;
-};
+  return !(item.data as ISlashComboboxItemData)?.isNew ? item.text : null
+}

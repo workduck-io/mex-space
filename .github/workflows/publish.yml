@@ -37,7 +37,7 @@ jobs:
         run: |
           rm -rf node_modules && rm -rf dist
           npm ci
-          
+
       - name: Change persmissions
         run: chmod +x ./.github/scripts/*.sh
 

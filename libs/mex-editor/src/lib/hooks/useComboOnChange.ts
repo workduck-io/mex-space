@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
-import { TEditor } from '@udecode/plate';
-import getTextFromTriggers from '../components/MultiCombobox/getMultiTextFromTrigger';
-import { useComboboxStore } from '../store/combobox';
-import { ComboboxType } from '../components/MultiCombobox/types';
+import { TEditor } from '@udecode/plate'
+import { useCallback } from 'react'
+
+import getTextFromTriggers from '../components/MultiCombobox/getMultiTextFromTrigger'
+import { ComboboxType } from '../components/MultiCombobox/types'
+import { useComboboxStore } from '../store/combobox'
 
 /**
  * If the cursor is after the trigger and at the end of the word:
@@ -10,31 +11,31 @@ import { ComboboxType } from '../components/MultiCombobox/types';
  */
 export const useComboboxOnChange = ({
   editor,
-  keys,
+  keys
 }: {
-  editor: TEditor;
+  editor: TEditor
   keys: {
-    [type: string]: ComboboxType;
-  };
+    [type: string]: ComboboxType
+  }
 }) => {
-  const setTargetRange = useComboboxStore((state) => state.setTargetRange);
-  const setSearch = useComboboxStore((state) => state.setSearch);
-  const setKey = useComboboxStore((state) => state.setKey);
+  const setTargetRange = useComboboxStore((state) => state.setTargetRange)
+  const setSearch = useComboboxStore((state) => state.setSearch)
+  const setKey = useComboboxStore((state) => state.setKey)
 
   return useCallback(
     (...args) => {
-      const textFromTrigger = getTextFromTriggers(editor, keys);
+      const textFromTrigger = getTextFromTriggers(editor, keys)
       if (textFromTrigger) {
-        const { key, search, range } = textFromTrigger;
+        const { key, search, range } = textFromTrigger
 
-        setKey(key);
-        setTargetRange(range);
-        setSearch(search);
-        return { search };
+        setKey(key)
+        setTargetRange(range)
+        setSearch(search)
+        return { search }
       }
 
-      return { search: undefined };
+      return { search: undefined }
     },
     [editor, keys, setKey, setTargetRange, setSearch]
-  );
-};
+  )
+}

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn prettier --config .prettierrc --loglevel=silent --write .
+
+cd libs/mex-utils
+yarn barrelsby -c barrelsby.config.json
+
+cd -

@@ -1,11 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES6",
     "outDir": "../../dist/out-tsc",
+    "moduleResolution": "Node",
     "declaration": true,
-    "composite": true,
     "sourceMap": false,
-    "types": []
+    "types": ["node"]
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts"]

@@ -1,6 +1,8 @@
-import { getSlateClass, createPluginFactory } from '@udecode/plate-core';
-import TagElement from './components/TagElement';
-export const COMET_TAG = 'tag';
+import { getSlateClass, createPluginFactory } from '@udecode/plate-core'
+
+import TagElement from './components/TagElement'
+
+export const COMET_TAG = 'tag'
 /**
  * Enables support for hypertags.
  */
@@ -11,10 +13,10 @@ export const createTagPlugin = createPluginFactory({
   deserializeHtml: {
     getNode: (el) => ({
       type: COMET_TAG,
-      value: el.getAttribute('data-slate-value'),
+      value: el.getAttribute('data-slate-value')
     }),
-    rules: [{ validClassName: getSlateClass(COMET_TAG) }],
+    rules: [{ validClassName: getSlateClass(COMET_TAG) }]
   },
   isInline: true,
-  isVoid: true,
-});
+  isVoid: true
+})
