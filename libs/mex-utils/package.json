@@ -10,6 +10,9 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
+    "chrono-node": "^2.3.9",
+    "date-fns": "^2.29.1",
+    "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "fuse.js": "^6.5.3"
   },
