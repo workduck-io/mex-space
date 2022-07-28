@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-components",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
@@ -14,7 +14,8 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "polished": "^4.1.4",
-    "zustand": "^3.6.9"
+    "zustand": "^3.6.9",
+    "core-js": "^3.21.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
