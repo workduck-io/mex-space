@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from './Button';
+import { Button } from './Button';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Rows } from '../StorybookHelpers/StorybookHelpers';
