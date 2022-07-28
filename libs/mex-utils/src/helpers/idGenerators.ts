@@ -14,7 +14,8 @@ import {
   TODO_PREFIX,
   QUESTION_ID_PREFIX,
   REMINDER_ID_PREFIX,
-  DRAFT_PREFIX
+  DRAFT_PREFIX,
+  TASK_VIEW_PREFIX
 } from '../constants/prefixes'
 
 const nolookalikes = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
@@ -33,6 +34,7 @@ export const generateSyncTempId = () => `${SYNCTEMP_PREFIX}${ID_SEPARATOR}${nano
 export const generateTodoId = () => `${TODO_PREFIX}${ID_SEPARATOR}${nanoid()}`
 export const generateQuestionId = () => `${QUESTION_ID_PREFIX}${ID_SEPARATOR}${nanoid()}`
 export const generateReminderId = () => `${REMINDER_ID_PREFIX}${ID_SEPARATOR}${shortId()}`
+export const generateTaskViewId = () => `${TASK_VIEW_PREFIX}${ID_SEPARATOR}${shortId()}`
 
 export const cleanString = (str: string) =>
   str.startsWith(`${DRAFT_PREFIX}${SEPARATOR}`) ? str.replace(`${DRAFT_PREFIX}${SEPARATOR}`, '') : str

@@ -13,4 +13,5 @@ export const MEETING_PREFIX = 'Meeting'
 export const QUESTION_ID_PREFIX = 'WD_MEX_QUESTION'
 export const DRAFT_NODE = 'Untitled'
 export const REMINDER_ID_PREFIX = 'REMINDER'
+export const TASK_VIEW_PREFIX = 'TASK_VIEW'
 export const SnippetCommandPrefix = `snip`
