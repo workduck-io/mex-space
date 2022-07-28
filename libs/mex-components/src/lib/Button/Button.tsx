@@ -6,4 +6,4 @@ import { SButton } from './Button.style';
  *
  */
 
-export default SButton;
+export const Button = SButton;

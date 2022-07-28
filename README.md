@@ -21,6 +21,14 @@ yarn storybook
 
 ## Publishing the mex-components
 
+0. Bump the version
+
+1. Build `mex-components`
+
 ```
 nx build mex-components
 ```
+
+2. Copy the `.npmrc` for publishing in `dist/libs/mex-components`
+
+3. Run `npm publish` in `dist/libs/mex-components`
