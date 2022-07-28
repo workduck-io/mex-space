@@ -1,7 +1,8 @@
 import { ThemeProvider } from 'styled-components';
 import { addDecorator } from '@storybook/react';
 import { withThemes } from '@react-theming/storybook-addon';
-import { defaultThemes } from '../src/lib/Theme';
+import { themes } from '@storybook/theming';
+import { storybookThemes } from '../src/lib/Theme';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -10,6 +11,12 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  darkMode: {
+    current: 'dark',
+    dark: themes.dark,
+    // Override the default light theme
+    light: themes.light,
   },
 };
 
@@ -28,5 +35,7 @@ export const onThemeSwitch = (context) => {
 };
 
 addDecorator(
-  withThemes(ThemeProvider, [defaultThemes[0].themeData], { onThemeSwitch })
+  withThemes(ThemeProvider, storybookThemes, {
+    onThemeSwitch,
+  })
 );

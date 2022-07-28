@@ -9,3 +9,18 @@ Run `yarn start` for a dev server. Navigate to http://localhost:4200/. The app w
 ## Build
 
 Run `yarn build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Mex Components and Storybook
+
+To start storybook of mex-components
+
+```
+cd ./libs/mex-components
+yarn storybook
+```
+
+## Publishing the mex-components
+
+```
+nx build mex-components
+```

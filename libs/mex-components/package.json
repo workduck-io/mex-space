@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-components",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
-    "@react-theming/storybook-addon": "^1.1.7",
+    "deepmerge": "^4.2.2",
     "polished": "^4.1.4",
     "zustand": "^3.6.9"
   },
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
+    "@react-theming/storybook-addon": "^1.1.7",
     "@storybook/addon-actions": "^6.5.9",
     "@storybook/addon-essentials": "^6.5.9",
     "@storybook/addon-interactions": "^6.5.9",
@@ -31,7 +32,8 @@
     "@storybook/manager-webpack4": "^6.5.9",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
-    "babel-loader": "^8.2.5"
+    "babel-loader": "^8.2.5",
+    "storybook-dark-mode": "^1.1.0"
   },
   "scripts": {
     "storybook": "start-storybook -p 6006",
