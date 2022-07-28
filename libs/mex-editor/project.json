@@ -35,7 +35,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/mex-editor"],
       "options": {
-        "jestConfig": "libs/mex-editor/jest.config.js",
+        "jestConfig": "libs/mex-editor/jest.config.json",
         "passWithNoTests": true
       }
     }

@@ -1,38 +1,39 @@
-import React, { useState } from 'react';
-import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor';
-import { StyledHome } from './components/home.style';
-import { gruvboxTheme } from './theme/theme';
-import { ThemeProvider } from 'styled-components';
-import { ELEMENT_MEDIA_EMBED, ELEMENT_TABLE } from '@udecode/plate';
-import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw';
+import { ELEMENT_MEDIA_EMBED, ELEMENT_TABLE } from '@udecode/plate'
+import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw'
+import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor'
+import React, { useState } from 'react'
+import { ThemeProvider } from 'styled-components'
+
+import { StyledHome } from './components/home.style'
+import { gruvboxTheme } from './theme/theme'
 
 type HomeProps = {
-  title: string;
-};
+  title: string
+}
 
 const commands = [
   {
     command: 'table',
     text: 'Insert Table',
     icon: 'ri:table-line',
-    type: 'Quick Actions',
+    type: 'Quick Actions'
   },
   {
     command: 'canvas',
     text: 'Insert Drawing canvas',
     icon: 'ri:markup-line',
-    type: 'Quick Actions',
+    type: 'Quick Actions'
   },
   {
     command: 'webem',
     text: 'Insert Web embed',
     icon: 'ri:global-line',
-    type: 'Quick Actions',
-  },
-];
+    type: 'Quick Actions'
+  }
+]
 
 const Home = ({ title }: HomeProps) => {
-  const [ilinks, setIlinks] = useState<Array<any>>([]);
+  const [ilinks, setIlinks] = useState<Array<any>>([])
   return (
     <StyledHome>
       <div className="wrapper">
@@ -65,68 +66,67 @@ const Home = ({ title }: HomeProps) => {
                                 value: ilink,
                                 text: ilink,
                                 nodeid: 'ilink1',
-                                icon: 'something',
-                              },
-                            ]),
+                                icon: 'something'
+                              }
+                            ])
                         },
                         tag: {
-                          newItemHandler: (tag: string) =>
-                            console.log('New Tag: ', tag),
+                          newItemHandler: (tag: string) => console.log('New Tag: ', tag)
                         },
                         slash_command: {
-                          newItemHandler: () => undefined,
-                        },
+                          newItemHandler: () => undefined
+                        }
                       },
                       slashCommands: {
                         webem: {
                           slateElementType: ELEMENT_MEDIA_EMBED,
                           command: 'webem',
                           options: {
-                            url: 'http://example.com/',
-                          },
+                            url: 'http://example.com/'
+                          }
                         },
                         excalidraw: {
                           slateElementType: ELEMENT_EXCALIDRAW,
-                          command: 'canvas',
+                          command: 'canvas'
                         },
                         table: {
                           slateElementType: ELEMENT_TABLE,
-                          command: 'table',
-                        },
-                      },
+                          command: 'table'
+                        }
+                      }
                     },
                     onChangeConfig: {
                       ilink: {
                         cbKey: ComboboxKey.ILINK,
                         data: ilinks,
-                        trigger: '[[',
+                        trigger: '[['
                       },
                       tag: {
                         cbKey: ComboboxKey.TAG,
                         data: [],
-                        trigger: '#',
+                        trigger: '#'
                       },
                       slash_command: {
                         cbKey: ComboboxKey.SLASH_COMMAND,
                         data: commands.map((l) => ({ ...l, value: l.command })),
-                        trigger: '/',
-                      },
-                    },
+                        trigger: '/'
+                      }
+                    }
                   }}
                   meta={{
-                    path: 'documentation.first',
+                    path: 'documentation.first'
                   }}
                   options={{
                     editableProps: {
                       readOnly: false,
                       placeholder: "Let's try something here...",
-                      autoFocus: true,
+                      autoFocus: true
                     },
                     withBalloonToolbar: true,
                     focusOptions: {
                       edge: 'start',
-                      focus: true,
-                    },
+                      focus: true
+                    }
                   }}
                   editorId="wd-mex-editor"
                   value={[{ type: 'p', children: [{ text: '' }] }]}
@@ -137,7 +137,7 @@ const Home = ({ title }: HomeProps) => {
         </div>
       </div>
     </StyledHome>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

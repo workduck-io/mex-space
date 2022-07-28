@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES6",
     "module": "esnext",
     "lib": ["es2021", "dom"],
     "skipLibCheck": true,
@@ -16,8 +16,10 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "@workduck-io/mex-editor": ["libs/mex-editor/src/index.ts"]
-    }
+      "@workduck-io/mex-editor": ["libs/mex-editor/src/index.ts"],
+      "@workduck-io/mex-utils": ["libs/mex-utils/src/index.ts"]
+    },
+    "types": ["node"]
   },
   "exclude": ["node_modules", "tmp"]
 }

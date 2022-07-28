@@ -1,11 +1,12 @@
-import * as React from 'react';
-import { ComboboxItemProps } from '../../../components/ComboBox/types';
+import * as React from 'react'
+
+import { ComboboxItemProps } from '../../../components/ComboBox/types'
 
 export type QuickLinkComboboxItemData =
   | {
-      isNew?: boolean;
+      isNew?: boolean
     }
-  | undefined;
+  | undefined
 
 export const QuickLinkComboboxItem = ({ item }: ComboboxItemProps) => {
   // console.log({ item })
@@ -15,5 +16,5 @@ export const QuickLinkComboboxItem = ({ item }: ComboboxItemProps) => {
     <div className="inline-flex items-center">
       New &quot;<span className="font-medium">{item.text}</span>&quot; node
     </div>
-  );
-};
+  )
+}

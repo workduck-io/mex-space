@@ -1,0 +1,44 @@
+{
+  "root": "libs/mex-utils",
+  "sourceRoot": "libs/mex-utils/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mex-utils",
+        "main": "libs/mex-utils/src/index.ts",
+        "tsConfig": "libs/mex-utils/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-utils/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/mex-utils"],
+      "options": {
+        "jestConfig": "libs/mex-utils/jest.config.json",
+        "passWithNoTests": true
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-utils:build",
+          "cp .npmrc dist/libs/mex-utils",
+          "cd dist/libs/mex-utils&& npm publish"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}

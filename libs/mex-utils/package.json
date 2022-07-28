@@ -1,0 +1,20 @@
+{
+  "name": "@workduck-io/mex-utils",
+  "version": "0.0.2",
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/workduck-io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workduck-io/mex-space.git"
+  },
+  "dependencies": {
+    "chrono-node": "^2.3.9",
+    "date-fns": "^2.29.1",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^4.0.0",
+    "fuse.js": "^6.5.3"
+  },
+  "devDependencies": {}
+}
