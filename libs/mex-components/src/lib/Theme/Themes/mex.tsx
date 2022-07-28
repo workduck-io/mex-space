@@ -1,4 +1,4 @@
-import { generateTheme } from '../themeGenerator'
+import { generateTheme } from '../themeGenerator';
 
 export const mexTheme = generateTheme({
   // Colors
@@ -16,14 +16,14 @@ export const mexTheme = generateTheme({
     4: '#8F94C1',
     3: '#9BA5D8',
     2: '#B9C1D6',
-    1: '#ffffff' // Lightest
+    1: '#ffffff', // Lightest
   },
   palette: {
     white: '#ffffff',
     black: '#000000',
     green: '#00e676',
     yellow: '#eeff41',
-    red: '#fb4934'
+    red: '#fb4934',
   },
   text: {
     heading: '#E4F1FF',
@@ -32,8 +32,6 @@ export const mexTheme = generateTheme({
     fade: '#9aa2c9',
     disabled: '#72767D',
     accent: '#fe8019',
-    oppositePrimary: '#1F2933'
+    oppositePrimary: '#1F2933',
   },
-  custom: 'xemThemeStyles'
-})
-
+});
