@@ -23,8 +23,7 @@
     "affected:build": "nx affected:build",
     "affected:dep-graph": "nx affected:dep-graph",
     "affected:libs": "nx affected:libs",
-    "affected:lint": "nx affected:lint",
-    "publish:mex-utils": "nx mex-utils:publish"
+    "affected:lint": "nx affected:lint"
   },
   "dependencies": {
     "nanoid": "^4.0.0",

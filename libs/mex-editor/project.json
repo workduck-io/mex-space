@@ -38,6 +38,18 @@
         "jestConfig": "libs/mex-editor/jest.config.json",
         "passWithNoTests": true
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-editor:build",
+          "cp .npmrc dist/libs/mex-editor",
+          "cd dist/libs/mex-editor && npm publish"
+        ],
+        "parallel": false
+      }
     }
   }
 }
