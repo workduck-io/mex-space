@@ -8,7 +8,7 @@ const isPackageUpdated = async (packageJSONPath: string) => {
   const registry = publishConfig.registry ?? 'https://registry.npmjs.org'
 
   const npmInfoOutput = await spawn('npm', ['info', name, '--registry', registry, '--json'])
-  console.log('NPM Info Output: ', npmInfoOutput.stdout)
+  console.log('NPM Info Output: ', npmInfoOutput.stdout.toString())
 
   const result = JSON.parse(npmInfoOutput.stdout.toString())
   const allVersions: string[] = result.versions
