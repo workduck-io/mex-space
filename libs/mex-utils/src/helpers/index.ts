@@ -3,6 +3,7 @@
  */
 
 export * from "./authValidator"
+export * from "./batchPromise"
 export * from "./devCheck"
 export * from "./idGenerators"
 export * from "./mog"
