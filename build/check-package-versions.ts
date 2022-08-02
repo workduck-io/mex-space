@@ -8,21 +8,27 @@ const isPackageUpdated = async (packageJSONPath: string) => {
   const registry = publishConfig.registry ?? 'https://registry.npmjs.org'
 
   const npmInfoOutput = await spawn('npm', ['info', name, '--registry', registry, '--json'])
-  console.log('NPM Info Output: ', npmInfoOutput.stdout.toString())
+  console.debug('NPM Info Output: ', npmInfoOutput.stdout.toString())
+  const rawOutput = npmInfoOutput.stdout.toString()
+  if (!rawOutput) return true
 
-  const result = JSON.parse(npmInfoOutput.stdout.toString())
-  const allVersions: string[] = result.versions
+  try {
+    const result = JSON.parse(rawOutput)
+    const allVersions: string[] = result.versions
 
-  console.log(`All Versions: ${allVersions} | Current Version: ${currentVersion}`)
+    console.debug(`All Versions: ${allVersions} | Current Version: ${currentVersion}`)
 
-  return allVersions.find((v) => v === currentVersion) === undefined ? true : false
+    return allVersions.find((v) => v === currentVersion) === undefined ? true : false
+  } catch (e) {
+    return true
+  }
 }
 
 const updatePackage = async (packagePath: string) => {
   const packageName = packagePath.split('/')[1]
-  console.log('Updating Package: ', packageName)
+  console.debug('Updating Package: ', packageName)
   const result = await spawn('yarn', ['nx', 'publish', packageName])
-  console.log(`Updating Package: ${packagePath} | Result: ${result.stdout.toString()}`)
+  console.debug(`Updating Package: ${packagePath} | Result: ${result.stdout.toString()}`)
 }
 
 const allPackageNames = fs
@@ -41,5 +47,5 @@ async function checkAndUpdatePackages(allPackagePaths: string[]) {
 }
 
 checkAndUpdatePackages(allPackagePaths).then((result) => {
-  console.log(`All Processed`)
+  console.debug(`All Processed`)
 })
