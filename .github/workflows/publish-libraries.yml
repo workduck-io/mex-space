@@ -1,4 +1,4 @@
-name: Release `mex-utils` package
+name: Version and Publish packages
 
 on:
   push:
