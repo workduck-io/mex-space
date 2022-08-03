@@ -1,4 +1,4 @@
-import { trim } from 'lodash-es'
+import { trim } from 'lodash'
 
 import { DRAFT_NODE, SEPARATOR } from '../constants/prefixes'
 

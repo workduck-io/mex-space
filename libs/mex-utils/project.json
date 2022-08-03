@@ -20,11 +20,11 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/mex-utils"],
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "jestConfig": "libs/mex-utils/jest.config.json",
-        "passWithNoTests": true
+        "commands": ["vitest"],
+        "parallel": false,
+        "cwd": "libs/mex-utils"
       }
     },
     "publish": {
