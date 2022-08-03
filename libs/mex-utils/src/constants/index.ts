@@ -5,3 +5,4 @@
 export * from "./editorElements"
 export * from "./prefixes"
 export * from "./regex"
+export * from "./search"

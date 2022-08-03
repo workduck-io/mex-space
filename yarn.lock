@@ -5820,6 +5820,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@workduck-io/flexsearch@^0.7.22":
+  version "0.7.22"
+  resolved "https://npm.pkg.github.com/download/@workduck-io/flexsearch/0.7.22/78facf234f5d5157ef2a7bf2d514f554afcfae084bd4bd996eb16c8309fd93d4#968178df34cab6b6df5489f73ed86ff0b9e97123"
+  integrity sha512-NADE1e1euqohnuCt7ymtwzGBC+5rPbtmKjp0VE0BF2w8cjvO1E9o2KNrPkMtHYRR+snr0iqO6lcBLM+J51m9QA==
+
 "@xobotyi/scrollbar-width@^1.9.5":
   version "1.9.5"
   resolved "https://registry.yarnpkg.com/@xobotyi/scrollbar-width/-/scrollbar-width-1.9.5.tgz#80224a6919272f405b87913ca13b92929bdf3c4d"
