@@ -3,4 +3,5 @@
  */
 
 export * from "./flexsearch"
+export * from "./fuzzySearch"
 export * from "./parseData"
