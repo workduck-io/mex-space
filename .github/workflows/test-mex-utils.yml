@@ -26,6 +26,4 @@ jobs:
         run: yarn install --network-timeout 1000000 --frozen-lockfile
 
       - name: Run tests for mex-utils
-        env:
-          NODE_OPTIONS: --experimental-vm-modules
-        run: yarn nx run mex-utils:test
+        run: yarn nx run mex-utils:test --watch=false

@@ -1,9 +1,7 @@
-import { ELEMENT_DEFAULT } from '../../src'
+import { expect, test } from 'vitest'
 
-describe('Editor Elements Check', () => {
-  describe('Default Element Type Check ', () => {
-    it('return p since ELEMENT_DEFAULT is always `p`', () => {
-      expect(ELEMENT_DEFAULT).toEqual('p')
-    })
-  })
+import { ELEMENT_DEFAULT } from '../../src/constants/editorElements'
+
+test('Default Element must be P', () => {
+  expect<string>(ELEMENT_DEFAULT).toEqual('p')
 })
