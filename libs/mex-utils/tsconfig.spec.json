@@ -5,7 +5,7 @@
     "target": "ES6",
     "outDir": "../../dist/out-tsc",
     "declaration": true,
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": ["**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "**/*.ts", "src/utils.test.js"]
 }
