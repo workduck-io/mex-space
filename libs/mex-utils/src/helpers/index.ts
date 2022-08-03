@@ -4,9 +4,11 @@
 
 export * from "./authValidator"
 export * from "./batchPromise"
+export * from "./content"
 export * from "./devCheck"
 export * from "./idGenerators"
 export * from "./mog"
+export * from "./smallContent"
 export * from "./strings"
 export * from "./time"
 export * from "./treeUtils"

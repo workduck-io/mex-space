@@ -5,4 +5,5 @@
 export * from "./constants/index"
 export * from "./helpers/index"
 export * from "./parsers/index"
+export * from "./search/index"
 export * from "./types/index"

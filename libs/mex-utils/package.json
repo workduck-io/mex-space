@@ -10,11 +10,13 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
+    "@workduck-io/flexsearch": "^0.7.22",
     "chrono-node": "^2.3.9",
     "date-fns": "^2.29.1",
+    "fast-fuzzy": "^1.11.2",
+    "fuse.js": "^6.5.3",
     "lodash-es": "^4.17.21",
-    "nanoid": "^4.0.0",
-    "fuse.js": "^6.5.3"
+    "nanoid": "^4.0.0"
   },
   "devDependencies": {}
 }
