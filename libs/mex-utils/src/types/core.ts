@@ -1,3 +1,4 @@
+import { ElementHighlightMetadata } from './highlight'
 import { AccessLevel } from './mentions'
 
 export interface ILink {
@@ -32,6 +33,8 @@ export interface NodeMetadata {
   createdAt: number
   lastEditedBy: string
   updatedAt: number
+
+  elementMetadata?: ElementHighlightMetadata
 }
 
 export type NodeEditorContent = any[]
