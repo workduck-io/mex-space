@@ -1,4 +1,4 @@
-import { uniq } from 'lodash-es'
+import { uniq } from 'lodash'
 
 import { ELEMENT_TAG, ELEMENT_MENTION, ELEMENT_TODO_LI } from '../constants/editorElements'
 import { NodeEditorContent } from '../types'
