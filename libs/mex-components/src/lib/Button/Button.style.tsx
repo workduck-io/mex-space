@@ -1,6 +1,8 @@
-import { transparentize } from 'polished';
-import styled, { css } from 'styled-components';
-import { ButtonProps } from './Button.types';
+import { transparentize } from 'polished'
+import styled, { css } from 'styled-components'
+import { centeredCss } from '../Helpers'
+import { LoadingWrapper } from '../Loading/Loading.style'
+import { ButtonProps } from './Button.types'
 
 export const SButton = styled.button<ButtonProps>`
   display: flex;
@@ -16,17 +18,16 @@ export const SButton = styled.button<ButtonProps>`
   background-color: ${({ theme }) => theme.colors.form.button.bg};
 
   flex-shrink: 0;
+  flex-grow: 0;
 
   &:focus {
     color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0px 6px 12px
-      ${({ theme }) => transparentize(0.75, theme.colors.primary)};
+    box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
   }
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0px 6px 12px
-      ${({ theme }) => transparentize(0.75, theme.colors.primary)};
+    box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
   }
 
   &:disabled {
@@ -54,12 +55,10 @@ export const SButton = styled.button<ButtonProps>`
     large
       ? css`
           padding: ${`${spacing.small} ${spacing.medium}`};
-          margin: 0 ${spacing.small};
           font-size: 1.2rem;
         `
       : css`
           padding: ${spacing.small};
-          margin: 0 ${spacing.tiny};
         `}
 
   ${({ theme, primary }) =>
@@ -77,8 +76,7 @@ export const SButton = styled.button<ButtonProps>`
           }
           &:focus {
             color: ${theme.colors.text.oppositePrimary};
-            box-shadow: 0px 6px 12px
-              ${({ theme }) => transparentize(0.75, theme.colors.primary)};
+            box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
           }
         `
       : ''}
@@ -88,8 +86,7 @@ export const SButton = styled.button<ButtonProps>`
       ? css`
           background-color: ${theme.colors.primary};
           color: ${theme.colors.text.oppositePrimary};
-          box-shadow: 0px 4px 8px
-            ${({ theme }) => transparentize(0.33, theme.colors.primary)};
+          box-shadow: 0px 4px 8px ${({ theme }) => transparentize(0.33, theme.colors.primary)};
           &:hover {
             background-color: ${theme.colors.fade.primary};
             color: ${theme.colors.text.oppositePrimary};
@@ -99,4 +96,19 @@ export const SButton = styled.button<ButtonProps>`
           }
         `
       : ''}
-`;
+`
+
+// export interface AsyncButtonProps extends ButtonProps {
+//   style?: any
+// }
+
+export const AsyncButton = styled(SButton)`
+  ${centeredCss};
+  overflow: hidden;
+  position: relative;
+
+  ${LoadingWrapper} {
+    position: absolute;
+    margin: auto;
+  }
+`
