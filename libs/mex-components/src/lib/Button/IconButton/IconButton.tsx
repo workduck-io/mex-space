@@ -1,9 +1,10 @@
-import { TippyProps } from '@tippyjs/react'
 import { Icon } from '@iconify/react'
+import { TippyProps } from '@tippyjs/react'
 import React from 'react'
-import { ToolbarTooltip } from '../../Tooltips/Tooltips'
-import { Button } from '..'
+
 import { TitleWithShortcut } from '../../Shortcuts/Shortcuts'
+import { ToolbarTooltip } from '../../Tooltips/Tooltips'
+import { Button } from '../Button'
 
 export type IconButtonProps = {
   icon: any // eslint-disable-line @typescript-eslint/no-explicit-any
