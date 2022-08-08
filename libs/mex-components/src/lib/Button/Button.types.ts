@@ -1,8 +1,6 @@
-export interface CustomProps {
+export interface ButtonProps {
   primary?: boolean
   large?: boolean
   highlight?: boolean
   transparent?: boolean
 }
-
-export interface ButtonProps extends CustomProps, React.HTMLProps<HTMLButtonElement> {}
