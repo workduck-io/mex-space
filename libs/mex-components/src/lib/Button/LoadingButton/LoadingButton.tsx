@@ -1,8 +1,10 @@
 import React from 'react'
 import { useTheme } from 'styled-components'
-import Loading from '../Loading/Loading'
-import { AsyncButton as StyledAsyncButton } from './Button.style'
-import { CustomProps } from './Button.types'
+
+import Loading from '../../Loading/Loading'
+import { AsyncButton as StyledAsyncButton } from '../Button.style'
+import { CustomProps } from '../Button.types'
+
 // import Loading from '../../../style/Loading'
 
 export const AsyncButton = StyledAsyncButton

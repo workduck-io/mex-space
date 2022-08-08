@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
 import { transparentize } from 'polished'
+import styled, { css } from 'styled-components'
 
 export const getTippyStyles = (name: string, textColor: string, background: string, border?: string) => css`
   .tippy-box[data-theme~='${name}'] {
@@ -219,4 +219,32 @@ export const ButtonSeparator = styled.div`
 export const EditorBalloonStyles = css`
   .slate-BalloonToolbar {
   }
+`
+
+export const TooltipBase = styled.div`
+  padding: ${({ theme }) => theme.spacing.small};
+  background: ${({ theme }) => transparentize(0.5, theme.colors.gray[8])} !important;
+
+  backdrop-filter: blur(8px);
+
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  color: ${({ theme }) => theme.colors.text.fade};
+  box-shadow: 0 4px 12px ${({ theme }) => theme.colors.gray[10]};
+`
+
+export const Tooltip = styled(TooltipBase)`
+  background: ${({ theme }) => transparentize(0.5, theme.colors.gray[9])} !important;
+  max-height: 400px;
+  max-width: 700px;
+  overflow-y: auto;
+`
+
+export const ErrorTooltip = styled.div`
+  padding: ${({ theme }) => theme.spacing.tiny};
+  background: ${({ theme }) => transparentize(0.3, theme.colors.gray[8])} !important;
+  backdrop-filter: blur(8px);
+  color: ${({ theme }) => theme.colors.text.fade};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-weight: 400;
+  font-size: 0.9rem;
 `
