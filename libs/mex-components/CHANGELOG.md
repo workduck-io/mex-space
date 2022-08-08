@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.5
+
+### Patch Changes
+
+- 3284884: Fix props for LoadingButton to inherit all Button properties
+
 ## 0.0.4
 
 ### Patch Changes
