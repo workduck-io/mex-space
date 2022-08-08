@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.4
+
+### Patch Changes
+
+- 956b3a1: Add infobox, export components
+
 ## 0.0.3
 
 ### Patch Changes
