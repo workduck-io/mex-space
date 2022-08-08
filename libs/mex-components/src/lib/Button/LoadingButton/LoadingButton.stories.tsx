@@ -12,13 +12,12 @@ export default {
    */
   component: LoadingButton,
   argTypes: {
-    buttonProps: { control: { type: 'object' } },
     loading: { control: { type: 'boolean' } },
-    dots: { control: { type: 'number' } }
-    // primary: { control: { type: 'boolean' } },
-    // large: { control: { type: 'boolean' } },
-    // highlight: { control: { type: 'boolean' } },
-    // transparent: { control: { type: 'boolean' } }
+    dots: { control: { type: 'number' } },
+    primary: { control: { type: 'boolean' } },
+    large: { control: { type: 'boolean' } },
+    highlight: { control: { type: 'boolean' } },
+    transparent: { control: { type: 'boolean' } }
     // theme: { control: disab
   }
 } as ComponentMeta<typeof LoadingButton>
@@ -31,23 +30,29 @@ Base.args = {
   children: 'Loading Button',
   dots: 5,
   loading: false,
-  buttonProps: {
-    primary: false,
-    large: false,
-    highlight: false,
-    transparent: false
-  }
+  primary: true
 }
 
 export const LoadingBase = Base.bind({})
 LoadingBase.args = {
   dots: 5,
-  loading: true
+  loading: true,
+  primary: true
+}
+
+export const LoadingWithButtonProps = Base.bind({})
+LoadingBase.args = {
+  dots: 5,
+  loading: true,
+  primary: true,
+  name: 'Loading Button'
 }
 
 export const AllLoadingButtons: ComponentStory<typeof LoadingButton> = () => (
   <Rows>
-    <LoadingButton>Button</LoadingButton>
-    <LoadingButton loading>Button</LoadingButton>
+    <LoadingButton primary>Button</LoadingButton>
+    <LoadingButton loading primary>
+      Button
+    </LoadingButton>
   </Rows>
 )
