@@ -32,3 +32,13 @@ nx build mex-components
 2. Copy the `.npmrc` for publishing in `dist/libs/mex-components`
 
 3. Run `npm publish` in `dist/libs/mex-components`
+
+## To use mex-components locally
+
+1. Build the `mex-components` package using `nx build mex-components`
+
+2. Go to the output `dist/libs/mex-components` folder and link the `mex-components` package using `yarn link`
+
+3. Inside of `node_modules`, link the `react`, `react-dom` and `styled-components` packages
+
+4. Go to the repository where you need to use it and link all the local packages using `yarn link @workduck-io/mex-components react react-dom styled-components`
