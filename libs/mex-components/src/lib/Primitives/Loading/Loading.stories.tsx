@@ -1,9 +1,8 @@
+import { ComponentStory, ComponentMeta } from '@storybook/react'
 import React from 'react'
 
+import { Rows } from '../../StorybookHelpers/StorybookHelpers'
 import Loading from './Loading'
-
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Rows } from '../StorybookHelpers/StorybookHelpers'
 
 export default {
   /* 👇 The title prop is optional.

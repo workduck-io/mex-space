@@ -6,4 +6,3 @@ export interface LoadingProps {
   color?: string
   size?: string
 }
-

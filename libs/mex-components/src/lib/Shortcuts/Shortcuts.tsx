@@ -1,5 +1,6 @@
-import { getSplitDisplayShortcut } from './helpers'
 import { ShortcutBox, ShortcutMid, ShortcutWrapper, TooltipShortcut } from './Shortcuts.style'
+import { getSplitDisplayShortcut } from './helpers'
+
 export interface DisplayShortcutProps {
   shortcut: string
 }

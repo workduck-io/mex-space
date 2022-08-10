@@ -16,6 +16,7 @@
     "core-js": "^3.21.0",
     "deepmerge": "^4.2.2",
     "polished": "^4.1.4",
+    "react-spring": "^9.5.2",
     "zustand": "^3.6.9"
   },
   "peerDependencies": {

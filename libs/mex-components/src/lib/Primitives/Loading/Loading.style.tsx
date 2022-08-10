@@ -1,6 +1,7 @@
-import styled, { css, keyframes } from 'styled-components'
-import { LoadingProps } from './Loading.types'
 import { range } from 'lodash'
+import styled, { css, keyframes } from 'styled-components'
+
+import { LoadingProps } from './Loading.types'
 
 const loadingFade = keyframes`
   0% { opacity: 0; }
