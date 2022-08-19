@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.6
+
+### Patch Changes
+
+- 13b8a72: Bump react to 18
+
 ## 0.0.5
 
 ### Patch Changes
