@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTheme } from 'styled-components'
 
-import Loading from '../../Loading/Loading'
+import Loading from '../../Primitives/Loading/Loading'
 import { AsyncButton as StyledAsyncButton } from '../Button.style'
 
 export const AsyncButton = StyledAsyncButton

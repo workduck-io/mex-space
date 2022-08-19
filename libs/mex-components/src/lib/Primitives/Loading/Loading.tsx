@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { LoadingDot, LoadingWrapper } from './Loading.style'
 import { LoadingProps } from './Loading.types'
 

@@ -1,7 +1,8 @@
 import { transparentize } from 'polished'
 import styled, { css } from 'styled-components'
+
 import { centeredCss } from '../Helpers'
-import { LoadingWrapper } from '../Loading/Loading.style'
+import { LoadingWrapper } from '../Primitives/Loading/Loading.style'
 import { ButtonProps } from './Button.types'
 
 export const SButton = styled.button<ButtonProps>`

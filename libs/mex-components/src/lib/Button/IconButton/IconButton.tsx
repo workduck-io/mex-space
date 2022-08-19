@@ -2,8 +2,8 @@ import { Icon } from '@iconify/react'
 import { TippyProps } from '@tippyjs/react'
 import React from 'react'
 
+import { ToolbarTooltip } from '../../Primitives/Tooltips/Tooltips'
 import { TitleWithShortcut } from '../../Shortcuts/Shortcuts'
-import { ToolbarTooltip } from '../../Tooltips/Tooltips'
 import { Button } from '../Button'
 
 export type IconButtonProps = {
