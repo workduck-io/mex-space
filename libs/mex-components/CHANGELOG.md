@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.7
+
+### Patch Changes
+
+- af613b9: Add layout components restructure primitives
+
 ## 0.0.6
 
 ### Patch Changes
