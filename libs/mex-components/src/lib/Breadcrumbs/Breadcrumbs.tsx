@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react'
+import Tippy from '@tippyjs/react'
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -8,9 +9,10 @@ import {
   BreadcrumbSection,
   BreadcrumbWrapper,
   BreadcrumbLabel,
-  BreadcrumbOverflow,
-  BreadcrumbItem
+  BreadcrumbItem,
+  BreadcrumbOverflowList
 } from './Breadcrumbs.style'
+import { BreadcrumbOverflow } from './Breadcrumbs.tooltips'
 import { BreadcrumbProps } from './Breadcrumbs.types'
 
 interface BreadcrumbState {
@@ -99,9 +101,30 @@ export const Breadcrumbs = ({ items, onOpenItem }: BreadcrumbProps) => {
     <BreadcrumbWrapper ref={wrapperRef}>
       {collapsed.length > 0 && (
         <>
-          <BreadcrumbOverflow>
-            <Icon icon="ri:more-fill" />
-          </BreadcrumbOverflow>
+          <BreadcrumbOverflow
+            OverflowItems={() => (
+              <BreadcrumbOverflowList>
+                {collapsed.map((id) => {
+                  const item = items.find((i) => i.id === id)
+                  if (item)
+                    return (
+                      <Tippy
+                        theme="mex-bright"
+                        moveTransition="transform 0.25s ease-out"
+                        placement="right"
+                        content={item.label}
+                      >
+                        <BreadcrumbItem onClick={() => onOpenItem(item.id)}>
+                          {item.icon && <Icon icon={item.icon} />}
+                          <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
+                        </BreadcrumbItem>
+                      </Tippy>
+                    )
+                  else return null
+                })}
+              </BreadcrumbOverflowList>
+            )}
+          />
           <BreadcrumbSeparator>
             <Icon icon="ri:arrow-drop-right-line" />
           </BreadcrumbSeparator>
@@ -114,12 +137,13 @@ export const Breadcrumbs = ({ items, onOpenItem }: BreadcrumbProps) => {
             data-targetid={item.id /* Set so that the observer only watches these elements */}
             key={`breadcrumb_item_${item.id}`}
             collapsedIndex={collapsedIndex}
-            onClick={() => onOpenItem(item.id)}
           >
-            <BreadcrumbItem>
-              {item.icon && <Icon icon={item.icon} />}
-              <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
-            </BreadcrumbItem>
+            <Tippy theme="mex-bright" moveTransition="transform 0.25s ease-out" placement="bottom" content={item.label}>
+              <BreadcrumbItem onClick={() => onOpenItem(item.id)}>
+                {item.icon && <Icon icon={item.icon} />}
+                <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
+              </BreadcrumbItem>
+            </Tippy>
             {index !== items.length - 1 && (
               <BreadcrumbSeparator key={`breadcrumb_separator_${item.id}`}>
                 <Icon icon="ri:arrow-drop-right-line" />

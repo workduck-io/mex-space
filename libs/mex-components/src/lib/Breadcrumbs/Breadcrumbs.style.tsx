@@ -1,3 +1,4 @@
+import { mix } from 'polished'
 import styled, { css } from 'styled-components'
 
 export const BreadcrumbWrapper = styled.div`
@@ -65,7 +66,7 @@ export const BreadcrumbSeparator = styled.div`
   }
 `
 
-export const BreadcrumbOverflow = styled.div`
+export const SBreadcrumbOverflow = styled.div`
   display: flex;
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.tiny};
@@ -75,4 +76,17 @@ export const BreadcrumbOverflow = styled.div`
     width: 1rem;
     height: 1rem;
   }
+`
+
+export const OverflowTooltipWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  background-color: ${({ theme }) => mix(0.5, theme.colors.gray[10], theme.colors.gray[9])};
+`
+
+export const BreadcrumbOverflowList = styled.div`
+  display: flex;
+  flex-direction: column;
 `
