@@ -18,17 +18,27 @@ interface SBreadcrumbItemProps {
   collapsedIndex: number
 }
 
-export const BreadcrumbItem = styled.div`
+interface BreadcrumbItemProps {
+  interactive?: boolean
+}
+export const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
   display: flex;
   align-items: center;
   flex-shrink: 0;
   gap: ${({ theme }) => theme.spacing.tiny};
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  &:hover {
-    cursor: pointer;
-    background: ${({ theme }) => theme.colors.gray[9]};
-  }
+  ${({ theme, interactive }) =>
+    interactive
+      ? css`
+          &:hover {
+            cursor: pointer;
+            background: ${theme.colors.gray[9]};
+          }
+        `
+      : css`
+          pointer-events: none;
+        `}
   svg {
     flex-shrink: 0;
   }

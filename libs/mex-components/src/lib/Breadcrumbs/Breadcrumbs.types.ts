@@ -10,4 +10,10 @@ export interface BreadcrumbItem {
 export interface BreadcrumbProps {
   items: BreadcrumbItem[]
   onOpenItem: (id: string) => void
+
+  /**
+   * If true, the first item is interactive as well
+   * Default: false
+   */
+  interactiveFirstItem?: boolean
 }

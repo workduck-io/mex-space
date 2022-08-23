@@ -21,7 +21,7 @@ interface BreadcrumbState {
   currentVisible?: string
 }
 
-export const Breadcrumbs = ({ items, onOpenItem }: BreadcrumbProps) => {
+export const Breadcrumbs = ({ items, onOpenItem, interactiveFirstItem }: BreadcrumbProps) => {
   const wrapperRef = useRef(null)
   const { visibilityMap } = useIntersectionContainer(wrapperRef)
 
@@ -139,7 +139,10 @@ export const Breadcrumbs = ({ items, onOpenItem }: BreadcrumbProps) => {
             collapsedIndex={collapsedIndex}
           >
             <Tippy theme="mex-bright" moveTransition="transform 0.25s ease-out" placement="bottom" content={item.label}>
-              <BreadcrumbItem onClick={() => onOpenItem(item.id)}>
+              <BreadcrumbItem
+                interactive={!!interactiveFirstItem || index !== items.length - 1}
+                onClick={() => onOpenItem(item.id)}
+              >
                 {item.icon && <Icon icon={item.icon} />}
                 <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
               </BreadcrumbItem>
