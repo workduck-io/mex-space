@@ -21,7 +21,7 @@ export const BreadcrumbItem = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  gap: ${({ theme }) => theme.spacing.small};
+  gap: ${({ theme }) => theme.spacing.tiny};
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   &:hover {
@@ -41,7 +41,8 @@ export const BreadcrumbSection = styled.div<SBreadcrumbItemProps>`
   ${({ collapsedIndex }) =>
     css`
       order: ${collapsedIndex < 0 ? 0 : collapsedIndex + 100};
-      opacity: ${collapsedIndex < 0 ? 1 : 0.2};
+      opacity: ${collapsedIndex < 0 ? 1 : 0};
+      pointer-events: ${collapsedIndex < 0 ? 'all' : 'none'};
     `};
 `
 
@@ -68,6 +69,7 @@ export const BreadcrumbOverflow = styled.div`
   display: flex;
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.tiny};
+  background-color: ${({ theme }) => theme.colors.gray[9]};
 
   svg {
     width: 1rem;
