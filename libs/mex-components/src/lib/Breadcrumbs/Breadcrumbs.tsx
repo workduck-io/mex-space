@@ -114,7 +114,7 @@ export const Breadcrumbs = ({ items, onOpenItem, interactiveFirstItem }: Breadcr
                         placement="right"
                         content={item.label}
                       >
-                        <BreadcrumbItem onClick={() => onOpenItem(item.id)}>
+                        <BreadcrumbItem interactive onClick={() => onOpenItem(item.id)}>
                           {item.icon && <Icon icon={item.icon} />}
                           <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
                         </BreadcrumbItem>

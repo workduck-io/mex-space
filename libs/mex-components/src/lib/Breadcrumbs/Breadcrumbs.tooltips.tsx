@@ -12,7 +12,6 @@ export const BreadcrumbOverflow = ({ OverflowItems }: BreadcrumbOverflowProps) =
   return (
     <Tippy
       interactive
-      theme="mex"
       render={(attrs) => (
         <OverflowTooltipWrapper tabIndex={-1} {...attrs}>
           <OverflowItems />
