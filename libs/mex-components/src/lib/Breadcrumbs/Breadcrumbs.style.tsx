@@ -5,6 +5,8 @@ export const BreadcrumbWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+
+  padding: ${({ theme }) => theme.spacing.tiny};
 `
 
 export const BreadcrumbItems = styled.div`

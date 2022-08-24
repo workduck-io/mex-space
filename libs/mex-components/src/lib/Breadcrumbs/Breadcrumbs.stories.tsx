@@ -32,10 +32,21 @@ const sampleItems = [
   }
 ]
 
+const items = [
+  {
+    id: 'item-3',
+    label: 'Item 3'
+  }
+]
+
 const onOpenItem = (id: string) => console.log('Fake Opening the item', { id })
 
 export const Base: ComponentStory<typeof Breadcrumbs> = () => (
   <Breadcrumbs items={sampleItems} onOpenItem={onOpenItem} />
+)
+
+export const SingleElemet: ComponentStory<typeof Breadcrumbs> = () => (
+  <Breadcrumbs items={items} onOpenItem={onOpenItem} />
 )
 
 Base.args = {}
