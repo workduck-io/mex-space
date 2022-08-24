@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.9
+
+### Patch Changes
+
+- 7c21636: Add fixes to breadcrumb: Padding to stop unintended intrsections
+
 ## 0.0.8
 
 ### Patch Changes
