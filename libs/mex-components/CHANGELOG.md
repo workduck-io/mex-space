@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.8
+
+### Patch Changes
+
+- 3832fd3: Add breadcrumbs
+
 ## 0.0.7
 
 ### Patch Changes
