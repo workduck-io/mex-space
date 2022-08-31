@@ -1,10 +1,14 @@
 export const getDisplayShortcut = (keybinding: string) => {
   let mod = '⌘'
-  if (process.platform === 'darwin') {
-    mod = '⌘'
-  } else if (process.platform === 'win32') {
-    mod = 'Ctrl'
+
+  if (typeof process !== 'undefined') {
+    if (process.platform === 'darwin') mod = '⌘'
+    else if (process.platform === 'win32') mod = 'Ctrl'
+  } else if (navigator) {
+    if (navigator.platform.includes('Mac')) mod = '⌘'
+    else mod = 'Ctrl'
   }
+
   return (
     keybinding
       .replaceAll('$mod', mod)
