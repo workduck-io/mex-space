@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.10
+
+### Patch Changes
+
+- 222a29c: Fix issues with process is not defined
+
 ## 0.0.9
 
 ### Patch Changes
