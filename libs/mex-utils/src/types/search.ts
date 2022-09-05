@@ -1,6 +1,18 @@
 import { Document } from '@workduck-io/flexsearch'
 
-import { ILink, LinkCache, NodeContent, SharedNode, Tag, TagsCache } from './core'
+import {
+  BlockType,
+  ILink,
+  LinkCache,
+  NodeContent,
+  NodeEditorContent,
+  NodeMetadata,
+  PartialBy,
+  SharedNode,
+  Tag,
+  TagsCache
+} from './core'
+import { Entities } from './entities'
 import { Reminder } from './reminder'
 import { Snippet } from './snippet'
 import { TodosType } from './tasks'
@@ -74,3 +86,36 @@ export type SearchOptions = {
   tags?: Array<string>
   searchFields?: Record<idxKey, Array<string>>
 }
+
+// export interface GenericSearchData {
+//   id: string
+//   blockId?: string
+//   title?: string
+//   text: string
+//   data?: any
+//   tag?: string[]
+// }
+
+export type AssociatedEntities = string[]
+
+export interface GenericEntitySearchData {
+  entity: Entities
+  id: string
+  text?: string
+  title?: string
+  data?: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  associatedEntities?: AssociatedEntities
+}
+
+export type EntityParserFn = (
+  block: any,
+  extra?: SearchRepExtra
+) => Array<PartialBy<GenericEntitySearchData, 'id'>> | undefined
+
+export type NodeParserFn = (
+  nodeId: string,
+  contents: NodeEditorContent,
+  title: string,
+  extra?: SearchRepExtra,
+  nodeMetadata?: NodeMetadata
+) => GenericEntitySearchData[]

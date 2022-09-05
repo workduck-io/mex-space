@@ -1,0 +1,11 @@
+export enum Entities {
+  TAG = 'TAG',
+  MENTION = 'MENTION',
+  TASK = 'TASK',
+  REMINDER = 'REMINDER',
+  ACTION = 'ACTION',
+  CONTENT_BLOCK = 'CONTENT_BLOCK',
+  NOTE = 'NOTE',
+  SNIPPET = 'SNIPPET',
+  TEMPLATE = 'TEMPLATE'
+}

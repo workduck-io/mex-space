@@ -1,6 +1,8 @@
 import { ElementHighlightMetadata } from './highlight'
 import { AccessLevel } from './mentions'
 
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+
 export interface ILink {
   /** Unique Identifier */
   nodeid: string
@@ -18,6 +20,7 @@ export interface ILink {
 }
 
 export interface Tag {
+  id: string
   value: string
 }
 
@@ -83,6 +86,8 @@ export type BlockType = {
   children: BlockType[]
   type: string
   text?: string
+  value?: string
+  url?: string
   blockMeta?: BlockMetaDataType
 }
 

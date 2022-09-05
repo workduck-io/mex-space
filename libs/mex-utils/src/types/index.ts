@@ -4,6 +4,7 @@
 
 export * from "./auth"
 export * from "./core"
+export * from "./entities"
 export * from "./help"
 export * from "./hierarchy"
 export * from "./highlight"
