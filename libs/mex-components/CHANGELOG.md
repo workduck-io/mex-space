@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.11
+
+### Patch Changes
+
+- 57949fb: Add hidden label to breadcrumb
+
 ## 0.0.10
 
 ### Patch Changes
