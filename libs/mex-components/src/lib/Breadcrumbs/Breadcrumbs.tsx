@@ -144,7 +144,7 @@ export const Breadcrumbs = ({ items, onOpenItem, interactiveFirstItem }: Breadcr
                 onClick={() => onOpenItem(item.id)}
               >
                 {item.icon && <Icon icon={item.icon} />}
-                <BreadcrumbLabel>{item.label}</BreadcrumbLabel>
+                {item.hideLabel !== true && <BreadcrumbLabel>{item.label}</BreadcrumbLabel>}
               </BreadcrumbItem>
             </Tippy>
             {index !== items.length - 1 && (

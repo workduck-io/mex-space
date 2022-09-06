@@ -5,6 +5,9 @@ export interface BreadcrumbItem {
   label: string
   // Icon string for rendering icon with the item (if any)
   icon?: string
+
+  // Hide label for this item?
+  hideLabel?: boolean
 }
 
 export interface BreadcrumbProps {
