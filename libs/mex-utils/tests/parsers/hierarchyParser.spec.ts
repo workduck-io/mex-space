@@ -1,8 +1,83 @@
 import { expect, test } from 'vitest'
 
-import { namespaceHierarchyParser } from '../../src/parsers/hierarchyParser'
+import {
+  allNamespacesHierarchyParser,
+  hierarchyParser,
+  namespaceHierarchyParser
+} from '../../src/parsers/hierarchyParser'
 
-// namespaceHierarchyParser<
+test('Hierarchy Parser - Valid Case', () => {
+  const hierarchy = [
+    'Entities Testing#NODE_r3wd6CP9rqDTypPqjzBck',
+    'lassan#NODE_FHPR9T7rAkixbGrUkFt7R#Untitled#NODE_gpTpmCdDBJLMbtEwN38pr',
+    'Meeti#NODE_K6b3TqJwfRT8VpeAMgtG6',
+    'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#A war crime is a#NODE_bjnqNrX6GUB6G9Nmbfrt8',
+    'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#Untitled#NODE_LgagK7tEFYNReNF3RiD9d',
+    'Mex#NODE_3qtx4AdKtW9TqVg6QtKjf#Entity Search#NODE_jKMqciMtxfQrmhAfxVhzy'
+  ]
+
+  const parsedHierarchy = hierarchyParser(hierarchy)
+  expect(parsedHierarchy).toStrictEqual([
+    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
+    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
+    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
+    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti' },
+    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts' },
+    { nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8', path: 'Drafts.A war crime is a' },
+    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled' },
+    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex' },
+    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search' }
+  ])
+})
+
+test('Hierarchy Parser - Fail Case', () => {
+  const fuckedUpHierarchy = [
+    'Entities Testing#NODE_r3wd6CP9rqDTypPqjzBck',
+    'lassan#NODE_FHPR9T7rAkixbGrUkFt7R#Untitled#NODE_gpTpmCdDBJLMbtEwN38pr',
+    'Meeti#NODE_K6b3TqJwfRT8VpeAMgtG6',
+    'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#A war crime is a#NODE_bjnqNrX6GUB6G9Nmbfrt8',
+    'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#Untitled#NODE_LgagK7tEFYNReNF3RiD9d',
+    'Mex#Entity Search#NODE_jKMqciMtxfQrmhAfxVhzy'
+  ]
+
+  expect(() => hierarchyParser(fuckedUpHierarchy)).toThrowError('Invalid Linkdata Input')
+})
+
+test('Single Namespace Hierarchy - Valid Case', () => {
+  const response = {
+    id: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt',
+    name: 'Personal',
+    createdAt: 1662555454584,
+    updatedAt: 1662555454584,
+    itemType: 'Namespace',
+    nodeHierarchy: [
+      'Entities Testing#NODE_r3wd6CP9rqDTypPqjzBck',
+      'lassan#NODE_FHPR9T7rAkixbGrUkFt7R#Untitled#NODE_gpTpmCdDBJLMbtEwN38pr',
+      'Meeti#NODE_K6b3TqJwfRT8VpeAMgtG6',
+      'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#A war crime is a#NODE_bjnqNrX6GUB6G9Nmbfrt8',
+      'Drafts#NODE_TtdLUWMJEPJGJRY6PzKcA#Untitled#NODE_LgagK7tEFYNReNF3RiD9d',
+      'Mex#NODE_3qtx4AdKtW9TqVg6QtKjf#Entity Search#NODE_jKMqciMtxfQrmhAfxVhzy'
+    ],
+    publicAccess: false
+  }
+
+  const parsed = namespaceHierarchyParser(response)
+  expect(parsed.nodeHierarchy).toStrictEqual([
+    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
+    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
+    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
+    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti' },
+    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts' },
+    {
+      nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8',
+      path: 'Drafts.A war crime is a'
+    },
+    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled' },
+    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex' },
+    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search' }
+  ])
+  expect(parsed).toBeTruthy()
+})
 
 test('Namespace Hierarchy Parser - Valid Case 1', () => {
   const nsHierarchyResponse = {
@@ -47,7 +122,7 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
     }
   }
 
-  const parsedHierarchy = namespaceHierarchyParser(nsHierarchyResponse.namespaceInfo)
+  const parsedHierarchy = allNamespacesHierarchyParser(nsHierarchyResponse)
   const expectedParsedHierarchy = {
     NAMESPACE_Li83KJzGw6TgUmTi43LGt: {
       name: 'Personal',

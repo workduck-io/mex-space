@@ -1,5 +1,5 @@
-import { ILink } from '../types/core'
-import { NamespaceHierarchy, NamespaceHierarchyInfo, ParsedNamespaceHierarchy } from '../types/hierarchy'
+import { ILink, NamespaceInfo } from '../types/core'
+import { AllNamespaceHierarchyResponse, ParsedNamespaceHierarchy } from '../types/hierarchy'
 
 export const hierarchyParser = (
   linkData: string[],
@@ -58,17 +58,27 @@ export const hierarchyParser = (
   return ilinks
 }
 
-type NamespaceHierarchyParserFn = (
-  namespaceInfo: NamespaceHierarchyInfo,
+type AllNamespaceHierarchyParserFn = (
+  allNamespacesResp: AllNamespaceHierarchyResponse,
   options?: { withParentNodeId: boolean; allowDuplicates?: boolean }
 ) => Record<string, ParsedNamespaceHierarchy>
 
-export const namespaceHierarchyParser: NamespaceHierarchyParserFn = (namespaceInfo, options) => {
+export const allNamespacesHierarchyParser: AllNamespaceHierarchyParserFn = (
+  allNamespacesResp,
+  options = { withParentNodeId: false, allowDuplicates: false }
+) => {
   const parsedNSHierarchy: Record<string, ParsedNamespaceHierarchy> = {}
-  Object.entries(namespaceInfo).forEach(([namespaceID, namespaceValue]) => {
+  Object.entries(allNamespacesResp.namespaceInfo).forEach(([namespaceID, namespaceValue]) => {
     const nHierarchy = hierarchyParser(namespaceValue.hierarchy, options)
     parsedNSHierarchy[namespaceID] = { name: namespaceValue.name, hierarchy: nHierarchy }
   })
 
   return parsedNSHierarchy
+}
+
+export const namespaceHierarchyParser = (
+  namespace: NamespaceInfo,
+  options = { withParentNodeId: false, allowDuplicates: false }
+) => {
+  return { ...namespace, nodeHierarchy: hierarchyParser(namespace.nodeHierarchy, options) }
 }
