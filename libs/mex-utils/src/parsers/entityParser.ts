@@ -22,17 +22,6 @@ import {
   SearchRepExtra
 } from '../types/search'
 
-// export const noteParser: EntityParserFn = (nodeId, contents, title = '', extra) => {
-//   return [{
-//     entity: Entities.NOTE,
-//     id: nodeId,
-//     text: title,
-//     data: {
-//      nodeId, title, extra
-//     }
-//   }]
-// }
-
 export const blockTextParser: EntityParserFn = (block: Required<BlockType>) => {
   return [
     {
@@ -218,18 +207,8 @@ export const parseTopLevelBlock = (block: BlockType, extra?: SearchRepExtra) => 
 
         if (e.entity === Entities.CONTENT_BLOCK) blockText += e.text
       })
-
-      parsedEntities?.push({
-        entity: Entities.CONTENT_BLOCK,
-        id: blockID,
-        text: blockText
-      })
     })
   }
-
-  parsedEntities?.forEach((e) => {
-    if (!e.id) e.id = blockID
-  })
 
   return parsedEntities
 }
@@ -237,22 +216,11 @@ export const parseTopLevelBlock = (block: BlockType, extra?: SearchRepExtra) => 
 export const noteParser: NodeParserFn = (nodeId, contents, title = '', extra, nodeMetadata) => {
   const results: GenericEntitySearchData[] = []
   contents.forEach((topLevelBlock) => {
-    parseTopLevelBlock(topLevelBlock)
+    const parsedEntities = parseTopLevelBlock(topLevelBlock)
+    // eslint-disable-next-line
+    // @ts-ignore
+    if (parsedEntities) results.push(...parsedEntities)
   })
 
   return results
 }
-// export const noteParser: NodeParserFn = (nodeId, contents, title = '', extra, nodeMetadata) => {
-//   const parsedEntities: GenericEntitySearchData[] = []
-//   const associatedEntities: AssociatedEntities = []
-//   const noteEntity = {
-//     id: nodeId,
-//     text: title,
-//     entity: Entities.NOTE,
-//     data: { nodeId, contents, title, nodeMetadata }
-//   }
-
-//   parsedEntities.push(noteEntity)
-
-//   return parsedEntities
-// }
