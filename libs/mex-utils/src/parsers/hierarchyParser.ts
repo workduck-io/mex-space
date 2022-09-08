@@ -1,4 +1,5 @@
 import { ILink } from '../types/core'
+import { NamespaceHierarchy, NamespaceHierarchyInfo, ParsedNamespaceHierarchy } from '../types/hierarchy'
 
 export const hierarchyParser = (
   linkData: string[],
@@ -55,4 +56,19 @@ export const hierarchyParser = (
   }
 
   return ilinks
+}
+
+type NamespaceHierarchyParserFn = (
+  namespaceInfo: NamespaceHierarchyInfo,
+  options?: { withParentNodeId: boolean; allowDuplicates?: boolean }
+) => Record<string, ParsedNamespaceHierarchy>
+
+export const namespaceHierarchyParser: NamespaceHierarchyParserFn = (namespaceInfo, options) => {
+  const parsedNSHierarchy: Record<string, ParsedNamespaceHierarchy> = {}
+  Object.entries(namespaceInfo).forEach(([namespaceID, namespaceValue]) => {
+    const nHierarchy = hierarchyParser(namespaceValue.hierarchy, options)
+    parsedNSHierarchy[namespaceID] = { name: namespaceValue.name, hierarchy: nHierarchy }
+  })
+
+  return parsedNSHierarchy
 }
