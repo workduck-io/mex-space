@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.4
+
+### Patch Changes
+
+- f320142: Add parsers for namespace hierarchies
+
 ## 0.0.3
 
 ### Patch Changes
