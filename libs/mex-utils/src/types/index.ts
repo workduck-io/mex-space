@@ -5,6 +5,7 @@
 export * from "./auth"
 export * from "./core"
 export * from "./help"
+export * from "./hierarchy"
 export * from "./highlight"
 export * from "./mentions"
 export * from "./reminder"

@@ -85,3 +85,13 @@ export type BlockType = {
   text?: string
   blockMeta?: BlockMetaDataType
 }
+
+export interface NamespaceInfo {
+  id: string
+  name: string
+  createdAt: number
+  updatedAt: number
+  itemType: string // Always going to be 'Namespace'
+  nodeHierarchy: string[]
+  publicAccess: boolean
+}
