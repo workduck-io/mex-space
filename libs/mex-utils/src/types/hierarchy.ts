@@ -2,8 +2,8 @@ import { ILink } from './core'
 
 export interface ParsedNamespaceHierarchy {
   name: string
-  hierarchy: ILink[]
+  nodeHierarchy: ILink[]
 }
 
-export type AllNamespaceHierarchyResponse = { namespaceInfo: Record<string, { name: string; hierarchy: string[] }> }
+export type AllNamespaceHierarchyResponse = { namespaceInfo: Record<string, { name: string; nodeHierarchy: string[] }> }
 export type ParsedAllNamespacesHierarchy = Record<string, ParsedNamespaceHierarchy>

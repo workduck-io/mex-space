@@ -69,8 +69,8 @@ export const allNamespacesHierarchyParser: AllNamespaceHierarchyParserFn = (
 ) => {
   const parsedNSHierarchy: Record<string, ParsedNamespaceHierarchy> = {}
   Object.entries(allNamespacesResp.namespaceInfo).forEach(([namespaceID, namespaceValue]) => {
-    const nHierarchy = hierarchyParser(namespaceValue.hierarchy, options)
-    parsedNSHierarchy[namespaceID] = { name: namespaceValue.name, hierarchy: nHierarchy }
+    const nHierarchy = hierarchyParser(namespaceValue.nodeHierarchy, options)
+    parsedNSHierarchy[namespaceID] = { name: namespaceValue.name, nodeHierarchy: nHierarchy }
   })
 
   return parsedNSHierarchy
