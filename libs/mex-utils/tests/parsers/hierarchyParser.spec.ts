@@ -84,7 +84,7 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
     namespaceInfo: {
       NAMESPACE_Li83KJzGw6TgUmTi43LGt: {
         name: 'Personal',
-        hierarchy: [
+        nodeHierarchy: [
           'Entities Testing#NODE_r3wd6CP9rqDTypPqjzBck',
           'lassan#NODE_FHPR9T7rAkixbGrUkFt7R#Untitled#NODE_gpTpmCdDBJLMbtEwN38pr',
           'Meeti#NODE_K6b3TqJwfRT8VpeAMgtG6',
@@ -95,7 +95,7 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
       },
       NAMESPACE_Li83KJzGw6TgUmt8dfkd8: {
         name: 'Another Namespace',
-        hierarchy: [
+        nodeHierarchy: [
           'Drafts#NODE_6pejwQT4HxTFeQj7yt9CY#Critical error 1#NODE_afE9DUhQKmVBAPEPXxa7G',
           'Drafts#NODE_6pejwQT4HxTFeQj7yt9CY#Nice thing new#NODE_mAQxQVbnNRKVJKfYtzRdK#This is it#NODE_bkxPUpJ7fdFpQYMezggDN',
           'Drafts#NODE_6pejwQT4HxTFeQj7yt9CY#Nice thing new#NODE_mAQxQVbnNRKVJKfYtzRdK#Untitled#NODE_KrYVbCFjrmTnUBGzE3H7C',
@@ -126,7 +126,7 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
   const expectedParsedHierarchy = {
     NAMESPACE_Li83KJzGw6TgUmTi43LGt: {
       name: 'Personal',
-      hierarchy: [
+      nodeHierarchy: [
         { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
         { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
         { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
@@ -140,7 +140,7 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
     },
     NAMESPACE_Li83KJzGw6TgUmt8dfkd8: {
       name: 'Another Namespace',
-      hierarchy: [
+      nodeHierarchy: [
         { nodeid: 'NODE_6pejwQT4HxTFeQj7yt9CY', path: 'Drafts' },
         { nodeid: 'NODE_afE9DUhQKmVBAPEPXxa7G', path: 'Drafts.Critical error 1' },
         { nodeid: 'NODE_mAQxQVbnNRKVJKfYtzRdK', path: 'Drafts.Nice thing new' },
