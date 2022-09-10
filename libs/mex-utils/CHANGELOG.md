@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.5
+
+### Patch Changes
+
+- 7e3d6ec: Rename hierarchy field in allNS Hierarchy response to nodeHierarchy
+
 ## 0.0.4
 
 ### Patch Changes
