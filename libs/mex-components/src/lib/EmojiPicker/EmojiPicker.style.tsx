@@ -12,6 +12,7 @@ export const PickerContainer = styled.div`
     --shadow: rgba(0, 0, 0, 0.133) 0 3.2px 7.2px 0, rgba(0, 0, 0, 0.11) 0 0.6px 1.8px 0;
 
     --rgb-background: ${({ theme }) => hex2Rgba(theme.colors.background.modal, 1)};
+    --rgb-color: ${({ theme }) => hex2Rgba(theme.colors.text.default, 1)};
 
     height: 50vh;
     min-height: 400px;
