@@ -4,6 +4,7 @@ import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor'
 import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
+import FleetContainer from './components/FleetContainer'
 import { StyledHome } from './components/home.style'
 import { gruvboxTheme } from './theme/theme'
 
@@ -53,6 +54,7 @@ const Home = ({ title }: HomeProps) => {
           <div id="mex-editor-container" className="rounded">
             <div className="text-container">
               <ThemeProvider theme={gruvboxTheme}>
+                <FleetContainer />
                 <MexEditor
                   comboboxConfig={{
                     onKeyDownConfig: {

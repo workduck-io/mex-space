@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-components",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
@@ -21,10 +21,13 @@
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
+    "react-modal": "^3.14.2",
+    "@types/react-modal": "^3.13.1",
     "styled-components": ">=5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
+    "@types/react-modal": "^3.13.1",
     "@react-theming/storybook-addon": "^1.1.7",
     "@storybook/addon-actions": "^6.5.9",
     "@storybook/addon-essentials": "^6.5.9",
@@ -35,6 +38,7 @@
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.5",
+    "react-modal": "3.14.2",
     "storybook-dark-mode": "^1.1.0"
   },
   "scripts": {
