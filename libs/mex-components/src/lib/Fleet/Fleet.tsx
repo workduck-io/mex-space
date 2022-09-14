@@ -36,11 +36,10 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      event.preventDefault()
-
       if (event.metaKey) {
         if (!isOpen) {
           if (isShortcutPressed(event)) {
+            event.preventDefault()
             onOpen()
           }
         } else {
@@ -53,8 +52,6 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
 
   const onKeyUp = useCallback(
     (event: KeyboardEvent) => {
-      event.preventDefault()
-
       if (event.key === 'Meta') {
         sections[active].onSelect()
         onClose()
