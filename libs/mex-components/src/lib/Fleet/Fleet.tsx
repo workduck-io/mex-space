@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTheme } from 'styled-components'
-import { MexIcon } from '@workduck-io/mex-components'
-import { FleetProps } from './Fleet.types'
+
+import { MexIcon } from '../Helpers/Layout'
 import { StyledModal, AnimateZoom, FleetStyled, FleetSection, FleetSectionTitle } from './Fleet.style'
+import { FleetProps } from './Fleet.types'
 
 export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
   const theme = useTheme()
@@ -33,27 +34,34 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
     }
   }
 
-  const onKeyDown = useCallback((event: KeyboardEvent) => {
+  const onKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      event.preventDefault()
 
-    if (event.metaKey) {
-      if (!isOpen) {
-        if (isShortcutPressed(event)) {
-          onOpen()
+      if (event.metaKey) {
+        if (!isOpen) {
+          if (isShortcutPressed(event)) {
+            onOpen()
+          }
+        } else {
+          handleSwitchSections(event)
         }
-      } else {
-        handleSwitchSections(event)
       }
-    }
-  }, [isOpen])
+    },
+    [isOpen]
+  )
 
+  const onKeyUp = useCallback(
+    (event: KeyboardEvent) => {
+      event.preventDefault()
 
-  const onKeyUp = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Meta') {
-      sections[active].onSelect()
-      onClose()
-    }
-  }, [active])
-
+      if (event.key === 'Meta') {
+        sections[active].onSelect()
+        onClose()
+      }
+    },
+    [active]
+  )
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown)
@@ -65,22 +73,27 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
     }
   }, [isOpen, onKeyUp, onKeyDown])
 
-  return <StyledModal className="ModalContent" overlayClassName="ModalOverlay" onRequestClose={onClose} isOpen={isOpen}>
-    <FleetStyled index={active} total={sections?.length}>
-      {
-        sections?.map(section => {
+  return (
+    <StyledModal className="ModalContent" overlayClassName="ModalOverlay" onRequestClose={onClose} isOpen={isOpen}>
+      <FleetStyled index={active} total={sections?.length}>
+        {sections?.map((section) => {
           const isActive = active === section?.id
 
-          return <FleetSection highlight={isActive}>
-            <AnimateZoom selected={isActive}>
-              <MexIcon icon={section.icon} width="40" height="40" color={isActive ? theme.colors.primary : theme.colors.text.default} />
-            </AnimateZoom>
-            <FleetSectionTitle>
-              {section?.name}
-            </FleetSectionTitle>
-          </FleetSection>
-        })
-      }
-    </FleetStyled >
-  </ StyledModal>
+          return (
+            <FleetSection key={`Fleet-section-${section?.id}`} highlight={isActive}>
+              <AnimateZoom selected={isActive}>
+                <MexIcon
+                  icon={section.icon}
+                  width="40"
+                  height="40"
+                  color={isActive ? theme.colors.primary : theme.colors.text.default}
+                />
+              </AnimateZoom>
+              <FleetSectionTitle>{section?.name}</FleetSectionTitle>
+            </FleetSection>
+          )
+        })}
+      </FleetStyled>
+    </StyledModal>
+  )
 }

@@ -3,9 +3,9 @@ import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw'
 import { ComboboxKey, MexEditor } from '@workduck-io/mex-editor'
 import React, { useState } from 'react'
 import { ThemeProvider } from 'styled-components'
+
 import { StyledHome } from './components/home.style'
 import { gruvboxTheme } from './theme/theme'
-import FleetContainer from './components/FleetContainer'
 
 type HomeProps = {
   title: string
@@ -43,7 +43,6 @@ const Home = ({ title }: HomeProps) => {
               <span> Hello there, </span>
               Welcome {title} 👋
             </h1>
-            <FleetContainer />
             <pre>
               {ilinks.map((i) => (
                 <div>{i.path}</div>
