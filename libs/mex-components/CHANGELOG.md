@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.14
+
+### Patch Changes
+
+- 03bd22b: Export EmojiPicker
+
 ## 0.0.13
 
 ### Patch Changes
