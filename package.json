@@ -89,7 +89,7 @@
     "typescript": "^4.7.2"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown --config .prettierrc --loglevel=silent"
+    "**/*": "prettier --write --ignore-unknown --config .prettierrc"
   },
   "resolutions": {
     "**/@types/react": "^17.0.18",

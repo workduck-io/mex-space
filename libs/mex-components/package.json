@@ -12,9 +12,12 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.0.6",
+    "@emoji-mart/react": "^1.0.1",
     "@tippyjs/react": "^4.2.6",
     "core-js": "^3.21.0",
     "deepmerge": "^4.2.2",
+    "emoji-mart": "^5.2.2",
     "polished": "^4.1.4",
     "react-spring": "^9.5.2"
   },
