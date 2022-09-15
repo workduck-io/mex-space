@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.15
+
+### Patch Changes
+
+- 739c57c: Add ts declare module for emoji mart
+
 ## 0.0.14
 
 ### Patch Changes
