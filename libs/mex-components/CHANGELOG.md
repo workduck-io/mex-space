@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.12
+
+### Patch Changes
+
+- Add fleet component
+
 ## 0.0.11
 
 ### Patch Changes
