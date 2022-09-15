@@ -206,6 +206,13 @@ export const parseTopLevelBlock = (block: BlockType, extra?: SearchRepExtra) => 
         if (e.associatedEntities) associatedEntities.push(...e.associatedEntities)
 
         if (e.entity === Entities.CONTENT_BLOCK) blockText += e.text
+        else parsedEntities?.push(e)
+      })
+
+      parsedEntities?.push({
+        entity: Entities.CONTENT_BLOCK,
+        id: blockID,
+        text: blockText
       })
     })
   }
