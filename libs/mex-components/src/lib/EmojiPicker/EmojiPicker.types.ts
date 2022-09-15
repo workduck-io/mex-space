@@ -3,10 +3,11 @@ export interface Emoji {
   name: string
   emoticons: Array<string>
   keywords: Array<string>
+  native: string
   version: number
 }
 
 export interface EmojiPickerProps {
-  data: any
+  data?: any
   onSelect: (emoji: Emoji) => void
 }
