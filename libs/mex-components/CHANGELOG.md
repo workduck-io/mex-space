@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.13
+
+### Patch Changes
+
+- a73107a: Add emojipicker
+
 ## 0.0.12
 
 ### Patch Changes
