@@ -107,10 +107,12 @@ export interface GenericEntitySearchData {
   associatedEntities?: AssociatedEntities
 }
 
-export type EntityParserFn = (
-  block: any,
-  extra?: SearchRepExtra
-) => Array<PartialBy<GenericEntitySearchData, 'id'>> | undefined
+export type ParserFuncResult = {
+  associatedEntities?: AssociatedEntities
+  entities?: Array<PartialBy<GenericEntitySearchData, 'id'>>
+}
+
+export type EntityParserFn = (block: any, extra?: SearchRepExtra) => ParserFuncResult
 
 export type NodeParserFn = (
   nodeId: string,

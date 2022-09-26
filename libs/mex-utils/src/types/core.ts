@@ -89,6 +89,7 @@ export type BlockType = {
   value?: string
   url?: string
   blockMeta?: BlockMetaDataType
+  caption?: Array<{ text: string }>
 }
 
 export interface NamespaceInfo {

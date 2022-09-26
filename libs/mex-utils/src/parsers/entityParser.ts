@@ -9,51 +9,78 @@ import {
   ELEMENT_MEDIA_EMBED,
   ELEMENT_MENTION,
   ELEMENT_PARAGRAPH,
-  ELEMENT_TAG
+  ELEMENT_TAG,
+  ELEMENT_TODO_LI
 } from '../constants'
 import { Reminder } from '../types'
-import { NodeMetadata, BlockType } from '../types/core'
+import { NodeMetadata, BlockType, PartialBy } from '../types/core'
 import { Entities } from '../types/entities'
 import {
   AssociatedEntities,
   EntityParserFn,
   GenericEntitySearchData,
   NodeParserFn,
+  ParserFuncResult,
   SearchRepExtra
 } from '../types/search'
 
-export const blockTextParser: EntityParserFn = (block: Required<BlockType>) => {
-  return [
-    {
-      entity: Entities.CONTENT_BLOCK,
-      data: block,
-      text: block.text
-    }
-  ]
+export const paragraphLikeParser: EntityParserFn = (block: Required<BlockType>) => {
+  const blockID = block.id
+  const blockType = block.type
+  const { fn: parserFunction, entityType } = entityParserMap(blockType)
+
+  const associatedEntities: AssociatedEntities = []
+  let blockText = block?.text ? `${block.text} ` : ''
+
+  console.log(`Block: ${JSON.stringify(block)} | EntityType: ${entityType}`)
+
+  if (entityType !== Entities.CONTENT_BLOCK) {
+    const { fn: parserFunction } = entityParserMap(blockType)
+    const { entities: e, associatedEntities: AE } = parserFunction(block)
+    return { entities: e, associatedEntities: AE }
+  }
+
+  const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
+
+  if (block.children && block.children.length > 0) {
+    block.children.forEach((childBlock) => {
+      const childBlockType = block.type
+
+      const { fn: parserFunction, entityType: childEntityType } = entityParserMap(childBlockType)
+      const { associatedEntities: childAssociatedEntities, entities: childEntities } = parserFunction(childBlock)
+
+      childEntities?.forEach((e) => {
+        if (e.entity === Entities.CONTENT_BLOCK) {
+          blockText += e.text
+        } else {
+          parsedEntities.push(e)
+        }
+      })
+
+      if (childAssociatedEntities) associatedEntities.push(...childAssociatedEntities)
+    })
+  }
+
+  parsedEntities.push({
+    entity: Entities.CONTENT_BLOCK,
+    id: blockID,
+    text: blockText,
+    associatedEntities: associatedEntities
+  })
+
+  return { entities: parsedEntities, associatedEntities: associatedEntities }
 }
 
 // Mentions can't have children, we only care about associated entity, which is UserID
 const mentionParser: EntityParserFn = (block: BlockType) => {
   const userID = `USER_${block.value}`
-  return [
-    {
-      entity: Entities.MENTION,
-      // id: userID,
-      associatedEntities: [userID]
-    }
-  ]
+  return { associatedEntities: [userID] }
 }
 
 // Similar to mentions, tags don't have children and we care only about tag value (ID, value for now)
 const tagParser: EntityParserFn = (block: BlockType) => {
   const tagID = `TAG_${block.value}`
-  return [
-    {
-      entity: Entities.TAG,
-      id: block.value,
-      associatedEntities: [tagID]
-    }
-  ]
+  return { associatedEntities: [tagID] }
 }
 
 // ILink Values are passed via the extra parameter and nodeIDs are replaced in blockText with paths
@@ -62,32 +89,34 @@ export const ilinkParser: EntityParserFn = (block: BlockType, extra) => {
     const blockKey = extra[ELEMENT_ILINK].keyToIndex
     const blockText = extra[ELEMENT_ILINK].replacements[block[blockKey]]
 
-    return [
-      {
-        entity: Entities.CONTENT_BLOCK,
-        text: blockText
-      }
-    ]
+    return {
+      entities: [
+        {
+          entity: Entities.CONTENT_BLOCK,
+          text: blockText
+        }
+      ]
+    }
   }
 
-  return undefined
+  return {}
 }
 
 // Links and Media Embeds - Replace in block text with URL
 export const urlParser: EntityParserFn = (block: BlockType) => {
   const url = block.url as string
-  console.log('Block URL: ', url)
-  console.log('Block: ', block)
-  const text = block.children[0]?.text
-  const blockText = text && text !== '' ? text : url
+  const blockText =
+    block.children && block.children.length > 0 && block.children[0].text !== '' ? block.children[0].text : url
 
-  return [
-    {
-      entity: Entities.CONTENT_BLOCK,
-      text: blockText,
-      associatedEntities: [new URL(url).origin]
-    }
-  ]
+  return {
+    entities: [
+      {
+        entity: Entities.CONTENT_BLOCK,
+        text: blockText
+      }
+    ],
+    associatedEntities: [new URL(url).origin]
+  }
 }
 
 // Excalidraw Canvas - Parse the value to get text inside the canvas
@@ -103,131 +132,194 @@ export const excalidrawParser: EntityParserFn = (block: BlockType) => {
       }
     })
 
-    return [
+    return {
+      entities: [
+        {
+          entity: Entities.CONTENT_BLOCK,
+          text: text.join(' ')
+        }
+      ]
+    }
+  }
+  return {}
+}
+
+export const actionItemParser: EntityParserFn = (block: BlockType) => {
+  const blockID = block.id
+  const blockType = block.type
+  const { fn: parserFunction, entityType } = entityParserMap(blockType)
+
+  const associatedEntities: AssociatedEntities = []
+  let blockText = block?.text ? `${block.text} ` : ''
+
+  console.log(`Block: ${JSON.stringify(block)} | EntityType: ${entityType}`)
+
+  if (entityType !== Entities.CONTENT_BLOCK) {
+    const { fn: parserFunction } = entityParserMap(blockType)
+    const { entities: e, associatedEntities: AE } = parserFunction(block)
+    return { entities: e, associatedEntities: AE }
+  }
+
+  const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
+
+  if (block.children && block.children.length > 0) {
+    block.children.forEach((childBlock) => {
+      const childBlockType = block.type
+
+      const { fn: parserFunction, entityType: childEntityType } = entityParserMap(childBlockType)
+      const { associatedEntities: childAssociatedEntities, entities: childEntities } = parserFunction(childBlock)
+
+      childEntities?.forEach((e) => {
+        if (e.entity === Entities.CONTENT_BLOCK) {
+          blockText += e.text
+        } else {
+          parsedEntities.push(e)
+        }
+      })
+
+      if (childAssociatedEntities) associatedEntities.push(...childAssociatedEntities)
+    })
+  }
+
+  parsedEntities.push({
+    entity: Entities.CONTENT_BLOCK,
+    id: blockID,
+    text: blockText,
+    associatedEntities: associatedEntities
+  })
+
+  return { entities: parsedEntities, associatedEntities: associatedEntities }
+}
+
+// // Reminders are not directly attached to note but are stored separately in the `reminders` object in `mex.json`
+// export const reminderParser: EntityParserFn = (reminder: Reminder) => {
+//   return {
+//     entity: {
+//       entity: Entities.REMINDER,
+//       id: reminder.id,
+//       text: reminder.description,
+//       title: reminder.title,
+//       data: reminder
+//     }
+//   }
+// }
+
+// export const actionParser: EntityParserFn = (block: any) => {
+//   const blockText = camelCase(block.actionContext?.actionGroupId)
+//   return {
+//     entity: {
+//       entity: Entities.ACTION,
+//       text: blockText,
+//       data: block
+//     }
+//   }
+// }
+
+export const imageParser: EntityParserFn = (block: BlockType) => {
+  const blockText = block.caption && block.caption.length > 0 ? block.caption[0].text : ''
+  return {
+    entities: [
       {
         entity: Entities.CONTENT_BLOCK,
-        text: text.join(' ')
+        id: block.id,
+        text: blockText
       }
     ]
   }
-  return undefined
 }
 
-// Reminders are not directly attached to note but are stored separately in the `reminders` object in `mex.json`
-export const reminderParser: EntityParserFn = (reminder: Reminder) => {
-  return [
-    {
-      entity: Entities.REMINDER,
-      id: reminder.id,
-      text: reminder.description,
-      title: reminder.title,
-      data: reminder
-    }
-  ]
-}
-
-export const actionParser: EntityParserFn = (block: any) => {
-  const blockText = camelCase(block.actionContext?.actionGroupId)
-  return [
-    {
-      entity: Entities.ACTION,
-      text: blockText,
-      data: block
-    }
-  ]
-}
-
-// export const tableParser: EntityParserFn = (block: any, extra?: SearchRepExtra) => {
-
-// }
-
-// export const imageParser: EntityParserFn = (block, extra) => {
-
-// }
-
-export const actionItemParser: EntityParserFn = (block: BlockType) => {
-  return [
-    {
-      entity: Entities.TASK,
-      id: block.id,
-      data: block
-    }
-  ]
-}
-
-type entityParserMapFn = (entityType: string) => EntityParserFn
+type entityParserMapFn = (entityType: string) => { fn: EntityParserFn; entityType: Entities }
 
 const entityParserMap: entityParserMapFn = (entityType = ELEMENT_PARAGRAPH) => {
   switch (entityType) {
     case ELEMENT_EXCALIDRAW:
-      return excalidrawParser
+      return { fn: excalidrawParser, entityType: Entities.EXCALIDRAW }
 
     case ELEMENT_MENTION:
-      return mentionParser
+      return { fn: mentionParser, entityType: Entities.MENTION }
 
     case ELEMENT_TAG:
-      return tagParser
+      return { fn: tagParser, entityType: Entities.TAG }
 
     case ELEMENT_ILINK:
-      return ilinkParser
+      return { fn: ilinkParser, entityType: Entities.LINK }
 
     case ELEMENT_MEDIA_EMBED:
     case ELEMENT_LINK:
-      return urlParser
+      return { fn: urlParser, entityType: Entities.LINK }
 
-    case ELEMENT_ACTION_BLOCK:
-      return actionParser
+    case ELEMENT_TODO_LI:
+      return { fn: actionItemParser, entityType: Entities.TASK }
 
-    // case ELEMENT_IMAGE:
-    //   return imageParser
+    // case ELEMENT_ACTION_BLOCK:
+    //   return { fn: actionParser, entityType: Entities.ACTION }
+
+    case ELEMENT_IMAGE:
+      return { fn: imageParser, entityType: Entities.IMAGE }
 
     default:
-      return blockTextParser
+      return { fn: paragraphLikeParser, entityType: Entities.CONTENT_BLOCK }
   }
 }
 
-export const parseTopLevelBlock = (block: BlockType, extra?: SearchRepExtra) => {
-  const blockID = block.id
-  const blockType = block.type
-  const parserFunction = entityParserMap(blockType)
+// export const recursiveBlockParser = (block: BlockType): ParserFuncResult => {
+//   const blockID = block.id
+//   const blockType = block.type
+//   const { fn: parserFunction, entityType } = entityParserMap(blockType)
 
-  const parsedEntities = parserFunction(block, extra)
-  const associatedEntities: AssociatedEntities = []
+//   const { entity, associatedEntity } = parserFunction(block)
 
-  if (block.children && block.children.length > 0) {
-    let blockText = ''
-    block.children.forEach((childBlock) => {
-      const blockParserFn = entityParserMap(childBlock.type)
-      const blockParsedEntities = blockParserFn(childBlock)
+//   const associatedEntities: AssociatedEntities = associatedEntity ?? []
 
-      blockParsedEntities?.forEach((e) => {
-        if (!e.id) e.id = blockID
+//   let blockText = entity?.text ? `${block.text} ` : ''
 
-        if (e.associatedEntities) associatedEntities.push(...e.associatedEntities)
+//   if (block.children && block.children.length > 0) {
+//     block.children.forEach((childBlock) => {
+//       const childBlockType = block.type
 
-        if (e.entity === Entities.CONTENT_BLOCK) blockText += e.text
-        else parsedEntities?.push(e)
-      })
+//       const { fn: parserFunction, entityType } = entityParserMap(childBlockType)
+//       const { entity: childEntity, associatedEntity: childAssociatedEntity } = parserFunction(childBlock)
 
-      parsedEntities?.push({
-        entity: Entities.CONTENT_BLOCK,
-        id: blockID,
-        text: blockText
-      })
-    })
-  }
+//       if (childEntity?.entity === entityType) {
+//         const { associatedEntity, entity: childParsed } = recursiveBlockParser(childBlock)
+//         if (associatedEntity) associatedEntities.push(...associatedEntity)
 
-  return parsedEntities
-}
+//         if (childParsed && childParsed.text) blockText += childParsed.text
+//       }
 
-export const noteParser: NodeParserFn = (nodeId, contents, title = '', extra, nodeMetadata) => {
+//       if (childAssociatedEntity) associatedEntities.push(...childAssociatedEntity)
+//     })
+//   }
+
+//   if (entity) {
+//     return {
+//       entity: {
+//         ...entity,
+//         text: blockText
+//       },
+//       associatedEntity: associatedEntities
+//     }
+//   } else {
+//     return {
+//       associatedEntity: associatedEntities
+//     }
+//   }
+// }
+
+export const noteParser = (nodeId, contents, title = '', extra, nodeMetadata) => {
   const results: GenericEntitySearchData[] = []
-  contents.forEach((topLevelBlock) => {
-    const parsedEntities = parseTopLevelBlock(topLevelBlock)
-    // eslint-disable-next-line
-    // @ts-ignore
-    if (parsedEntities) results.push(...parsedEntities)
-  })
+  // contents.forEach((topLevelBlock) => {
+  //   const parsedEntities = parseTopLevelBlock(topLevelBlock)
+  //   // eslint-disable-next-line
+  //   // @ts-ignore
+  //   if (parsedEntities) results.push(...parsedEntities)
+  // })
+  const parsedEntities = paragraphLikeParser(contents[25])
+  return parsedEntities
+  // eslint-disable-next-line
+  // @ts-ignore
+  // if (parsedEntities) results.push(...parsedEntities)
+  // // results.push(...parsedEntities)
 
-  return results
+  // return results
 }
