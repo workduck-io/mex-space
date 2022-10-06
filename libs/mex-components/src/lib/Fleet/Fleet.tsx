@@ -17,7 +17,7 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
   }
 
   const isShortcutPressed = (e: KeyboardEvent) => {
-    const pressedModifier = e.metaKey && !e.shiftKey && !e.ctrlKey && !e.altKey
+    const pressedModifier = !e.metaKey && !e.shiftKey && !e.ctrlKey && e.altKey
     return e.code === 'KeyN' && pressedModifier
   }
 
@@ -36,7 +36,7 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.metaKey) {
+      if (event.altKey) {
         if (!isOpen) {
           if (isShortcutPressed(event)) {
             event.preventDefault()
@@ -52,9 +52,10 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
 
   const onKeyUp = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Meta') {
+      if (event.key === 'Alt') {
         sections[active].onSelect()
         onClose()
+        setActive(0)
       }
     },
     [active]
@@ -71,10 +72,16 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
   }, [isOpen, onKeyUp, onKeyDown])
 
   return (
-    <StyledModal className="ModalContent" overlayClassName="ModalOverlay" onRequestClose={onClose} isOpen={isOpen}>
+    <StyledModal
+      shouldCloseOnEsc
+      className="ModalContent"
+      overlayClassName="ModalOverlay"
+      onRequestClose={onClose}
+      isOpen={isOpen}
+    >
       <FleetStyled index={active} total={sections?.length}>
-        {sections?.map((section) => {
-          const isActive = active === section?.id
+        {sections?.map((section, index) => {
+          const isActive = active === index
 
           return (
             <FleetSection key={`Fleet-section-${section?.id}`} highlight={isActive}>
