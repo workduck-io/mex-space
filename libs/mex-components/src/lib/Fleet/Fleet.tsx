@@ -36,7 +36,6 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      console.log('EVENT IS PRESSED', { event })
       if (event.altKey) {
         if (!isOpen) {
           if (isShortcutPressed(event)) {
