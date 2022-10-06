@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.17
+
+### Patch Changes
+
+- 6bc224b: Fleet with Option + N and sections re-ordering support
+
 ## 0.0.15
 
 ### Patch Changes
