@@ -81,8 +81,8 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
       isOpen={isOpen}
     >
       <FleetStyled index={active} total={sections?.length}>
-        {sections?.map((section) => {
-          const isActive = active === section?.id
+        {sections?.map((section, index) => {
+          const isActive = active === index
 
           return (
             <FleetSection key={`Fleet-section-${section?.id}`} highlight={isActive}>
