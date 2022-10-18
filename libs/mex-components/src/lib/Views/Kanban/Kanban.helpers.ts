@@ -1,28 +1,21 @@
-import { DraggableLocation } from 'react-beautiful-dnd'
-import { Item, ItemMap } from './Kanban.types'
+import { Item, ItemMap, ReorderItemMapArgs, ReorderItemMapResult } from './Kanban.types'
 
 // a little function to help us with reordering the result
+/**
+ * Reorders an item in an array
+ * Moves it from start index to end index
+ * Used to reorder the column in which the item is dragged
+ */
 const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
   const result = Array.from(list)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
-
   return result
 }
 
 export default reorder
 
-type ReorderQuoteMapArgs = {
-  itemMap: ItemMap
-  source: DraggableLocation
-  destination: DraggableLocation
-}
-
-export type ReorderQuoteMapResult = {
-  quoteMap: ItemMap
-}
-
-export const reorderQuoteMap = ({ itemMap, source, destination }: ReorderQuoteMapArgs): ReorderQuoteMapResult => {
+export function reorderItemMap({ itemMap, source, destination }: ReorderItemMapArgs): ReorderItemMapResult {
   const current: Item[] = [...itemMap[source.droppableId]]
   const next: Item[] = [...itemMap[destination.droppableId]]
   const target: Item = current[source.index]
@@ -35,12 +28,11 @@ export const reorderQuoteMap = ({ itemMap, source, destination }: ReorderQuoteMa
       [source.droppableId]: reordered
     }
     return {
-      quoteMap: result
+      itemMap: result
     }
   }
 
   // moving to different list
-
   // remove from original
   current.splice(source.index, 1)
   // insert into next
@@ -53,50 +45,6 @@ export const reorderQuoteMap = ({ itemMap, source, destination }: ReorderQuoteMa
   }
 
   return {
-    quoteMap: result
+    itemMap: result
   }
 }
-
-// type List<T> = {|
-//   id: string,
-//   values: T[],
-// |};
-
-// type MoveBetweenArgs<T> = {|
-//   list1: List<T>,
-//   list2: List<T>,
-//   source: DraggableLocation,
-//   destination: DraggableLocation,
-// |};
-
-// type MoveBetweenResult<T> = {|
-//   list1: List<T>,
-//   list2: List<T>,
-// |};
-
-// export function moveBetween<T>({
-//   list1,
-//   list2,
-//   source,
-//   destination,
-// }: MoveBetweenArgs<T>): MoveBetweenResult<T> {
-//   const newFirst = Array.from(list1.values);
-//   const newSecond = Array.from(list2.values);
-
-//   const moveFrom = source.droppableId === list1.id ? newFirst : newSecond;
-//   const moveTo = moveFrom === newFirst ? newSecond : newFirst;
-
-//   const [moved] = moveFrom.splice(source.index, 1);
-//   moveTo.splice(destination.index, 0, moved);
-
-//   return {
-//     list1: {
-//       ...list1,
-//       values: newFirst,
-//     },
-//     list2: {
-//       ...list2,
-//       values: newSecond,
-//     },
-//   };
-// }

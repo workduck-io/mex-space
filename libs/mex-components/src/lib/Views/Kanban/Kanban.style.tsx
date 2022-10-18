@@ -2,14 +2,15 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
+  gap: ${({ theme }) => theme.spacing.medium};
 `
 
 export const ColumnContainer = styled.div`
-  border-top-left-radius: ${({ theme }) => theme.borderRadius.small}
-  border-top-right-radius: ${({ theme }) => theme.borderRadius.small}
-  background-color: ${({ theme }) => theme.colors.background.card};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  background-color: ${({ theme }) => theme.colors.gray[9]};
   flex-shrink: 0;
-  margin: ${({ theme }) => theme.spacing.small};
+  flex-grow: 1;
+  padding: ${({ theme }) => theme.spacing.small};
   display: flex;
   flex-direction: column;
 `

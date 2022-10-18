@@ -1,54 +1,32 @@
-import React, { useCallback, useEffect, useReducer } from 'react'
-import ReactDOM from 'react-dom'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import React, { useEffect, useReducer } from 'react'
 import { mergeRefs } from 'react-merge-refs'
-
-// import { List } from 'react-virtualized';
-// import styled from '@emotion/styled';
-// import { Global, css } from '@emotion/core';
-// import { colors } from '@atlaskit/theme';
 import {
-  DropResult,
+  DragDropContext,
+  Draggable,
   DraggableLocation,
   DraggableProvided,
+  DraggableRubric,
   DraggableStateSnapshot,
+  Droppable,
   DroppableProvided,
   DroppableStateSnapshot,
-  DraggableRubric,
-  Draggable,
-  Droppable,
-  DragDropContext
+  DropResult
 } from 'react-beautiful-dnd'
+import { reorderItemMap } from './Kanban.helpers'
 import { ColumnContainer, Container } from './Kanban.style'
-import { Title } from '../../Primitives'
-import { reorderQuoteMap } from './Kanban.helpers'
-import { Item, ItemMap, KanbanProps } from './Kanban.types'
-import SampleItem from './sampleItem.render'
-import { sampleItemMap } from './sampleData'
+import { ColumnProps, Item, ItemMap, KanbanProps, RenderVirtualProps } from './Kanban.types'
 
-type RowProps = {
-  index: number
-  style: Record<string, number>
-}
-
-const grid = 8
-
-const RenderVirtual = ({
-  items,
-  itemCount,
-  droppableProvided
-}: {
-  items: Item[]
-  itemCount: number
-  droppableProvided: DroppableProvided
-}) => {
+/**
+ * Renders the virtual items inside a column
+ */
+const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
   const parentRef = React.useRef<HTMLDivElement>(null)
-  // const getestimate = useCallback((index) => (index > items.length ? 0 : 100), [items.length])
-  // The virtualizer
+
   const rowVirtualizer = useVirtualizer({
     count: itemCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 1
+    estimateSize: () => 64
   })
 
   // Used to recalculate the layout of the column as the changed props
@@ -56,17 +34,15 @@ const RenderVirtual = ({
     // eslint-disable-next-line
     // @ts-expect-error
     rowVirtualizer.calculateRange()
-  }, [items])
-
-  const itemsss = rowVirtualizer.getVirtualItems()
-  console.log('Virtual Items Renderer', { itemCount, items, itemsss })
+    // rowVirtualizer.calculateRange()
+  }, [itemCount])
 
   return (
     <div
-      // ref={parentRef}
       ref={mergeRefs([droppableProvided.innerRef, parentRef])}
       style={{
-        height: `400px`,
+        maxHeight: `90vh`,
+        flexGrow: 1,
         overflow: 'auto' // Make it scroll!
       }}
     >
@@ -80,9 +56,10 @@ const RenderVirtual = ({
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem, index) => {
           const item = items[virtualItem.index]
-          console.log('VirtualItem', { virtualItem, item, index })
+          // console.log('VirtualItem', { virtualItem, item, index })
           if (!item) {
-            console.log('LMAO LOL Fake item')
+            // ('LMAO LOL Fake item')
+            // Is in the case of a placeholder
             return null
           }
           return (
@@ -94,14 +71,13 @@ const RenderVirtual = ({
                 top: 0,
                 left: 0,
                 width: '100%',
-                // height: `${virtualItem.size}px`,
                 transform: `translateY(${virtualItem.start}px)`
               }}
             >
               {!item ? null : (
                 <Draggable draggableId={item.id} index={index} key={item.id}>
                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                    <SampleItem
+                    <RenderItem
                       provided={provided}
                       item={item}
                       isDragging={snapshot.isDragging}
@@ -118,25 +94,28 @@ const RenderVirtual = ({
   )
 }
 
-type ColumnProps = {
-  columnId: string
-  items: Item[]
-  itemCount: number
-}
-
+/**
+ * Renders a column
+ */
 const Column = React.memo(function Column(props: ColumnProps) {
-  const { columnId, items, itemCount } = props
+  const {
+    columnId,
+    items,
+    // itemCount,
+    RenderColumnHeader,
+    RenderItem
+  } = props
 
-  console.log('ColumnOfKanban', { columnId, items, itemCount })
+  // console.log('ColumnOfKanban', { columnId, items, itemCount })
 
   return (
     <ColumnContainer>
-      <Title>{columnId}</Title>
+      <RenderColumnHeader columnId={columnId} />
       <Droppable
         droppableId={columnId}
         mode="virtual"
         renderClone={(provided: DraggableProvided, snapshot: DraggableStateSnapshot, rubric: DraggableRubric) => (
-          <SampleItem
+          <RenderItem
             provided={provided}
             isDragging={snapshot.isDragging}
             item={items[rubric.source.index]}
@@ -145,10 +124,16 @@ const Column = React.memo(function Column(props: ColumnProps) {
         )}
       >
         {(droppableProvided: DroppableProvided, snapshot: DroppableStateSnapshot) => {
-          // Set item count somehow in the rowVirtualizer
           const itemCount: number = snapshot.isUsingPlaceholder ? items.length + 1 : items.length
 
-          return <RenderVirtual items={items} itemCount={itemCount} droppableProvided={droppableProvided} />
+          return (
+            <RenderVirtual
+              items={items}
+              itemCount={itemCount}
+              droppableProvided={droppableProvided}
+              RenderItem={RenderItem}
+            />
+          )
         }}
       </Droppable>
     </ColumnContainer>
@@ -161,8 +146,8 @@ type State = {
   columnKeys: string[]
 }
 
-function getColumnKeys(quoteMap: ItemMap): string[] {
-  return Object.keys(quoteMap).sort()
+function getColumnKeys(itemMap: ItemMap): string[] {
+  return Object.keys(itemMap).sort()
 }
 
 type Action = {
@@ -185,7 +170,7 @@ function reducer(state: State, action: Action) {
 // type Empty = {}
 
 // eslint-disable-next-line no-unused-vars
-function Kanban({ items }: KanbanProps) {
+function Kanban({ items, sortDroppedColumn, onDrop, RenderItem, RenderColumnHeader }: KanbanProps) {
   const [state, dispatch] = useReducer(reducer, undefined, () => ({
     itemCount: Object.entries(items).flatMap(([_, value]) => value).length,
     itemMap: items,
@@ -204,26 +189,33 @@ function Kanban({ items }: KanbanProps) {
       return
     }
 
-    const updated = reorderQuoteMap({
+    const updated = reorderItemMap({
       itemMap: state.itemMap,
       source,
-      destination
+      destination,
+      sortDroppedColumn
     })
 
-    // console.log('onDragEnd', { updated, result })
+    onDrop?.(result)
 
-    dispatch({ type: 'REORDER', payload: updated.quoteMap })
+    dispatch({ type: 'REORDER', payload: updated.itemMap })
   }
-
-  // console.log('Kanban', { state })
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
         {state.columnKeys.map((key: string) => {
-          const quotes: Item[] = state.itemMap[key]
-
-          return <Column key={key} itemCount={state.itemCount} items={quotes} columnId={key} />
+          const items: Item[] = state.itemMap[key]
+          return (
+            <Column
+              RenderItem={RenderItem}
+              RenderColumnHeader={RenderColumnHeader}
+              key={key}
+              itemCount={state.itemCount}
+              items={items}
+              columnId={key}
+            />
+          )
         })}
       </Container>
     </DragDropContext>

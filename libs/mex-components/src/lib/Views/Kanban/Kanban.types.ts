@@ -11,36 +11,78 @@
  *
  */
 
-import { DraggableProvided } from 'react-beautiful-dnd'
+import { DraggableLocation, DraggableProvided, DroppableProvided, DropResult } from 'react-beautiful-dnd'
 
-type ItemProps = {
+export type ItemProps = {
   item: Item
   isDragging: boolean
   provided: DraggableProvided
-  isClone?: boolean
   isGroupedOver?: boolean
   style?: Record<string, unknown>
   index?: number
 }
 
-export interface KanbanProps {
-  items: ItemMap
-  sortDroppedColumn?: (columnId: string, items: Item[]) => Item[]
-  RenderItem?: React.FC<ItemProps>
+export interface ColumnHeaderProps {
+  columnId: string
 }
 
-export type ItemData = {
-  id: string
-  name: string
-  avatarUrl: string
-  url: string
-  // colors: AuthorColors,
+type SortDroppedColumnFn = (columnId: string, items: Item[]) => Item[]
+
+export interface KanbanProps {
+  /**
+   * Column ids with their corresponding items.
+   */
+  items: ItemMap
+
+  /**
+   * If provided, this function is called to sort the items on drop in a column
+   */
+  sortDroppedColumn?: SortDroppedColumnFn
+
+  /**
+   * Called when a item is dropped in a column
+   */
+  onDrop?: (result: DropResult) => void
+
+  /**
+   * A function that renders an item in the column
+   */
+  RenderItem: React.FC<ItemProps>
+
+  /**
+   * A function that renders a column header
+   */
+  RenderColumnHeader: React.FC<ColumnHeaderProps>
+}
+
+export type ColumnProps = {
+  columnId: string
+  items: Item[]
+  itemCount: number
+  RenderItem: React.FC<ItemProps>
+  RenderColumnHeader: React.FC<ColumnHeaderProps>
+}
+
+export type RenderVirtualProps = {
+  items: Item[]
+  itemCount: number
+  droppableProvided: DroppableProvided
+  RenderItem: React.FC<ItemProps>
+}
+
+export type ReorderItemMapArgs = {
+  itemMap: ItemMap
+  source: DraggableLocation
+  destination: DraggableLocation
+  sortDroppedColumn?: SortDroppedColumnFn
+}
+
+export type ReorderItemMapResult = {
+  itemMap: ItemMap
 }
 
 export type Item = {
   id: string
-  content: string
-  // author: ItemData
 }
 
 export type ItemMap = {
