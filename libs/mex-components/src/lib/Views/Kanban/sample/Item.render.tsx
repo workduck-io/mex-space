@@ -35,7 +35,7 @@ function SampleItem(props: ItemProps) {
     >
       <Content>
         <p>{itemData?.title}</p>
-        <BlockQuote>{itemData?.description.slice(0, 80)}</BlockQuote>
+        <BlockQuote>{itemData?.description}</BlockQuote>
         <Footer>
           <QuoteId>
             id:{item.id} {itemData?.id}

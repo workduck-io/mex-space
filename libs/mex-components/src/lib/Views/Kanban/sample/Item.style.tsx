@@ -46,8 +46,8 @@ export const Container = styled.a<{ isDragging?: boolean; isGroupedOver?: boolea
   box-sizing: border-box;
   padding: ${grid}px;
   min-height: ${imageSize}px;
-  margin-bottom: ${grid}px;
   user-select: none;
+  margin-bottom: ${({ theme }) => theme.spacing.small};
 
   /* anchor overrides */
   color: ${({ theme }) => theme.colors.gray[1]};

@@ -64,6 +64,7 @@ export type ColumnProps = {
 }
 
 export type RenderVirtualProps = {
+  columnId: string
   items: Item[]
   itemCount: number
   droppableProvided: DroppableProvided

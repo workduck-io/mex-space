@@ -20,7 +20,7 @@ import { ColumnProps, Item, ItemMap, KanbanProps, RenderVirtualProps } from './K
 /**
  * Renders the virtual items inside a column
  */
-const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
+const RenderVirtual = ({ items, columnId, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
   const parentRef = React.useRef<HTMLDivElement>(null)
 
   const rowVirtualizer = useVirtualizer({
@@ -41,8 +41,7 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
     <div
       ref={mergeRefs([droppableProvided.innerRef, parentRef])}
       style={{
-        maxHeight: `90vh`,
-        flexGrow: 1,
+        height: `600px`,
         overflow: 'auto' // Make it scroll!
       }}
     >
@@ -56,7 +55,7 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
           const item = items[virtualItem.index]
-          // console.log('VirtualItem', { virtualItem, item, index })
+          // console.log('VirtualItem', { virtualItem, item })
           if (!item) {
             // ('LMAO LOL Fake item') Is in the case of a placeholder
             return null
@@ -68,7 +67,7 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
 
           return (
             <div
-              key={virtualItem.key}
+              key={`${columnId}_${virtualItem.key}`}
               ref={virtualItem.measureElement}
               style={{
                 position: 'absolute',
@@ -78,13 +77,11 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
                 transform: `translateY(${virtualItem.start}px)`
               }}
             >
-              {!item ? null : (
-                <Draggable draggableId={item.id} index={indexOfItem} key={item.id}>
-                  {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                    <RenderItem provided={provided} item={item} isDragging={snapshot.isDragging} />
-                  )}
-                </Draggable>
-              )}
+              <Draggable draggableId={item.id} index={indexOfItem} key={item.id}>
+                {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                  <RenderItem provided={provided} item={item} isDragging={snapshot.isDragging} />
+                )}
+              </Draggable>
             </div>
           )
         })}
@@ -130,6 +127,7 @@ const Column = React.memo(function Column(props: ColumnProps) {
 
           return (
             <RenderVirtual
+              columnId={columnId}
               items={items}
               itemCount={itemCount}
               droppableProvided={droppableProvided}
