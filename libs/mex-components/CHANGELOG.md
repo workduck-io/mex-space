@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.17
+
+### Patch Changes
+
+- bc153d4: Added optional `root` prop for setting tooltip container
+
 ## 0.0.16
 
 ### Patch Changes
