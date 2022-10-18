@@ -54,14 +54,18 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
           position: 'relative'
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualItem, index) => {
+        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
           const item = items[virtualItem.index]
           // console.log('VirtualItem', { virtualItem, item, index })
           if (!item) {
-            // ('LMAO LOL Fake item')
-            // Is in the case of a placeholder
+            // ('LMAO LOL Fake item') Is in the case of a placeholder
             return null
           }
+
+          // Use this index instead of the map,
+          // the map index gives index of shown virtualized items
+          const indexOfItem = items.findIndex((i) => i.id === item.id)
+
           return (
             <div
               key={virtualItem.key}
@@ -75,14 +79,9 @@ const RenderVirtual = ({ items, itemCount, RenderItem, droppableProvided }: Rend
               }}
             >
               {!item ? null : (
-                <Draggable draggableId={item.id} index={index} key={item.id}>
+                <Draggable draggableId={item.id} index={indexOfItem} key={item.id}>
                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                    <RenderItem
-                      provided={provided}
-                      item={item}
-                      isDragging={snapshot.isDragging}
-                      // style={patchedStyle}
-                    />
+                    <RenderItem provided={provided} item={item} isDragging={snapshot.isDragging} />
                   )}
                 </Draggable>
               )}
@@ -114,14 +113,17 @@ const Column = React.memo(function Column(props: ColumnProps) {
       <Droppable
         droppableId={columnId}
         mode="virtual"
-        renderClone={(provided: DraggableProvided, snapshot: DraggableStateSnapshot, rubric: DraggableRubric) => (
-          <RenderItem
-            provided={provided}
-            isDragging={snapshot.isDragging}
-            item={items[rubric.source.index]}
-            style={{ margin: 0 }}
-          />
-        )}
+        renderClone={(provided: DraggableProvided, snapshot: DraggableStateSnapshot, rubric: DraggableRubric) => {
+          // console.log('RenderClone', { provided, snapshot, rubric })
+          return (
+            <RenderItem
+              provided={provided}
+              isDragging={snapshot.isDragging}
+              item={items[rubric.source.index]}
+              style={{ margin: 0 }}
+            />
+          )
+        }}
       >
         {(droppableProvided: DroppableProvided, snapshot: DroppableStateSnapshot) => {
           const itemCount: number = snapshot.isUsingPlaceholder ? items.length + 1 : items.length
@@ -198,6 +200,7 @@ function Kanban({ items, sortDroppedColumn, onDrop, RenderItem, RenderColumnHead
 
     onDrop?.(result)
 
+    // console.log('onDragEnd', { result, updated })
     dispatch({ type: 'REORDER', payload: updated.itemMap })
   }
 
