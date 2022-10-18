@@ -26,11 +26,15 @@ const RenderVirtual = ({ items, snapshot, columnId, itemCount, RenderItem, dropp
   const rowVirtualizer = useVirtualizer({
     count: itemCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 64
+    estimateSize: () => 100
   })
 
   // Used to recalculate the layout of the column as the changed props
   useEffect(() => {
+    // These two lines set the correct element position but the immediate dragged to column is not updated
+    // rowVirtualizer.measureElementCache = {}
+    // rowVirtualizer.measure()
+
     // eslint-disable-next-line
     // @ts-expect-error
     rowVirtualizer.calculateRange()
@@ -40,6 +44,7 @@ const RenderVirtual = ({ items, snapshot, columnId, itemCount, RenderItem, dropp
   return (
     <ColumnDropArea
       ref={mergeRefs([droppableProvided.innerRef, parentRef])}
+      // To render the background color on different states of being dragged over
       dragState={snapshot.isDraggingOver ? 'draggingOver' : snapshot.draggingFromThisWith ? 'draggingFrom' : 'normal'}
       style={{
         height: `600px`,

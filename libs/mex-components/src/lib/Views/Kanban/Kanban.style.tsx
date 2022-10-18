@@ -31,7 +31,7 @@ export const ColumnDropArea = styled.div`
         `
       case 'draggingFrom':
         return css`
-          background-color: ${({ theme }) => transparentize(0.5, theme.colors.gray[9])};
+          background-color: ${({ theme }) => transparentize(0.5, theme.colors.gray[10])};
         `
       default:
         return css``
