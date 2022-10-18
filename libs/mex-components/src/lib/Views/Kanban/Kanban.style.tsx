@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { transparentize } from 'polished'
 
 export const Container = styled.div`
   display: flex;
@@ -13,4 +14,27 @@ export const ColumnContainer = styled.div`
   padding: ${({ theme }) => theme.spacing.small};
   display: flex;
   flex-direction: column;
+`
+
+interface ColumnDropAreaProps {
+  dragState?: 'normal' | 'draggingOver' | 'draggingFrom'
+}
+
+export const ColumnDropArea = styled.div`
+  overflow: auto;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  ${({ dragState }: ColumnDropAreaProps) => {
+    switch (dragState) {
+      case 'draggingOver':
+        return css`
+          background-color: ${({ theme }) => transparentize(0.75, theme.colors.primary)};
+        `
+      case 'draggingFrom':
+        return css`
+          background-color: ${({ theme }) => transparentize(0.5, theme.colors.gray[9])};
+        `
+      default:
+        return css``
+    }
+  }}
 `

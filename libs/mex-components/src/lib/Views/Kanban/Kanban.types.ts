@@ -11,7 +11,13 @@
  *
  */
 
-import { DraggableLocation, DraggableProvided, DroppableProvided, DropResult } from 'react-beautiful-dnd'
+import {
+  DraggableLocation,
+  DraggableProvided,
+  DroppableProvided,
+  DroppableStateSnapshot,
+  DropResult
+} from 'react-beautiful-dnd'
 
 export type ItemProps = {
   item: Item
@@ -68,6 +74,7 @@ export type RenderVirtualProps = {
   items: Item[]
   itemCount: number
   droppableProvided: DroppableProvided
+  snapshot: DroppableStateSnapshot
   RenderItem: React.FC<ItemProps>
 }
 

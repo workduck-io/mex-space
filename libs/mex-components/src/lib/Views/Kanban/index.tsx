@@ -14,13 +14,13 @@ import {
   DropResult
 } from 'react-beautiful-dnd'
 import { reorderItemMap } from './Kanban.helpers'
-import { ColumnContainer, Container } from './Kanban.style'
+import { ColumnContainer, ColumnDropArea, Container } from './Kanban.style'
 import { ColumnProps, Item, ItemMap, KanbanProps, RenderVirtualProps } from './Kanban.types'
 
 /**
  * Renders the virtual items inside a column
  */
-const RenderVirtual = ({ items, columnId, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
+const RenderVirtual = ({ items, snapshot, columnId, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
   const parentRef = React.useRef<HTMLDivElement>(null)
 
   const rowVirtualizer = useVirtualizer({
@@ -38,8 +38,9 @@ const RenderVirtual = ({ items, columnId, itemCount, RenderItem, droppableProvid
   }, [itemCount])
 
   return (
-    <div
+    <ColumnDropArea
       ref={mergeRefs([droppableProvided.innerRef, parentRef])}
+      dragState={snapshot.isDraggingOver ? 'draggingOver' : snapshot.draggingFromThisWith ? 'draggingFrom' : 'normal'}
       style={{
         height: `600px`,
         overflow: 'auto' // Make it scroll!
@@ -86,7 +87,7 @@ const RenderVirtual = ({ items, columnId, itemCount, RenderItem, droppableProvid
           )
         })}
       </div>
-    </div>
+    </ColumnDropArea>
   )
 }
 
@@ -129,6 +130,7 @@ const Column = React.memo(function Column(props: ColumnProps) {
             <RenderVirtual
               columnId={columnId}
               items={items}
+              snapshot={snapshot}
               itemCount={itemCount}
               droppableProvided={droppableProvided}
               RenderItem={RenderItem}
