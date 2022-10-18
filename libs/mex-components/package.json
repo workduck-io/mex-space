@@ -14,23 +14,25 @@
   "dependencies": {
     "@emoji-mart/data": "^1.0.6",
     "@emoji-mart/react": "^1.0.1",
+    "@tanstack/react-virtual": "^3.0.0-beta.18",
     "@tippyjs/react": "^4.2.6",
     "core-js": "^3.21.0",
     "deepmerge": "^4.2.2",
     "emoji-mart": "^5.2.2",
     "polished": "^4.1.4",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-merge-refs": "^2.0.1",
     "react-spring": "^9.5.2"
   },
   "peerDependencies": {
+    "@types/react-modal": "^3.13.1",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
     "react-modal": "^3.14.2",
-    "@types/react-modal": "^3.13.1",
     "styled-components": ">=5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
-    "@types/react-modal": "^3.13.1",
     "@react-theming/storybook-addon": "^1.1.7",
     "@storybook/addon-actions": "^6.5.9",
     "@storybook/addon-essentials": "^6.5.9",
@@ -40,6 +42,8 @@
     "@storybook/manager-webpack4": "^6.5.9",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
+    "@types/react-beautiful-dnd": "^13.1.2",
+    "@types/react-modal": "^3.13.1",
     "babel-loader": "^8.2.5",
     "react-modal": "3.14.2",
     "storybook-dark-mode": "^1.1.0"
