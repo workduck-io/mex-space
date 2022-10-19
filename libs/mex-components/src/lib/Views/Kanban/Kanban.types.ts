@@ -11,6 +11,7 @@
  *
  */
 
+import { PartialKeys, VirtualizerOptions } from '@tanstack/react-virtual'
 import {
   DraggableLocation,
   DraggableProvided,
@@ -35,6 +36,11 @@ export type ItemProps = {
 export interface ColumnHeaderProps {
   columnId: string
 }
+
+type ReactVirtualOptions = PartialKeys<
+  VirtualizerOptions<any, unknown>,
+  'observeElementRect' | 'observeElementOffset' | 'scrollToFn' | 'getScrollElement' | 'count' | 'estimateSize'
+>
 
 type SortDroppedColumnFn = (columnId: string, items: Item[]) => Item[]
 
@@ -68,6 +74,11 @@ export interface KanbanProps {
    * A function that renders a column header
    */
   RenderColumnHeader: React.FC<ColumnHeaderProps>
+
+  /**
+   * virtualizer options
+   */
+  virtualizerOptions?: ReactVirtualOptions
 }
 
 export type ColumnProps = {
@@ -77,6 +88,7 @@ export type ColumnProps = {
   RenderItem: React.FC<ItemProps>
   getItemSize?: (item: Item) => number
   RenderColumnHeader: React.FC<ColumnHeaderProps>
+  virtualizerOptions?: ReactVirtualOptions
 }
 
 export type RenderVirtualProps = {
@@ -87,6 +99,7 @@ export type RenderVirtualProps = {
   getItemSize?: (item: Item) => number
   snapshot: DroppableStateSnapshot
   RenderItem: React.FC<ItemProps>
+  virtualizerOptions?: ReactVirtualOptions
 }
 
 export type ReorderItemMapArgs = {

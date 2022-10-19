@@ -27,14 +27,16 @@ const RenderVirtual = ({
   itemCount,
   RenderItem,
   droppableProvided,
-  getItemSize
+  getItemSize,
+  virtualizerOptions
 }: RenderVirtualProps) => {
   const parentRef = React.useRef<HTMLDivElement>(null)
 
   const rowVirtualizer = useVirtualizer({
     count: itemCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: getItemSize ? (i) => getItemSize(items[i]) : () => 50
+    estimateSize: getItemSize ? (i) => getItemSize(items[i]) : () => 50,
+    ...virtualizerOptions
   })
 
   const recal = () => {
@@ -115,8 +117,9 @@ const Column = React.memo(function Column(props: ColumnProps) {
     columnId,
     items,
     // itemCount,
-    getItemSize,
+    virtualizerOptions,
     RenderColumnHeader,
+    getItemSize,
     RenderItem
   } = props
 
@@ -150,6 +153,7 @@ const Column = React.memo(function Column(props: ColumnProps) {
               snapshot={snapshot}
               itemCount={itemCount}
               droppableProvided={droppableProvided}
+              virtualizerOptions={virtualizerOptions}
               getItemSize={getItemSize}
               RenderItem={RenderItem}
             />
@@ -190,7 +194,15 @@ function reducer(state: State, action: Action) {
 // type Empty = {}
 
 // eslint-disable-next-line no-unused-vars
-function Kanban({ items, getItemSize, sortDroppedColumn, onDrop, RenderItem, RenderColumnHeader }: KanbanProps) {
+function Kanban({
+  items,
+  virtualizerOptions,
+  getItemSize,
+  sortDroppedColumn,
+  onDrop,
+  RenderItem,
+  RenderColumnHeader
+}: KanbanProps) {
   const [state, dispatch] = useReducer(reducer, undefined, () => ({
     itemCount: Object.entries(items).flatMap(([_, value]) => value).length,
     itemMap: items,
@@ -236,6 +248,7 @@ function Kanban({ items, getItemSize, sortDroppedColumn, onDrop, RenderItem, Ren
               items={items}
               columnId={key}
               getItemSize={getItemSize}
+              virtualizerOptions={virtualizerOptions}
             />
           )
         })}

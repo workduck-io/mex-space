@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const ColumnContainer = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  background-color: ${({ theme }) => theme.colors.gray[9]};
+  background-color: ${({ theme }) => transparentize(0.5, theme.colors.gray[9])};
   flex-shrink: 0;
   flex-grow: 1;
   padding: ${({ theme }) => theme.spacing.small};

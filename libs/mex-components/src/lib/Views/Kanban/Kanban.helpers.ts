@@ -15,7 +15,12 @@ const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
 
 export default reorder
 
-export function reorderItemMap({ itemMap, source, destination }: ReorderItemMapArgs): ReorderItemMapResult {
+export function reorderItemMap({
+  itemMap,
+  source,
+  destination,
+  sortDroppedColumn
+}: ReorderItemMapArgs): ReorderItemMapResult {
   const current: Item[] = [...itemMap[source.droppableId]]
   const next: Item[] = [...itemMap[destination.droppableId]]
   const target: Item = current[source.index]
@@ -25,7 +30,7 @@ export function reorderItemMap({ itemMap, source, destination }: ReorderItemMapA
     const reordered: Item[] = reorder(current, source.index, destination.index)
     const result: ItemMap = {
       ...itemMap,
-      [source.droppableId]: reordered
+      [source.droppableId]: sortDroppedColumn ? sortDroppedColumn(destination.droppableId, reordered) : reordered
     }
     return {
       itemMap: result
@@ -41,7 +46,7 @@ export function reorderItemMap({ itemMap, source, destination }: ReorderItemMapA
   const result: ItemMap = {
     ...itemMap,
     [source.droppableId]: current,
-    [destination.droppableId]: next
+    [destination.droppableId]: sortDroppedColumn ? sortDroppedColumn(destination.droppableId, next) : next
   }
 
   return {
