@@ -21,6 +21,8 @@ yarn storybook
 
 ## Publishing the mex-components
 
+Manually:
+
 0. Bump the version
 
 1. Build `mex-components`
@@ -32,6 +34,13 @@ nx build mex-components
 2. Copy the `.npmrc` for publishing in `dist/libs/mex-components`
 
 3. Run `npm publish` in `dist/libs/mex-components`
+
+Via Github Actions:
+
+0. Run `yarn changeset` to create a changeset for the package.
+1. Open PR
+1. Merge PR
+1. Merge automatically created PR for releasing packages.
 
 ## To use mex-components locally
 
