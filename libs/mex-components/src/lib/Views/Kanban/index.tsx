@@ -171,10 +171,6 @@ type State = {
   columnKeys: string[]
 }
 
-function getColumnKeys(itemMap: ItemMap): string[] {
-  return Object.keys(itemMap).sort()
-}
-
 type Action = {
   type: 'REORDER'
   payload: ItemMap
@@ -185,7 +181,7 @@ function reducer(state: State, action: Action) {
     return {
       itemCount: state.itemCount,
       itemMap: action.payload,
-      columnKeys: getColumnKeys(action.payload)
+      columnKeys: state.columnKeys
     }
   }
 
