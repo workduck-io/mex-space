@@ -20,26 +20,36 @@ import { ColumnProps, Item, ItemMap, KanbanProps, RenderVirtualProps } from './K
 /**
  * Renders the virtual items inside a column
  */
-const RenderVirtual = ({ items, snapshot, columnId, itemCount, RenderItem, droppableProvided }: RenderVirtualProps) => {
+const RenderVirtual = ({
+  items,
+  snapshot,
+  columnId,
+  itemCount,
+  RenderItem,
+  droppableProvided,
+  getItemSize
+}: RenderVirtualProps) => {
   const parentRef = React.useRef<HTMLDivElement>(null)
 
   const rowVirtualizer = useVirtualizer({
     count: itemCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 100
+    estimateSize: getItemSize ? (i) => getItemSize(items[i]) : () => 50
   })
 
-  // Used to recalculate the layout of the column as the changed props
-  useEffect(() => {
-    // These two lines set the correct element position but the immediate dragged to column is not updated
-    // rowVirtualizer.measureElementCache = {}
-    // rowVirtualizer.measure()
+  const recal = () => {
+    rowVirtualizer.measure()
 
     // eslint-disable-next-line
     // @ts-expect-error
     rowVirtualizer.calculateRange()
-    // rowVirtualizer.calculateRange()
-  }, [itemCount])
+  }
+
+  // Used to recalculate the layout of the column as the changed props
+  useEffect(() => {
+    // These two lines set the correct element position but the immediate dragged to column is not updated
+    recal()
+  }, [itemCount, items, getItemSize])
 
   return (
     <ColumnDropArea
@@ -74,18 +84,19 @@ const RenderVirtual = ({ items, snapshot, columnId, itemCount, RenderItem, dropp
           return (
             <div
               key={`${columnId}_${virtualItem.key}`}
-              ref={virtualItem.measureElement}
+              // ref={virtualItem.measureElement}
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
+                height: `${virtualItem.size}px`,
                 transform: `translateY(${virtualItem.start}px)`
               }}
             >
               <Draggable draggableId={item.id} index={indexOfItem} key={item.id}>
                 {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-                  <RenderItem provided={provided} item={item} isDragging={snapshot.isDragging} />
+                  <RenderItem recal={recal} provided={provided} item={item} isDragging={snapshot.isDragging} />
                 )}
               </Draggable>
             </div>
@@ -104,6 +115,7 @@ const Column = React.memo(function Column(props: ColumnProps) {
     columnId,
     items,
     // itemCount,
+    getItemSize,
     RenderColumnHeader,
     RenderItem
   } = props
@@ -138,6 +150,7 @@ const Column = React.memo(function Column(props: ColumnProps) {
               snapshot={snapshot}
               itemCount={itemCount}
               droppableProvided={droppableProvided}
+              getItemSize={getItemSize}
               RenderItem={RenderItem}
             />
           )
@@ -177,7 +190,7 @@ function reducer(state: State, action: Action) {
 // type Empty = {}
 
 // eslint-disable-next-line no-unused-vars
-function Kanban({ items, sortDroppedColumn, onDrop, RenderItem, RenderColumnHeader }: KanbanProps) {
+function Kanban({ items, getItemSize, sortDroppedColumn, onDrop, RenderItem, RenderColumnHeader }: KanbanProps) {
   const [state, dispatch] = useReducer(reducer, undefined, () => ({
     itemCount: Object.entries(items).flatMap(([_, value]) => value).length,
     itemMap: items,
@@ -222,6 +235,7 @@ function Kanban({ items, sortDroppedColumn, onDrop, RenderItem, RenderColumnHead
               itemCount={state.itemCount}
               items={items}
               columnId={key}
+              getItemSize={getItemSize}
             />
           )
         })}

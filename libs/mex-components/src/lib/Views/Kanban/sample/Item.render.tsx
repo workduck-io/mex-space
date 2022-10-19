@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { DraggableProvided } from 'react-beautiful-dnd'
 import { Title } from '../../../Primitives'
 import { ColumnHeaderProps, ItemProps } from '../Kanban.types'
-import { ItemStore } from './data'
+import { ItemStore, useItemStore } from './data'
 import { BlockQuote, Container, Content, Footer, QuoteId } from './Item.style'
 
 function getStyle(provided: DraggableProvided, style?: Record<string, unknown>) {
@@ -17,8 +17,16 @@ function getStyle(provided: DraggableProvided, style?: Record<string, unknown>) 
 }
 
 function SampleItem(props: ItemProps) {
-  const { item, isDragging, isGroupedOver, provided, style, index } = props
-  const itemData = useMemo(() => ItemStore.getItemData(item.id), [item.id])
+  const { item, recal, isDragging, isGroupedOver, provided, style, index } = props
+
+  // Data of the current item
+  const getItemData = useItemStore((state) => state.getItemData)
+  const itemData = useMemo(() => getItemData(item.id), [item.id])
+
+  // To manage open/close or expand/collapse states of item
+  const toggleOpen = useItemStore((state) => state.toggleOpen)
+  const openStates = useItemStore((state) => state.openStates)
+  const isOpen = useMemo(() => openStates[item.id], [item, openStates])
 
   return (
     <Container
@@ -31,16 +39,28 @@ function SampleItem(props: ItemProps) {
       data-is-dragging={isDragging}
       data-testid={item.id}
       data-index={index}
-      // aria-label={`${item.author.name} quote ${item.content}`}
+      aria-label={`${itemData?.title} quote ${itemData?.description}`}
     >
       <Content>
-        <p>{itemData?.title}</p>
+        <p
+          onClick={() => {
+            toggleOpen(item.id)
+            if (recal) recal()
+          }}
+        >
+          {itemData?.title}
+        </p>
         <BlockQuote>{itemData?.description}</BlockQuote>
-        <Footer>
-          <QuoteId>
-            id:{item.id} {itemData?.id}
-          </QuoteId>
-        </Footer>
+        {isOpen && (
+          <>
+            <BlockQuote>{itemData?.description}</BlockQuote>
+            <Footer>
+              <QuoteId>
+                id:{item.id} {itemData?.id}
+              </QuoteId>
+            </Footer>
+          </>
+        )}
       </Content>
     </Container>
   )

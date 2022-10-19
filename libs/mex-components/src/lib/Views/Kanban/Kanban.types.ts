@@ -26,6 +26,10 @@ export type ItemProps = {
   isGroupedOver?: boolean
   style?: Record<string, unknown>
   index?: number
+  /**
+   * Function to recalculate sizes
+   */
+  recal?: () => void
 }
 
 export interface ColumnHeaderProps {
@@ -51,6 +55,11 @@ export interface KanbanProps {
   onDrop?: (result: DropResult) => void
 
   /**
+   * Estimate size based on index
+   */
+  getItemSize?: (item: Item) => number
+
+  /**
    * A function that renders an item in the column
    */
   RenderItem: React.FC<ItemProps>
@@ -66,6 +75,7 @@ export type ColumnProps = {
   items: Item[]
   itemCount: number
   RenderItem: React.FC<ItemProps>
+  getItemSize?: (item: Item) => number
   RenderColumnHeader: React.FC<ColumnHeaderProps>
 }
 
@@ -74,6 +84,7 @@ export type RenderVirtualProps = {
   items: Item[]
   itemCount: number
   droppableProvided: DroppableProvided
+  getItemSize?: (item: Item) => number
   snapshot: DroppableStateSnapshot
   RenderItem: React.FC<ItemProps>
 }

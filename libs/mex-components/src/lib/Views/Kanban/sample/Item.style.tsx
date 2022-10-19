@@ -1,4 +1,5 @@
 import styled, { DefaultTheme } from 'styled-components'
+import { Ellipsis } from '../../../Helpers'
 
 export const getBackgroundColor = (isDragging: boolean, isGroupedOver: boolean, theme: DefaultTheme) => {
   if (isDragging) {
@@ -71,6 +72,7 @@ export const Container = styled.a<{ isDragging?: boolean; isGroupedOver?: boolea
 export const Content = styled.div`
   /* flex child */
   flex-grow: 1;
+  width: 100%;
 
   /*
     Needed to wrap text in ie11
@@ -81,6 +83,12 @@ export const Content = styled.div`
   /* flex parent */
   display: flex;
   flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.small};
+
+  p {
+    margin: 0;
+    color: ${({ theme }) => theme.colors.text.accent};
+  }
 `
 
 export const BlockQuote = styled.div`
@@ -91,6 +99,8 @@ export const BlockQuote = styled.div`
   &::after {
     content: close-quote;
   }
+
+  ${Ellipsis}
 `
 
 export const Footer = styled.div`

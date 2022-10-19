@@ -1,5 +1,6 @@
 import { Lorizzle } from '../../../StorybookHelpers/StorybookHelpers'
 import { ItemMap } from '../Kanban.types'
+import create from 'zustand'
 
 interface ItemData {
   id: string
@@ -36,7 +37,53 @@ const itemData = allItemKeys.reduce((acc, key) => {
 }, {} as Record<string, ItemData>)
 
 export const ItemStore = {
+  openStates: {
+    'item-1': false,
+    'item-2': true
+  },
+  toggleOpen: (id: string) => {
+    const prev = ItemStore.openStates[id]
+    if (prev === undefined) {
+      ItemStore.openStates[id] = true
+    } else {
+      ItemStore.openStates[id] = !prev
+    }
+  },
   getItemData: (id: string) => {
     return itemData[id]
   }
 }
+
+interface ItemDataStore {
+  openStates: Record<string, boolean>
+  toggleOpen: (id: string) => void
+  getItemData: (id: string) => ItemData
+}
+
+export const useItemStore = create<ItemDataStore>((set, get) => ({
+  openStates: {
+    'item-1': false,
+    'item-2': true
+  },
+  toggleOpen: (id: string) => {
+    const prev = get().openStates[id]
+    if (prev === undefined) {
+      set((state) => ({
+        openStates: {
+          ...state.openStates,
+          [id]: true
+        }
+      }))
+    } else {
+      set((state) => ({
+        openStates: {
+          ...state.openStates,
+          [id]: !prev
+        }
+      }))
+    }
+  },
+  getItemData: (id: string) => {
+    return itemData[id]
+  }
+}))
