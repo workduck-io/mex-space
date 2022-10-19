@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import React from 'react'
 
-import Kanban from './index'
+import { Kanban } from './index'
 import { Item } from './Kanban.types'
 import { sampleItemMap, useItemStore } from './sample/data'
 import ItemRender, { ColumnHeader } from './sample/Item.render'

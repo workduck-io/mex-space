@@ -195,7 +195,7 @@ function reducer(state: State, action: Action) {
 // type Empty = {}
 
 // eslint-disable-next-line no-unused-vars
-function Kanban({
+export function Kanban({
   items,
   virtualizerOptions,
   getItemSize,
@@ -258,5 +258,3 @@ function Kanban({
     </DragDropContext>
   )
 }
-
-export default Kanban
