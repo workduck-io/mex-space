@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { DraggableProvided } from 'react-beautiful-dnd'
 import { Title } from '../../../Primitives'
 import { ColumnHeaderProps, ItemProps } from '../Kanban.types'
-import { ItemStore, useItemStore } from './data'
+import { useItemStore } from './data'
 import { BlockQuote, Container, Content, Footer, QuoteId } from './Item.style'
 
 function getStyle(provided: DraggableProvided, style?: Record<string, unknown>) {

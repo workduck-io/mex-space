@@ -85,6 +85,8 @@ export const Content = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.small};
 
+  transition: height 0.2s ease;
+
   p {
     margin: 0;
     color: ${({ theme }) => theme.colors.text.accent};

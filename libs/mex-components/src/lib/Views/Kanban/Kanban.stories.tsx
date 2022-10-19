@@ -3,7 +3,7 @@ import React from 'react'
 
 import Kanban from './index'
 import { Item } from './Kanban.types'
-import { ItemStore, sampleItemMap, useItemStore } from './sample/data'
+import { sampleItemMap, useItemStore } from './sample/data'
 import ItemRender, { ColumnHeader } from './sample/Item.render'
 
 export default {
@@ -32,6 +32,22 @@ export const Base: ComponentStory<typeof Kanban> = () => (
   </>
 )
 
+export const CustomHeight: ComponentStory<typeof Kanban> = () => (
+  <>
+    <Kanban
+      items={sampleItemMap}
+      kanbanHeight={'40vh'}
+      getItemSize={getItemSize}
+      RenderItem={ItemRender}
+      RenderColumnHeader={ColumnHeader}
+    />
+    <div>
+      <p>Help:</p>
+      <p>Click on title to expand/collapse</p>
+      <p>Drag and drop to reorder</p>
+    </div>
+  </>
+)
 const sortDroppedColumn = (columnId: string, items: Item[]) => {
   const sorted = items.sort((a, b) => {
     const aIndex = a?.id?.split('-')[1]

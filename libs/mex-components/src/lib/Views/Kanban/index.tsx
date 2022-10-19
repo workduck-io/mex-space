@@ -14,8 +14,10 @@ import {
   DropResult
 } from 'react-beautiful-dnd'
 import { reorderItemMap } from './Kanban.helpers'
-import { ColumnContainer, ColumnDropArea, Container } from './Kanban.style'
+import { ColumnContainer, ColumnDropArea, Container, DraggableWrapper } from './Kanban.style'
 import { ColumnProps, Item, ItemMap, KanbanProps, RenderVirtualProps } from './Kanban.types'
+
+// const DefaultColumnHeight = 600
 
 /**
  * Renders the virtual items inside a column
@@ -59,7 +61,6 @@ const RenderVirtual = ({
       // To render the background color on different states of being dragged over
       dragState={snapshot.isDraggingOver ? 'draggingOver' : snapshot.draggingFromThisWith ? 'draggingFrom' : 'normal'}
       style={{
-        height: `600px`,
         overflow: 'auto' // Make it scroll!
       }}
     >
@@ -84,7 +85,7 @@ const RenderVirtual = ({
           const indexOfItem = items.findIndex((i) => i.id === item.id)
 
           return (
-            <div
+            <DraggableWrapper
               key={`${columnId}_${virtualItem.key}`}
               // ref={virtualItem.measureElement}
               style={{
@@ -101,7 +102,7 @@ const RenderVirtual = ({
                   <RenderItem recal={recal} provided={provided} item={item} isDragging={snapshot.isDragging} />
                 )}
               </Draggable>
-            </div>
+            </DraggableWrapper>
           )
         })}
       </div>
@@ -200,6 +201,7 @@ function Kanban({
   getItemSize,
   sortDroppedColumn,
   onDrop,
+  kanbanHeight,
   RenderItem,
   RenderColumnHeader
 }: KanbanProps) {
@@ -236,7 +238,7 @@ function Kanban({
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Container>
+      <Container height={kanbanHeight}>
         {state.columnKeys.map((key: string) => {
           const items: Item[] = state.itemMap[key]
           return (

@@ -36,24 +36,6 @@ const itemData = allItemKeys.reduce((acc, key) => {
   return acc
 }, {} as Record<string, ItemData>)
 
-export const ItemStore = {
-  openStates: {
-    'item-1': false,
-    'item-2': true
-  },
-  toggleOpen: (id: string) => {
-    const prev = ItemStore.openStates[id]
-    if (prev === undefined) {
-      ItemStore.openStates[id] = true
-    } else {
-      ItemStore.openStates[id] = !prev
-    }
-  },
-  getItemData: (id: string) => {
-    return itemData[id]
-  }
-}
-
 interface ItemDataStore {
   openStates: Record<string, boolean>
   toggleOpen: (id: string) => void

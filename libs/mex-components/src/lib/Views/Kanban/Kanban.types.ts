@@ -66,6 +66,12 @@ export interface KanbanProps {
   getItemSize?: (item: Item) => number
 
   /**
+   * Height of the kanban column
+   * @default 90vh
+   */
+  kanbanHeight?: string
+
+  /**
    * A function that renders an item in the column
    */
   RenderItem: React.FC<ItemProps>
