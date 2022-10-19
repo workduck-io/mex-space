@@ -66,6 +66,12 @@ export interface KanbanProps {
   getItemSize?: (item: Item) => number
 
   /**
+   * Get the order of the columns from the item map
+   * If not provided, the keys are sorted alphabetically
+   */
+  getColumnKeys?: (items?: ItemMap) => string[]
+
+  /**
    * Height of the kanban column
    * @default 90vh
    */

@@ -202,13 +202,14 @@ export function Kanban({
   sortDroppedColumn,
   onDrop,
   kanbanHeight,
+  getColumnKeys,
   RenderItem,
   RenderColumnHeader
 }: KanbanProps) {
   const [state, dispatch] = useReducer(reducer, undefined, () => ({
     itemCount: Object.entries(items).flatMap(([_, value]) => value).length,
     itemMap: items,
-    columnKeys: getColumnKeys(items)
+    columnKeys: getColumnKeys ? getColumnKeys(items) : Object.keys(items).sort()
   }))
 
   function onDragEnd(result: DropResult) {
