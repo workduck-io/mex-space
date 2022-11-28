@@ -35,3 +35,39 @@ export const gruvboxTheme = generateTheme({
     oppositePrimary: '#282828'
   }
 })
+
+export const gruvboxLightTheme = generateTheme({
+  // Colors
+  primary: '#b8bb26',
+  secondary: '#fabd2f',
+
+  // Palettes
+  gray: {
+    1: '#1d2021', // Darkest
+    2: '#282828',
+    3: '#3c3836',
+    4: '#504945',
+    5: '#665c54',
+    6: '#7c6f64',
+    7: '#a89984',
+    8: '#bdae93',
+    9: '#d5c4a1',
+    10: '#fbf1c7' // Lightest
+  },
+  palette: {
+    white: '#ffffff',
+    black: '#000000',
+    green: '#00e676',
+    yellow: '#eeff41',
+    red: '#fb4934'
+  },
+  text: {
+    heading: '#f9f5d7',
+    default: '#ebdbb2',
+    subheading: '#f2e5bc',
+    fade: '#d5c4a1',
+    disabled: '#a89984',
+    accent: '#fe8019',
+    oppositePrimary: '#282828'
+  }
+})

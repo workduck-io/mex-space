@@ -439,6 +439,14 @@ interface LayoutTheme {
   }
 }
 
+export type ThemeMode = 'light' | 'dark'
+
+export interface MexThemeData {
+  name: string
+  id: string
+  data: Record<ThemeMode, MexTheme>
+}
+
 export interface MexTheme extends LayoutStyle {
   colors: {
     primary: string
