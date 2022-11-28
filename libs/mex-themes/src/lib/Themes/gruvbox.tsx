@@ -60,14 +60,5 @@ export const gruvboxLightTheme = generateTheme({
     green: '#00e676',
     yellow: '#eeff41',
     red: '#fb4934'
-  },
-  text: {
-    heading: '#f9f5d7',
-    default: '#ebdbb2',
-    subheading: '#f2e5bc',
-    fade: '#d5c4a1',
-    disabled: '#a89984',
-    accent: '#fe8019',
-    oppositePrimary: '#282828'
   }
 })

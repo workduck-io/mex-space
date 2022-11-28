@@ -8,9 +8,24 @@ import { MexTheme, ThemeMode, UserThemePreferences } from './types/theme'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
 type ThemeProviderContextType = {
+  /**
+   * Currently applied preferences of theme and mode
+   */
   preferences: UserThemePreferences
+
+  /**
+   * All available themes
+   */
   themes: typeof defaultThemes
+
+  /**
+   * Change to a theme (and optionally mode)
+   */
   changeTheme: (themeId: string, mode?: ThemeMode) => void
+
+  /**
+   * Toggle mode of current theme
+   */
   toggleMode: () => void
 }
 
@@ -69,9 +84,13 @@ export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY
 }
 
 interface ManagedProviderProps {
+  /**
+   * Theme to display for this provider
+   */
   theme: MexTheme
   children: React.ReactNode
 }
+
 export const ManagedProvider = ({ theme, children }: ManagedProviderProps) => {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }
