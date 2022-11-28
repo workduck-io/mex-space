@@ -10,6 +10,12 @@ Run `yarn start` for a dev server. Navigate to http://localhost:4200/. The app w
 
 Run `yarn build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Adding new library
+
+```
+mex-space$ nx generate @nrwl/react:library lib-name
+```
+
 ## Mex Components and Storybook
 
 To start storybook of mex-components
@@ -19,7 +25,7 @@ cd ./libs/mex-components
 yarn storybook
 ```
 
-## Publishing the mex-components
+### Publishing the mex-components
 
 0. Bump the version
 
@@ -33,7 +39,7 @@ nx build mex-components
 
 3. Run `npm publish` in `dist/libs/mex-components`
 
-## To use mex-components locally
+### To use mex-components locally
 
 1. Build the `mex-components` package using `nx build mex-components`
 

@@ -3,6 +3,7 @@
   "projects": {
     "mex-components": "libs/mex-components",
     "mex-editor": "libs/mex-editor",
+    "mex-themes": "libs/mex-themes",
     "mex-utils": "libs/mex-utils",
     "web": "apps/web"
   }

@@ -1,0 +1,43 @@
+{
+  "root": "libs/mex-themes",
+  "sourceRoot": "libs/mex-themes/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mex-themes",
+        "tsConfig": "libs/mex-themes/tsconfig.lib.json",
+        "project": "libs/mex-themes/package.json",
+        "entryFile": "libs/mex-themes/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/mex-themes/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-themes/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/mex-themes"],
+      "options": {
+        "jestConfig": "libs/mex-themes/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

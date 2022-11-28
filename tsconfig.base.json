@@ -16,6 +16,7 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
+      "@mexin/mex-themes": ["libs/mex-themes/src/index.ts"],
       "@workduck-io/mex-components": ["libs/mex-components/src/index.ts"],
       "@workduck-io/mex-editor": ["libs/mex-editor/src/index.ts"],
       "@workduck-io/mex-utils": ["libs/mex-utils/src/index.ts"]
