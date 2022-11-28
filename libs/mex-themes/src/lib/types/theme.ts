@@ -447,6 +447,11 @@ export interface MexThemeData {
   data: Record<ThemeMode, MexTheme>
 }
 
+export interface UserThemePreferences {
+  themeId: string
+  mode: ThemeMode
+}
+
 export interface MexTheme extends LayoutStyle {
   colors: {
     primary: string

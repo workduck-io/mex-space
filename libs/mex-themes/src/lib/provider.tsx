@@ -3,10 +3,12 @@ import { ThemeProvider } from 'styled-components'
 
 import { defaultThemes } from './Themes/defaultThemes'
 import { mexTheme } from './Themes/mex'
-import { MexTheme, ThemeMode } from './types/theme'
+import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
+import { MexTheme, ThemeMode, UserThemePreferences } from './types/theme'
+import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
 type ThemeProviderContextType = {
-  themeId: string
+  preferences: UserThemePreferences
   themes: typeof defaultThemes
   changeTheme: (themeId: string, mode?: ThemeMode) => void
   toggleMode: () => void
@@ -15,34 +17,51 @@ type ThemeProviderContextType = {
 const ThemeContext = createContext<ThemeProviderContextType>(undefined!)
 export const useThemeContext = () => useContext(ThemeContext)
 
-export const Provider = ({ children }) => {
+interface ProviderProps {
+  children: React.ReactNode
+  /**
+   * The key to use for local storage of user theme preferences
+   */
+  localStorageKey?: string
+}
+
+export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY }: ProviderProps) => {
   const defaultThemeId = useMemo(() => defaultThemes[0].id, [])
-  const [mode, setMode] = useState<ThemeMode>('light')
-  const [themeId, setThemeId] = useState(defaultThemeId)
+  const [pref, setPref] = useState<UserThemePreferences>(
+    getInitialTheme(localStorageKey) ?? {
+      themeId: defaultThemeId,
+      mode: 'light'
+    }
+  )
 
   const currentTheme = useMemo(() => {
-    const theme = defaultThemes.find((theme) => theme.id === themeId)
+    const theme = defaultThemes.find((theme) => theme.id === pref.themeId)
     return theme
-  }, [themeId])
+  }, [pref])
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
     const newTheme = defaultThemes.find((theme) => theme.id === themeId)
     if (newTheme) {
-      setThemeId(themeId)
-      if (mode) setMode(mode)
+      setPref((pref) => {
+        const newPref = { themeId, mode: mode ?? pref.mode }
+        saveThemePreferenceToLocalStorage(newPref, localStorageKey)
+        return newPref
+      })
     }
   }
 
   const toggleMode = () => {
-    setMode((mode) => {
-      const newMode = mode === 'light' ? 'dark' : 'light'
-      return newMode
+    setPref((p) => {
+      const newMode = p.mode === 'light' ? 'dark' : 'light'
+      const newPerf: UserThemePreferences = { ...p, mode: newMode }
+      saveThemePreferenceToLocalStorage(newPerf, localStorageKey)
+      return newPerf
     })
   }
 
   return (
-    <ThemeProvider theme={currentTheme?.data[mode] ?? mexTheme}>
-      <ThemeContext.Provider value={{ themeId, themes: defaultThemes, changeTheme, toggleMode }}>
+    <ThemeProvider theme={currentTheme?.data[pref.mode] ?? mexTheme}>
+      <ThemeContext.Provider value={{ preferences: pref, themes: defaultThemes, changeTheme, toggleMode }}>
         {children}
       </ThemeContext.Provider>
     </ThemeProvider>
