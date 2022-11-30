@@ -15,7 +15,8 @@
     "core-js": "^3.21.0",
     "deepmerge": "^4.2.2",
     "color-scheme": "^1.0.1",
-    "polished": "^4.1.4"
+    "polished": "^4.1.4",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "react": ">=18.2.0",

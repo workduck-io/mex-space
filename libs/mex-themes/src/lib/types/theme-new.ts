@@ -7,51 +7,53 @@ export type ThemeMode = 'light' | 'dark'
  * --var-name
  * where var-name is comprised of keys of the LayoutTheme
  */
-export type CSSPrefix = '--theme-'
-export type CSSSeparator = '-'
-export type CSSVariable = `${CSSPrefix}${string}`
-
-const x: CSSVariable = '--theme-kanban-column-text-color'
+export type CssPrefix = '--theme-'
+export type CssVariable = `${CssPrefix}${string}`
 
 const keysToVar = (keys: string[]) => `--theme-${keys.join('-')}`
 
-export interface BaseElementStyle {
-  surface?: CSSVariable
+export interface BaseElementStyle<T> {
+  surface?: T
   text?: {
-    size?: CSSVariable
-    color?: CSSVariable
-    weight?: CSSVariable
-    family?: CSSVariable
+    size?: T
+    color?: T
+    weight?: T
+    family?: T
   }
-  iconColor?: CSSVariable
-  border?: CSSVariable
+  iconColor?: T
+  border?: T
 }
 
 //What is generated:
 //
 //
-export interface GenericElementStyle extends BaseElementStyle {
+export interface ElementStyle<T> extends BaseElementStyle<T> {
   // Should focus be different from hover?
-  hover?: BaseElementStyle
-  active?: BaseElementStyle
-  disabled?: BaseElementStyle
+  hover?: BaseElementStyle<T>
+  active?: BaseElementStyle<T>
+  disabled?: BaseElementStyle<T>
 }
 
-interface ListStyle extends BaseElementStyle {
-  marker?: BaseElementStyle
+export interface ListStyle<T> extends BaseElementStyle<T> {
+  marker?: BaseElementStyle<T>
 }
 
-interface EmbedViewStyle {
-  wrapper: BaseElementStyle
+export interface EmbedViewStyle<T> {
+  wrapper: BaseElementStyle<T>
   toolbar: {
-    wrapper: BaseElementStyle
-    icon: BaseElementStyle
-    input: BaseElementStyle
-    button: BaseElementStyle
+    wrapper: BaseElementStyle<T>
+    icon: BaseElementStyle<T>
+    input: BaseElementStyle<T>
+    button: BaseElementStyle<T>
   }
 }
 
-interface LayoutTheme {
+export interface LayoutTheme<
+  T,
+  GenericElementStyle = ElementStyle<T>,
+  GenericListStyle = ListStyle<T>,
+  GenericEmbedViewStyle = EmbedViewStyle<T>
+> {
   // For base styles
   app: GenericElementStyle
 
@@ -157,8 +159,8 @@ interface LayoutTheme {
         strikethrough: GenericElementStyle
       }
       list: {
-        ul: ListStyle
-        ol: ListStyle
+        ul: GenericListStyle
+        ol: GenericListStyle
       }
       tag: GenericElementStyle
       mention: {
@@ -196,8 +198,8 @@ interface LayoutTheme {
         image: GenericElementStyle
         caption: GenericElementStyle
       }
-      webEmbed: EmbedViewStyle
-      canvas: EmbedViewStyle
+      webEmbed: GenericEmbedViewStyle
+      canvas: GenericEmbedViewStyle
       qaBlock: GenericElementStyle
     }
     combobox: {
@@ -371,7 +373,7 @@ export interface UserThemePreferences {
 }
 
 export interface MexTheme extends LayoutTokens {
-  t: LayoutTheme
+  t: LayoutTheme<string>
   backgroundImages?: BackgroundImages
   additional: {
     profilePalette: string[]

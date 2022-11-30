@@ -1,7 +1,6 @@
 import { DefaultTheme } from 'styled-components'
 
 type Shadow = string
-type Pixels = number // Pixels in integer
 type HexColor = string
 
 export interface LayoutTokens {
@@ -16,27 +15,9 @@ export interface LayoutTokens {
     small: string
     tiny: string
   }
-  width: {
-    nav: Pixels
-    sidebar: Pixels
-  }
-  indent: { sidebar: Pixels }
 }
 
-// interface ShadePalette {
-//   10: HexColor // Darkest
-//   9: HexColor
-//   8: HexColor
-//   7: HexColor
-//   6: HexColor
-//   5: HexColor
-//   4: HexColor
-//   3: HexColor
-//   2: HexColor
-//   1: HexColor // Lightest
-// }
-
-interface TextPalette {
+interface TextColorPalette {
   heading: HexColor
   default: HexColor
   subheading: HexColor
@@ -46,46 +27,54 @@ interface TextPalette {
   oppositePrimary: HexColor
 }
 
-export interface ElementStyle {
-  text: TextPalette
-  surface: HexColor
-}
-
 export interface BackgroundImages {
   app: string
   preview: string
 }
 
+export interface SurfaceLayers {
+  0: HexColor
+  1: HexColor
+  2: HexColor
+  3: HexColor
+  4: HexColor
+  5: HexColor
+  6: HexColor
+}
+
 interface Surfaces {
-  card: string
-  sidebar: string
-  nav: string
-  modal: string
+  s: SurfaceLayers
+  sidebar: HexColor
+  modal: HexColor
   tooltip: {
-    default: string
-    primary: string
-    info: string
+    default: HexColor
+    primary: HexColor
+    info: HexColor
   }
-  editor: string
-  appBackground: string
 }
 
 interface ColorPalette {
-  primary: string
-  secondary: string
-  white: string
-  black: string
-  green: string
-  yellow: string
-  red: string
-  blue: string
+  primary: {
+    default: HexColor
+    hover: HexColor
+    active: HexColor
+    disabled: HexColor
+    text: HexColor
+  }
+  secondary: HexColor
+  white: HexColor
+  black: HexColor
+  green: HexColor
+  yellow: HexColor
+  red: HexColor
+  blue: HexColor
 }
 
 // What is fed
-interface ThemeTokens {
+export interface ThemeTokens {
   layout: LayoutTokens
   colors: ColorPalette
-  text: TextPalette
+  text: TextColorPalette
   surfaces: Surfaces
   shadow: {
     small: Shadow
