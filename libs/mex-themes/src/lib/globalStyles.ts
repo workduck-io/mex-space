@@ -159,12 +159,31 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     }
   }
 
-  const defaultTooltip: ElementStyle<string> = {
-    surface: tokens.surfaces.tooltip.default
+  const defaultTooltip = {
+    surface: tokens.surfaces.s[1],
+    text: {
+      color: tokens.text.default
+    }
+  }
+  const primaryTooltip = {
+    surface: tokens.colors.primary.default,
+    text: {
+      color: tokens.colors.primary.text
+    }
   }
 
-  const primaryTooltip: ElementStyle<string> = {
-    surface: tokens.surfaces.tooltip.primary
+  const infoTooltip = {
+    text: {
+      color: tokens.text.fade
+    },
+    surface: tokens.surfaces.s[1]
+  }
+  const errorTooltip = {
+    surface: tokens.surfaces.s[1],
+    iconColor: tokens.colors.red,
+    text: {
+      color: tokens.text.default
+    }
   }
 
   const embedViewStyle = (level: number): EmbedViewStyle<string> => ({
@@ -203,19 +222,19 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       color: tokens.colors.primary.default
     }
   }
-  const hoverCard = {
-    ...card(0),
+  const hoverCard = (level: number) => ({
+    ...card(level),
     ...defaultText,
     iconColor: tokens.colors.fade,
     hover: {
-      surface: tokens.surfaces.s[1],
+      surface: tokens.surfaces.s[level + 1],
       iconColor: tokens.colors.primary.hover
     },
     active: {
-      surface: tokens.surfaces.s[2],
+      surface: tokens.surfaces.s[level + 2],
       iconColor: tokens.colors.primary.active
     }
-  }
+  })
   const theme: LayoutTheme<string> = {
     // For base styles
     app,
@@ -465,8 +484,8 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
 
     search: {
       result: {
-        list: hoverCard,
-        card: hoverCard
+        list: hoverCard(1),
+        card: hoverCard(1)
       },
       input: genericElementStyle,
       viewToggle: menuItem(1),
@@ -502,13 +521,14 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     reminders: {
       reminder: {
         wrapper: card(2),
+        // TODO:
         status: {
           active: genericElementStyle,
           snooze: genericElementStyle,
           seen: genericElementStyle,
           missed: genericElementStyle
         },
-        note: genericElementStyle,
+        note: fadeText,
         controls: {
           button: transparentButton(1),
           snoozeControls: transparentButton(1)
@@ -517,15 +537,12 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     },
 
     highlight: {
-      wrapper: genericElementStyle
+      surface: tokens.surfaces.highlight
     },
 
     links: {
-      wrapper: genericElementStyle,
-      link: {
-        wrapper: genericElementStyle,
-        icon: genericElementStyle
-      }
+      // wrapper: card(1),
+      link: hoverCard(1)
     },
 
     spotlight: {
@@ -545,8 +562,8 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     },
 
     modal: {
-      overlay: genericElementStyle,
-      content: genericElementStyle
+      overlay: modal
+      // content: genericElementStyle
     },
 
     helpButton: button(0),
@@ -556,7 +573,7 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
         iconColor: tokens.surfaces.separator
       },
       tags: {
-        wrapper: genericElementStyle,
+        wrapper: card(1),
         tag: tagStyle
       },
       button: {
@@ -567,18 +584,18 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       tooltip: {
         default: defaultTooltip,
         primary: primaryTooltip,
-        info: genericElementStyle
+        info: infoTooltip
       },
       // The selection dropdown for selecting a note
       // While renaming, refactoring, lookup etc
       noteSelect: {
-        ...menu(2),
-        status: {
-          selected: genericElementStyle,
-          empty: genericElementStyle
-        }
+        ...menu(2)
+        // status: {
+        //   selected: genericElementStyle,
+        //   empty: genericElementStyle
+        // }
       },
-      pageTitle: genericElementStyle,
+      pageTitle: headingText,
       form: {
         input: genericElementStyle,
         select: genericElementStyle,
@@ -590,17 +607,15 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       shortcut: genericElementStyle,
       toast: {
         success: defaultTooltip,
-        error: genericElementStyle
+        error: errorTooltip
       },
-      contextMenu: {
-        ...menu(1)
-      }
+      contextMenu: menu(1)
     },
 
     kanban: {
-      card: card(2),
+      card: hoverCard(2),
       column: card(1),
-      columnHeader: genericElementStyle
+      columnHeader: headingText
     },
 
     settings: {

@@ -194,12 +194,12 @@ export interface LayoutTheme<
     elements: {
       paragraph: TextColor<T>
       heading: {
-        h1: GenericElementStyle
-        h2: GenericElementStyle
-        h3: GenericElementStyle
-        h4: GenericElementStyle
-        h5: GenericElementStyle
-        h6: GenericElementStyle
+        h1: TextColor<T>
+        h2: TextColor<T>
+        h3: TextColor<T>
+        h4: TextColor<T>
+        h5: TextColor<T>
+        h6: TextColor<T>
       }
       marks: {
         highlight: Card<T>
@@ -215,9 +215,10 @@ export interface LayoutTheme<
       tag: TextColor<T>
       mention: {
         self: TextColor<T>
-        invited: GenericElementStyle
-        default: GenericElementStyle
+        invited: TextColor<T>
+        default: TextColor<T>
       }
+      // TODO:
       todo: {
         self: GenericElementStyle
         checkbox: GenericElementStyle
@@ -291,13 +292,14 @@ export interface LayoutTheme<
   reminders: {
     reminder: {
       wrapper: Card<T>
+      // TODO:
       status: {
         active: GenericElementStyle
         snooze: GenericElementStyle
         seen: GenericElementStyle
         missed: GenericElementStyle
       }
-      note: GenericElementStyle
+      note: TextColor<T>
       controls: {
         button: GenericElementStyle
         snoozeControls: GenericElementStyle
@@ -305,18 +307,16 @@ export interface LayoutTheme<
     }
   }
 
-  highlight: {
-    wrapper: GenericElementStyle
-  }
+  // TODO:
+  // These are highlights shown in sidebar and in links
+  highlight: Card<T>
 
   links: {
-    wrapper: GenericElementStyle
-    link: {
-      wrapper: GenericElementStyle
-      icon: GenericElementStyle
-    }
+    // wrapper: Card<T>
+    link: RequiredElementStyle<T, 'surface' | 'text' | 'iconColor' | 'hover' | 'active'>
   }
 
+  // TODO:
   spotlight: {
     input: GenericElementStyle
     logo: GenericElementStyle
@@ -332,15 +332,15 @@ export interface LayoutTheme<
   }
 
   modal: {
-    overlay: GenericElementStyle
-    content: GenericElementStyle
+    overlay: Card<T>
+    // content: GenericElementStyle
   }
 
   helpButton: GenericElementStyle
 
   generic: {
     tags: {
-      wrapper: GenericElementStyle
+      wrapper: Card<T>
       tag: TextColor<T>
     }
     button: {
@@ -349,21 +349,20 @@ export interface LayoutTheme<
       secondary: GenericElementStyle
     }
     tooltip: {
-      default: GenericElementStyle
-      primary: GenericElementStyle
-      info: GenericElementStyle
+      default: Card<T> & TextColor<T>
+      primary: Card<T> & TextColor<T>
+      info: Card<T> & TextColor<T>
     }
     // The selection dropdown for selecting a note
     // While renaming, refactoring, lookup etc
-    noteSelect: {
-      menu: GenericElementStyle
-      item: GenericElementStyle
-      status: {
-        selected: GenericElementStyle
-        empty: GenericElementStyle
-      }
+    noteSelect: Menu<T> & {
+      // status: {
+      //   selected: GenericElementStyle
+      //   empty: GenericElementStyle
+      // }
     }
-    pageTitle: GenericElementStyle
+    pageTitle: TextColor<T>
+    // TODO:
     form: {
       input: GenericElementStyle
       select: GenericElementStyle
@@ -374,27 +373,24 @@ export interface LayoutTheme<
     }
     shortcut: GenericElementStyle
     toast: {
-      success: GenericElementStyle
-      error: GenericElementStyle
+      success: Card<T> & TextColor<T>
+      error: RequiredBaseElementStyle<T, 'text' | 'surface' | 'iconColor'>
     }
-    contextMenu: {
-      menu: GenericElementStyle
-      item: GenericElementStyle
-    }
+    contextMenu: Menu<T>
     separator: SimpleIcon<T>
   }
 
   kanban: {
-    card: GenericElementStyle
-    column: GenericElementStyle
-    columnHeader: GenericElementStyle
+    card: RequiredElementStyle<T, 'surface' | 'text' | 'iconColor' | 'hover' | 'active'>
+    column: Card<T>
+    columnHeader: TextColor<T>
   }
 
   settings: {
-    sidebar: GenericElementStyle
-    content: GenericElementStyle
-    importCard: GenericElementStyle
-    themeCard: GenericElementStyle
+    sidebar: Card<T>
+    content: Card<T>
+    importCard: Card<T>
+    themeCard: Card<T>
   }
 }
 
