@@ -52,6 +52,47 @@ function ThemeSwitcher() {
 }
 ```
 
+## Style usage
+
+```typescript-react
+const buttonStyles = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-size: ${({ theme }) => theme.app.text.size};
+`;
+
+export const PrimaryButton = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${genButtonStyles(theme.generic.button.primary)}
+  `}
+`;
+
+export const Button = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${genButtonStyles(theme.generic.button.default)}
+  `}
+`;
+
+// Note that generateStyleGeneric and genButtonStyles differ yet do the same thing,
+// convert the button styles to css styles
+export const SecondaryButton = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${generateStyleGeneric(theme.generic.button.secondary)}
+  `}
+`;
+
+
+```
+
 ## Running unit tests
 
 Run `nx test mex-themes` to execute the unit tests via [Jest](https://jestjs.io).
