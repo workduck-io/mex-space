@@ -44,20 +44,16 @@ type RequiredElementStyle<T, K extends keyof ElementStyle<T>> = Required<Pick<El
 export interface ListStyle<T> {
   marker?: BaseElementStyle<T>
 }
+type ButtonState<T> = RequiredBaseElementStyle<T, 'surface' | 'text' | 'iconColor'>
 
-export interface EmbedViewStyle<T> {
-  wrapper: BaseElementStyle<T>
-  toolbar: {
-    wrapper: BaseElementStyle<T>
-    iconColor: T
-    // TODO:
-    input: BaseElementStyle<T>
-    button: BaseElementStyle<T>
-  }
+export interface ButtonStyle<T> extends ButtonState<T> {
+  hover: ButtonState<T>
+  active: ButtonState<T>
+  disabled: ButtonState<T>
 }
 
 interface CreateNew<T> extends Menu<T> {
-  button: ElementStyle<T>
+  button: ButtonStyle<T>
 }
 
 type SimpleIcon<T> = RequiredBaseElementStyle<T, 'iconColor'>
@@ -65,6 +61,12 @@ type TextColor<T> = {
   text: {
     color: T
   }
+}
+
+type TodoStyle<T> = {
+  self: RequiredBaseElementStyle<T, 'text'>
+  checkbox: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
+  controls: ButtonStyle<T>
 }
 
 // {
@@ -102,11 +104,46 @@ export interface Combobox<T> extends Menu<T> {
   groupLabel: ElementStyle<T>
   preview: ElementStyle<T>
 }
-interface TableStyle<T> {
-  tr: ElementStyle<T>
-  td: ElementStyle<T>
-  th: ElementStyle<T>
+
+export interface EmbedViewStyle<T> {
+  wrapper: Card<T>
+  toolbar: {
+    wrapper: Card<T>
+    iconColor: T
+    // TODO:
+    input: BaseElementStyle<T>
+    button: BaseElementStyle<T>
+  }
 }
+
+export interface ShortcutStyle<T> {
+  surface: T
+  iconColor: T
+  border: T
+  hover: {
+    surface: T
+    iconColor: T
+    border: T
+  }
+}
+
+type TooltipStyle<T> = Card<T> & TextColor<T>
+
+interface InputStyle<T> extends RequiredBaseElementStyle<T, 'surface' | 'text' | 'iconColor'> {
+  hover: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
+  active: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'border'>
+  disabled: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'text'>
+}
+
+interface TableStyle<T> {
+  wrapper: RequiredBaseElementStyle<T, 'surface'>
+  tr: RequiredBaseElementStyle<T, 'text'>
+  td: RequiredBaseElementStyle<T, 'text'>
+  th: RequiredBaseElementStyle<T, 'text'>
+}
+
+type ReminderStatusStyle<T> = RequiredBaseElementStyle<T, 'text' | 'iconColor'>
+
 export interface LayoutTheme<
   T,
   GenericElementStyle = ElementStyle<T>,
@@ -117,23 +154,22 @@ export interface LayoutTheme<
   //  Required of BaseElementStyle: surface
   app: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'text'>
 
-  nav: {
-    wrapper: Card<T>
-    logo: SimpleIcon<T>
-    search: GenericElementStyle
-    link: { main: GenericElementStyle; end: GenericElementStyle }
-    backForward: GenericElementStyle
-  }
-
   sidebar: {
     toggle: SimpleIcon<T>
+    wrapper: Card<T>
+    nav: {
+      logo: SimpleIcon<T>
+      search: ButtonStyle<T>
+      link: { main: ButtonStyle<T>; end: ButtonStyle<T> }
+      backForward: ButtonStyle<T>
+    }
     tabs: {
       // wrapper: GenericElementStyle
-      tab: GenericElementStyle
+      tab: ButtonStyle<T>
       indicator: Card<T>
     }
     // TODO:
-    filter: GenericElementStyle
+    filter: InputStyle<T>
     tree: {
       // wrapper: GenericElementStyle
       item: {
@@ -162,7 +198,9 @@ export interface LayoutTheme<
           toggle: SimpleIcon<T>
         }
       }
-      graph: GenericElementStyle
+      graph: {
+        controlsWrapper: Card<T>
+      }
       smartSuggestion: Card<T>
       reminders: Card<T>
     }
@@ -176,10 +214,10 @@ export interface LayoutTheme<
     toolbar: {
       // wrapper: Card<T>
       title: TextColor<T>
-      button: GenericElementStyle
+      button: ButtonStyle<T>
       balloonToolbar: {
         wrapper: Card<T>
-        button: GenericElementStyle
+        button: ButtonStyle<T>
       }
     }
 
@@ -188,7 +226,7 @@ export interface LayoutTheme<
     preview: {
       wrapper: Card<T>
       header: TextColor<T>
-      editor: GenericElementStyle
+      // editor: GenericElementStyle
     }
     dnd: RequiredElementStyle<T, 'surface' | 'iconColor' | 'hover' | 'active'>
     elements: {
@@ -219,11 +257,7 @@ export interface LayoutTheme<
         default: TextColor<T>
       }
       // TODO:
-      todo: {
-        self: GenericElementStyle
-        checkbox: GenericElementStyle
-        actions: GenericElementStyle // Better name maybe
-      }
+      todo: TodoStyle<T>
       ilink: {
         preview: {
           wrapper: Card<T>
@@ -239,10 +273,9 @@ export interface LayoutTheme<
       weblink: TextColor<T>
       blockquote: RequiredBaseElementStyle<T, 'text' | 'surface' | 'borderLeft'>
       codeblock: Card<T>
-      // TODO:
       table: TableStyle<T>
       image: {
-        image: GenericElementStyle
+        // image: GenericElementStyle
         caption: RequiredBaseElementStyle<T, 'text' | 'surface'>
       }
       webEmbed: GenericEmbedViewStyle
@@ -257,22 +290,20 @@ export interface LayoutTheme<
       list: RequiredElementStyle<T, 'surface' | 'text' | 'iconColor' | 'hover' | 'active'>
       card: RequiredElementStyle<T, 'surface' | 'text' | 'iconColor' | 'hover' | 'active'>
     }
-    // TODO:
-    input: GenericElementStyle
+    input: InputStyle<T>
     viewToggle: MenuItem<T>
+    // TODO:
     filters: {
-      container: GenericElementStyle
+      container: Card<T>
       filter: {
-        wrapper: GenericElementStyle
-        icon: GenericElementStyle
-        label: GenericElementStyle
-        count: GenericElementStyle
+        wrapper: RequiredElementStyle<T, 'surface' | 'text' | 'iconColor' | 'hover' | 'active'>
+        count: TextColor<T>
       }
     }
     preview: {
-      wrapper: GenericElementStyle
-      title: GenericElementStyle
-      editor: GenericElementStyle
+      wrapper: Card<T>
+      title: TextColor<T>
+      editor: Card<T>
     }
   }
 
@@ -294,15 +325,16 @@ export interface LayoutTheme<
       wrapper: Card<T>
       // TODO:
       status: {
-        active: GenericElementStyle
-        snooze: GenericElementStyle
-        seen: GenericElementStyle
-        missed: GenericElementStyle
+        surface: T
+        active: ReminderStatusStyle<T>
+        snooze: ReminderStatusStyle<T>
+        seen: ReminderStatusStyle<T>
+        missed: ReminderStatusStyle<T>
       }
       note: TextColor<T>
       controls: {
-        button: GenericElementStyle
-        snoozeControls: GenericElementStyle
+        button: ButtonStyle<T>
+        snoozeControls: ButtonStyle<T>
       }
     }
   }
@@ -318,16 +350,16 @@ export interface LayoutTheme<
 
   // TODO:
   spotlight: {
-    input: GenericElementStyle
-    logo: GenericElementStyle
+    input: InputStyle<T>
+    logo: SimpleIcon<T>
     list: {
       item: GenericElementStyle
-      groupLabel: GenericElementStyle
+      groupLabel: TextColor<T>
     }
     preview: GenericElementStyle
     toast: {
-      success: GenericElementStyle
-      error: GenericElementStyle
+      success: TooltipStyle<T>
+      error: TooltipStyle<T>
     }
   }
 
@@ -336,7 +368,7 @@ export interface LayoutTheme<
     // content: GenericElementStyle
   }
 
-  helpButton: GenericElementStyle
+  helpButton: ButtonStyle<T>
 
   generic: {
     tags: {
@@ -344,14 +376,14 @@ export interface LayoutTheme<
       tag: TextColor<T>
     }
     button: {
-      default: GenericElementStyle
-      primary: GenericElementStyle
-      secondary: GenericElementStyle
+      default: ButtonStyle<T>
+      primary: ButtonStyle<T>
+      secondary: ButtonStyle<T>
     }
     tooltip: {
-      default: Card<T> & TextColor<T>
-      primary: Card<T> & TextColor<T>
-      info: Card<T> & TextColor<T>
+      default: TooltipStyle<T>
+      primary: TooltipStyle<T>
+      info: TooltipStyle<T>
     }
     // The selection dropdown for selecting a note
     // While renaming, refactoring, lookup etc
@@ -364,14 +396,14 @@ export interface LayoutTheme<
     pageTitle: TextColor<T>
     // TODO:
     form: {
-      input: GenericElementStyle
+      // Use input for textarea as well
+      input: InputStyle<T>
       select: GenericElementStyle
-      textarea: GenericElementStyle
       checkbox: GenericElementStyle
       radio: GenericElementStyle
       label: GenericElementStyle
     }
-    shortcut: GenericElementStyle
+    shortcut: ShortcutStyle<T>
     toast: {
       success: Card<T> & TextColor<T>
       error: RequiredBaseElementStyle<T, 'text' | 'surface' | 'iconColor'>

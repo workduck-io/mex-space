@@ -9,7 +9,8 @@ import {
   CssVariable,
   Card,
   Menu,
-  MenuItem
+  MenuItem,
+  ButtonStyle
 } from './types/theme-new'
 import { ThemeTokens } from './types/tokens'
 
@@ -73,17 +74,25 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     menu: card(level + 1)
   })
 
-  const primaryButton: ElementStyle<string> = {
+  const primaryButton: ButtonStyle<string> = {
     surface: tokens.colors.primary.default,
     text: {
       color: tokens.colors.primary.text
     },
     iconColor: tokens.colors.primary.text,
     hover: {
-      surface: tokens.colors.primary.hover
+      surface: tokens.colors.primary.hover,
+      text: {
+        color: tokens.colors.primary.text
+      },
+      iconColor: tokens.colors.primary.text
     },
     active: {
-      surface: tokens.colors.primary.active
+      surface: tokens.colors.primary.active,
+      text: {
+        color: tokens.colors.primary.text
+      },
+      iconColor: tokens.colors.primary.text
     },
     disabled: {
       surface: tokens.colors.primary.disabled,
@@ -94,7 +103,7 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     }
   }
 
-  const IconButtonTitle = (level: number, transparent = true): ElementStyle<string> => ({
+  const IconButtonTitle = (level: number, transparent = true): ButtonStyle<string> => ({
     surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
     text: {
       color: tokens.colors.primary.default
@@ -123,25 +132,20 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     }
   })
 
-  const button = (level: number): ElementStyle<string> => ({
-    surface: tokens.surfaces.s[level + 1],
+  const button = (level: number, transparent = false): ButtonStyle<string> => ({
+    surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
     text: { color: tokens.text.default },
     iconColor: tokens.text.default,
-    hover: { surface: tokens.surfaces.s[level + 2] },
-    active: { surface: tokens.surfaces.s[level + 3] },
-    disabled: {
-      surface: 'transparent',
-      text: { color: tokens.text.disabled },
-      iconColor: tokens.text.disabled
-    }
-  })
-
-  const transparentButton = (level: number): ElementStyle<string> => ({
-    surface: 'transparent',
-    text: { color: tokens.text.default },
-    iconColor: tokens.text.default,
-    hover: { surface: tokens.surfaces.s[level + 1] },
-    active: { surface: tokens.surfaces.s[level + 2] },
+    hover: {
+      surface: tokens.surfaces.s[level + (transparent ? 1 : 2)],
+      text: { color: tokens.text.default },
+      iconColor: tokens.text.default
+    },
+    active: {
+      surface: tokens.surfaces.s[level + (transparent ? 2 : 3)],
+      text: { color: tokens.text.default },
+      iconColor: tokens.text.default
+    },
     disabled: {
       surface: 'transparent',
       text: { color: tokens.text.disabled },
@@ -235,25 +239,55 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       iconColor: tokens.colors.primary.active
     }
   })
+  const input = (level: number) => ({
+    ...card(level + 1),
+    ...defaultText,
+    iconColor: tokens.colors.fade,
+    hover: {
+      surface: tokens.surfaces.s[level + 2],
+      iconColor: tokens.colors.primary.hover
+    },
+    active: {
+      surface: tokens.surfaces.s[level + 3],
+      iconColor: tokens.colors.primary.active,
+      border: '1px solid ' + tokens.colors.primary.active
+    },
+    disabled: {
+      surface: tokens.surfaces.s[level + 1],
+      iconColor: tokens.colors.fade,
+      text: {
+        color: tokens.text.disabled
+      }
+    }
+  })
+
+  const shortcutStyle = {
+    surface: tokens.surfaces.s[1],
+    iconColor: tokens.colors.primary.default,
+    border: '1px solid ' + tokens.colors.primary.default,
+    hover: {
+      surface: tokens.surfaces.s[2],
+      iconColor: tokens.colors.primary.hover,
+      border: '1px solid ' + tokens.colors.primary.default
+    }
+  }
+
   const theme: LayoutTheme<string> = {
     // For base styles
     app,
 
-    nav: {
+    sidebar: {
       wrapper: {
         surface: tokens.surfaces.sidebar
       },
-      logo: {
-        iconColor: tokens.colors.primary.default
+      nav: {
+        logo: {
+          iconColor: tokens.colors.primary.default
+        },
+        search: button(0, true),
+        link: { main: IconButtonTitle(1, true), end: IconButtonTitle(1, true) },
+        backForward: IconButtonTitle(1, true)
       },
-      search: {
-        surface: tokens.surfaces.s[1]
-      },
-      link: { main: IconButtonTitle(1, true), end: IconButtonTitle(1, true) },
-      backForward: IconButtonTitle(1, true)
-    },
-
-    sidebar: {
       toggle: {
         iconColor: tokens.colors.fade
       },
@@ -264,7 +298,7 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
           surface: tokens.colors.primary.default
         }
       },
-      filter: genericElementStyle,
+      filter: input(1),
       tree: {
         // wrapper: {},
         item: {
@@ -322,7 +356,9 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
             }
           }
         },
-        graph: {},
+        graph: {
+          controlsWrapper: card(2)
+        },
         smartSuggestion: card(1),
         reminders: card(1)
       }
@@ -355,7 +391,7 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
         button: button(0),
         balloonToolbar: {
           wrapper: card(1),
-          button: transparentButton(1)
+          button: button(1, true)
         }
       },
 
@@ -371,8 +407,8 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       // content: genericElementStyle,
       preview: {
         wrapper: modal,
-        header: defaultText,
-        editor: genericElementStyle
+        header: defaultText
+        // editor: genericElementStyle
       },
       dnd: {
         ...card(1),
@@ -421,9 +457,12 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
           default: primaryText
         },
         todo: {
-          self: genericElementStyle,
-          checkbox: genericElementStyle,
-          actions: genericElementStyle // Better name maybe,
+          self: defaultText,
+          checkbox: {
+            surface: tokens.surfaces.s[0],
+            iconColor: tokens.colors.primary.default
+          },
+          controls: button(0, true)
         },
         ilink: {
           preview: {
@@ -450,12 +489,13 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
         },
         codeblock: card(1),
         table: {
-          tr: genericElementStyle,
-          td: genericElementStyle,
-          th: genericElementStyle
+          wrapper: card(1),
+          tr: defaultText,
+          td: defaultText,
+          th: headingText
         },
         image: {
-          image: genericElementStyle,
+          // image: genericElementStyle,
           caption: {
             ...card(1),
             ...defaultText
@@ -487,21 +527,31 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
         list: hoverCard(1),
         card: hoverCard(1)
       },
-      input: genericElementStyle,
+      input: input(1),
       viewToggle: menuItem(1),
       filters: {
-        container: genericElementStyle,
+        container: card(1),
         filter: {
-          wrapper: genericElementStyle,
-          icon: genericElementStyle,
-          label: genericElementStyle,
-          count: genericElementStyle
+          wrapper: {
+            ...card(2),
+            ...defaultText,
+            iconColor: tokens.colors.fade,
+            hover: {
+              surface: tokens.surfaces.s[2],
+              iconColor: tokens.colors.primary.hover
+            },
+            active: {
+              surface: tokens.surfaces.s[3],
+              iconColor: tokens.colors.primary.default
+            }
+          },
+          count: fadeText
         }
       },
       preview: {
-        wrapper: genericElementStyle,
-        title: genericElementStyle,
-        editor: genericElementStyle
+        wrapper: card(1),
+        title: headingText,
+        editor: card(2)
       }
     },
 
@@ -521,17 +571,29 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     reminders: {
       reminder: {
         wrapper: card(2),
-        // TODO:
         status: {
-          active: genericElementStyle,
-          snooze: genericElementStyle,
-          seen: genericElementStyle,
-          missed: genericElementStyle
+          surface: tokens.surfaces.s[2],
+          active: {
+            text: { color: tokens.text.default },
+            iconColor: tokens.colors.primary.default
+          },
+          snooze: {
+            text: { color: tokens.text.default },
+            iconColor: tokens.colors.yellow
+          },
+          seen: {
+            text: { color: tokens.text.fade },
+            iconColor: tokens.colors.fade
+          },
+          missed: {
+            text: { color: tokens.text.default },
+            iconColor: tokens.colors.red
+          }
         },
         note: fadeText,
         controls: {
-          button: transparentButton(1),
-          snoozeControls: transparentButton(1)
+          button: button(1, true),
+          snoozeControls: button(1, true)
         }
       }
     },
@@ -546,18 +608,18 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
     },
 
     spotlight: {
-      input: genericElementStyle,
+      input: input(1),
       logo: {
         iconColor: tokens.colors.primary.default
       },
       list: {
         item: genericElementStyle,
-        groupLabel: genericElementStyle
+        groupLabel: fadeText
       },
       preview: genericElementStyle,
       toast: {
-        success: genericElementStyle,
-        error: genericElementStyle
+        success: primaryTooltip,
+        error: errorTooltip
       }
     },
 
@@ -579,7 +641,7 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       button: {
         default: button(1),
         primary: primaryButton,
-        secondary: transparentButton(1)
+        secondary: button(1, true)
       },
       tooltip: {
         default: defaultTooltip,
@@ -597,14 +659,14 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
       },
       pageTitle: headingText,
       form: {
-        input: genericElementStyle,
+        input: input(1),
         select: genericElementStyle,
-        textarea: genericElementStyle,
+
         checkbox: genericElementStyle,
         radio: genericElementStyle,
         label: genericElementStyle
       },
-      shortcut: genericElementStyle,
+      shortcut: shortcutStyle,
       toast: {
         success: defaultTooltip,
         error: errorTooltip
