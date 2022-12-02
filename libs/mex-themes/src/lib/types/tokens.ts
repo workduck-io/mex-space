@@ -24,7 +24,7 @@ interface TextColorPalette {
   fade: HexColor
   disabled: HexColor
   accent: HexColor
-  oppositePrimary: HexColor
+  code: HexColor
 }
 
 export interface BackgroundImages {
@@ -46,6 +46,9 @@ interface Surfaces {
   s: SurfaceLayers
   sidebar: HexColor
   modal: HexColor
+  separator: HexColor
+  highlight: HexColor
+  code: HexColor
   tooltip: {
     default: HexColor
     primary: HexColor
@@ -61,6 +64,7 @@ interface ColorPalette {
     disabled: HexColor
     text: HexColor
   }
+  fade: HexColor
   secondary: HexColor
   white: HexColor
   black: HexColor

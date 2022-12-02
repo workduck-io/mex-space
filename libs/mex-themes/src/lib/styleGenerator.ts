@@ -1,8 +1,8 @@
 import { css } from 'styled-components'
 
-import { BaseElementStyle, GenericElementStyle } from './types/theme-new'
+import { BaseElementStyle, CssVariable, ElementStyle } from './types/theme-new'
 
-export const generateStyleBase = (bes: BaseElementStyle) => {
+export const generateStyleBase = (bes: BaseElementStyle<CssVariable>) => {
   const { surface, text, iconColor, border } = bes
   const style = {
     backgroundColor: surface,
@@ -22,7 +22,7 @@ export const generateStyleBase = (bes: BaseElementStyle) => {
   return style
 }
 
-export const generateStyleGeneric = (ges: GenericElementStyle) => {
+export const generateStyleGeneric = (ges: ElementStyle<CssVariable>) => {
   const { surface, text, iconColor, border, hover, active, disabled } = ges
   const base = { surface, text, iconColor, border }
 
