@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { defaultThemes } from './Themes/defaultThemes'
+import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
 import { mexTheme } from './Themes/mex'
 import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
+import { generateGlobalStyles } from './globalStyles'
 import { MexTheme, ThemeMode, UserThemePreferences } from './types/theme'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
@@ -49,9 +50,10 @@ export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY
     }
   )
 
-  const currentTheme = useMemo(() => {
-    const theme = defaultThemes.find((theme) => theme.id === pref.themeId)
-    return theme
+  const { theme: currentTheme, GlobalStyle } = useMemo(() => {
+    const themeTokens = defaultThemes.find((theme) => theme.id === pref.themeId)
+    const { theme, globalStyle: GlobalStyle } = generateGlobalStyles(themeTokens?.data[pref.mode] ?? mexThemeNew)
+    return { theme, GlobalStyle }
   }, [pref])
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
@@ -75,9 +77,10 @@ export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY
   }
 
   return (
-    <ThemeProvider theme={currentTheme?.data[pref.mode] ?? mexTheme}>
+    <ThemeProvider theme={currentTheme}>
       <ThemeContext.Provider value={{ preferences: pref, themes: defaultThemes, changeTheme, toggleMode }}>
         {children}
+        <GlobalStyle />
       </ThemeContext.Provider>
     </ThemeProvider>
   )

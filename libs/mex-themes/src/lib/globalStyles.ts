@@ -1,5 +1,7 @@
 import { set, get } from 'lodash'
+import { createGlobalStyle } from 'styled-components'
 
+import { generateTheme } from './themeGenerator'
 import {
   LayoutTheme,
   ListStyle,
@@ -9,11 +11,28 @@ import {
   Card,
   Menu,
   MenuItem,
-  ButtonStyle
-} from './types/theme-new'
-import { ThemeTokens } from './types/tokens'
+  ButtonStyle,
+  CssVariableAccessor
+} from './types/theme'
+import { LayoutTokens, ThemeTokens } from './types/tokens'
 
-export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme } => {
+const layoutTokens: LayoutTokens = {
+  spacing: {
+    large: '2rem',
+    medium: '1rem',
+    small: '0.5rem',
+    tiny: '0.25rem'
+  },
+  borderRadius: {
+    large: '1rem',
+    small: '0.5rem',
+    tiny: '0.25rem'
+  }
+}
+
+export const getGlobalStylesAndTheme = (
+  tokens: ThemeTokens
+): { theme: MexTheme; cssVarMap: Record<CssVariable, string> } => {
   const app = {
     surface: tokens.surfaces.s[0],
     textColor: tokens.text.default,
@@ -635,22 +654,59 @@ export const getGlobalStylesAndTheme = (tokens: ThemeTokens): { theme: MexTheme 
 
   const { theme: cssTheme, cssVariables: themeCssvariables } = getVarAndThemeMap(theme)
 
+  const legacyTheme = generateTheme({
+    primary: tokens.colors.primary.default,
+    secondary: tokens.colors.secondary,
+
+    // Palettes
+    gray: {
+      10: tokens.surfaces.s[0],
+      9: tokens.surfaces.s[1],
+      8: tokens.surfaces.s[2],
+      7: tokens.surfaces.s[3],
+      6: tokens.surfaces.s[4],
+      5: tokens.surfaces.s[5],
+      4: tokens.surfaces.s[6],
+      3: tokens.colors.fade,
+      2: tokens.text.default,
+      1: tokens.text.heading
+    },
+    palette: {
+      white: tokens.colors.white,
+      black: tokens.colors.black,
+      green: tokens.colors.green,
+      yellow: tokens.colors.yellow,
+      red: tokens.colors.red
+    },
+    text: {
+      heading: tokens.text.heading,
+      default: tokens.text.default,
+      subheading: tokens.text.subheading,
+      fade: tokens.text.fade,
+      disabled: tokens.text.disabled,
+      accent: tokens.text.accent,
+      oppositePrimary: tokens.colors.primary.text
+    }
+  })
+
   // const cssVariable = `--${key}`
   return {
     theme: {
-      ...tokens.layout,
-      t: cssTheme,
+      ...legacyTheme,
+      ...layoutTokens,
+      ...cssTheme,
       additional: {
         profilePalette: [],
         reactSelect: {}
       }
-    }
+    },
+    cssVarMap: themeCssvariables
   }
 }
 
 const getVarAndThemeMap = (
   theme: LayoutTheme<string>
-): { theme: LayoutTheme<CssVariable>; cssVariables: Record<CssVariable, string> } => {
+): { theme: LayoutTheme<CssVariableAccessor>; cssVariables: Record<CssVariable, string> } => {
   /*
    * We will now generate the two maps,
    * first the theme map in CssVariables
@@ -664,13 +720,14 @@ const getVarAndThemeMap = (
   console.log({ leaveKeys })
 
   leaveKeys.forEach((key) => {
-    const cssVariable: CssVariable = `--theme-${key.join('-')}`
-    set(themeMap, key, cssVariable)
+    const cssVariableAccessor: CssVariableAccessor = `var(--theme-${key.join('-')})`
+    const cssVariable = `--theme-${key.join('-')}`
+    set(themeMap, key, cssVariableAccessor)
     set(cssVariablesMap, cssVariable, get(theme, key))
   })
 
   return {
-    theme: themeMap as LayoutTheme<CssVariable>,
+    theme: themeMap as LayoutTheme<CssVariableAccessor>,
     cssVariables: cssVariablesMap as Record<CssVariable, string>
   }
 }
@@ -690,4 +747,18 @@ const getKeyOfLeaves = (obj: DeepObject): Array<string[]> => {
   }
   leaves(obj)
   return keys
+}
+
+export const generateGlobalStyles = (tokens: ThemeTokens) => {
+  const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens)
+  const globalStyle = createGlobalStyle`
+    :root {
+    ${Object.entries(cssVarMap)
+      .map(([key, value]) => {
+        return `${key}: ${value};`
+      })
+      .join('\n')}
+    }
+  `
+  return { theme, globalStyle }
 }

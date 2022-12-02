@@ -74,9 +74,12 @@ interface ColorPalette {
   blue: HexColor
 }
 
+export interface DefaultTokens {
+  layout: LayoutTokens
+}
+
 // What is fed
 export interface ThemeTokens {
-  layout: LayoutTokens
   colors: ColorPalette
   text: TextColorPalette
   surfaces: Surfaces

@@ -3,7 +3,7 @@ import merge from 'deepmerge'
 import { getLuminance, lighten, mix, tint } from 'polished'
 import { DefaultTheme, FlattenInterpolation } from 'styled-components'
 
-import { LayoutStyle, ThemePalette } from './types/theme'
+import { LayoutStyle, ThemePalette } from './types/theme-legacy'
 
 const LayoutTheme: LayoutStyle = {
   spacing: {
