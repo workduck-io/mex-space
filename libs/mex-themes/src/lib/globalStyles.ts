@@ -1,5 +1,5 @@
 import { set, get } from 'lodash'
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, css } from 'styled-components'
 
 import { generateTheme } from './themeGenerator'
 import {
@@ -30,8 +30,13 @@ const layoutTokens: LayoutTokens = {
   }
 }
 
+interface GeneratorOptions {
+  antiLegacy?: boolean
+}
+
 export const getGlobalStylesAndTheme = (
-  tokens: ThemeTokens
+  tokens: ThemeTokens,
+  options?: GeneratorOptions
 ): { theme: MexTheme; cssVarMap: Record<CssVariable, string> } => {
   const app = {
     surface: tokens.surfaces.s[0],
@@ -654,40 +659,70 @@ export const getGlobalStylesAndTheme = (
 
   const { theme: cssTheme, cssVariables: themeCssvariables } = getVarAndThemeMap(theme)
 
-  const legacyTheme = generateTheme({
-    primary: tokens.colors.primary.default,
-    secondary: tokens.colors.secondary,
+  const legacyTheme = generateTheme(
+    options?.antiLegacy
+      ? {
+          // AntiLegacyTheme
+          primary: tokens.colors.primary.default,
+          secondary: tokens.colors.secondary,
 
-    // Palettes
-    gray: {
-      10: tokens.surfaces.s[0],
-      9: tokens.surfaces.s[1],
-      8: tokens.surfaces.s[2],
-      7: tokens.surfaces.s[3],
-      6: tokens.surfaces.s[4],
-      5: tokens.surfaces.s[5],
-      4: tokens.surfaces.s[6],
-      3: tokens.colors.fade,
-      2: tokens.text.default,
-      1: tokens.text.heading
-    },
-    palette: {
-      white: tokens.colors.white,
-      black: tokens.colors.black,
-      green: tokens.colors.green,
-      yellow: tokens.colors.yellow,
-      red: tokens.colors.red
-    },
-    text: {
-      heading: tokens.text.heading,
-      default: tokens.text.default,
-      subheading: tokens.text.subheading,
-      fade: tokens.text.fade,
-      disabled: tokens.text.disabled,
-      accent: tokens.text.accent,
-      oppositePrimary: tokens.colors.primary.text
-    }
-  })
+          // Palettes
+          gray: {
+            10: '#f74f9e',
+            9: '#f74f9e',
+            8: '#f74f9e',
+            7: '#f74f9e',
+            6: '#f74f9e',
+            5: '#f74f9e',
+            4: '#f74f9e',
+            3: '#f74f9e',
+            2: '#f74f9e',
+            1: '#f74f9e'
+          },
+          palette: {
+            white: '#f74f9e',
+            black: '#f74f9e',
+            green: '#f74f9e',
+            yellow: '#f74f9e',
+            red: '#f74f9e'
+          }
+        }
+      : {
+          // Default generation of legacy
+          primary: tokens.colors.primary.default,
+          secondary: tokens.colors.secondary,
+
+          // Palettes
+          gray: {
+            10: tokens.surfaces.s[0],
+            9: tokens.surfaces.s[1],
+            8: tokens.surfaces.s[2],
+            7: tokens.surfaces.s[3],
+            6: tokens.surfaces.s[4],
+            5: tokens.surfaces.s[5],
+            4: tokens.surfaces.s[6],
+            3: tokens.colors.fade,
+            2: tokens.text.default,
+            1: tokens.text.heading
+          },
+          palette: {
+            white: tokens.colors.white,
+            black: tokens.colors.black,
+            green: tokens.colors.green,
+            yellow: tokens.colors.yellow,
+            red: tokens.colors.red
+          },
+          text: {
+            heading: tokens.text.heading,
+            default: tokens.text.default,
+            subheading: tokens.text.subheading,
+            fade: tokens.text.fade,
+            disabled: tokens.text.disabled,
+            accent: tokens.text.accent,
+            oppositePrimary: tokens.colors.primary.text
+          }
+        }
+  )
 
   // const cssVariable = `--${key}`
   return {
@@ -749,9 +784,23 @@ const getKeyOfLeaves = (obj: DeepObject): Array<string[]> => {
   return keys
 }
 
-export const generateGlobalStyles = (tokens: ThemeTokens) => {
-  const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens)
-  const globalStyle = createGlobalStyle`
+interface GlobalStyleOptions extends GeneratorOptions {
+  wrapperStyles?: boolean
+}
+export const generateGlobalStyles = (tokens: ThemeTokens, options?: GlobalStyleOptions) => {
+  const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens, options)
+  const varStr = Object.entries(cssVarMap)
+    .map(([key, value]) => {
+      return `${key}: ${value};`
+    })
+    .join('\n')
+  if (options?.wrapperStyles) {
+    const wrapperStyle = css`
+      ${varStr}
+    `
+    return { wrapperStyle, theme }
+  }
+  const style = createGlobalStyle`
     :root {
     ${Object.entries(cssVarMap)
       .map(([key, value]) => {
@@ -760,5 +809,5 @@ export const generateGlobalStyles = (tokens: ThemeTokens) => {
       .join('\n')}
     }
   `
-  return { theme, globalStyle }
+  return { theme, style }
 }

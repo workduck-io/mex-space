@@ -1,11 +1,17 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
-import { ThemeProvider } from 'styled-components'
+import styled, {
+  DefaultTheme,
+  FlattenInterpolation,
+  FlattenSimpleInterpolation,
+  ThemeProvider
+} from 'styled-components'
 
 import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
 import { mexTheme } from './Themes/mex'
 import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
 import { generateGlobalStyles } from './globalStyles'
 import { MexTheme, ThemeMode, UserThemePreferences } from './types/theme'
+import { ThemeTokens } from './types/tokens'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
 type ThemeProviderContextType = {
@@ -39,9 +45,18 @@ interface ProviderProps {
    * The key to use for local storage of user theme preferences
    */
   localStorageKey?: string
+  /**
+   * If false, the legacy theme will be set to antiLegacy
+   * to facilitate removal of the legacy theme
+   */
+  legacySupport?: boolean
 }
 
-export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY }: ProviderProps) => {
+export const Provider = ({
+  children,
+  localStorageKey = DEFAULT_LOCAL_STORAGE_KEY,
+  legacySupport = true
+}: ProviderProps) => {
   const defaultThemeId = useMemo(() => defaultThemes[0].id, [])
   const [pref, setPref] = useState<UserThemePreferences>(
     getInitialTheme(localStorageKey) ?? {
@@ -52,9 +67,11 @@ export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY
 
   const { theme: currentTheme, GlobalStyle } = useMemo(() => {
     const themeTokens = defaultThemes.find((theme) => theme.id === pref.themeId)
-    const { theme, globalStyle: GlobalStyle } = generateGlobalStyles(themeTokens?.data[pref.mode] ?? mexThemeNew)
+    const { theme, style: GlobalStyle } = generateGlobalStyles(themeTokens?.data[pref.mode] ?? mexThemeNew, {
+      antiLegacy: !legacySupport
+    })
     return { theme, GlobalStyle }
-  }, [pref])
+  }, [pref, legacySupport])
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
     const newTheme = defaultThemes.find((theme) => theme.id === themeId)
@@ -80,7 +97,7 @@ export const Provider = ({ children, localStorageKey = DEFAULT_LOCAL_STORAGE_KEY
     <ThemeProvider theme={currentTheme}>
       <ThemeContext.Provider value={{ preferences: pref, themes: defaultThemes, changeTheme, toggleMode }}>
         {children}
-        <GlobalStyle />
+        {GlobalStyle ? <GlobalStyle /> : null}
       </ThemeContext.Provider>
     </ThemeProvider>
   )
@@ -90,10 +107,34 @@ interface ManagedProviderProps {
   /**
    * Theme to display for this provider
    */
-  theme: MexTheme
+  tokens: ThemeTokens
+  /**
+   * If false, the legacy theme will be set to antiLegacy
+   * to facilitate removal of the legacy theme
+   */
+  legacySupport?: boolean
   children: React.ReactNode
 }
 
-export const ManagedProvider = ({ theme, children }: ManagedProviderProps) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+const DIv = styled.div<{ styl: FlattenSimpleInterpolation }>`
+  ${({ styl }) => styl}
+`
+
+export const ManagedProvider = ({ tokens, children, legacySupport = true }: ManagedProviderProps) => {
+  const { theme, wrapperStyle: WrapperStyle } = useMemo(
+    () =>
+      generateGlobalStyles(tokens, {
+        wrapperStyles: true,
+        antiLegacy: !legacySupport
+      }),
+    [tokens, legacySupport]
+  )
+  if (!WrapperStyle) {
+    return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  } else
+    return (
+      <ThemeProvider theme={theme}>
+        <DIv styl={WrapperStyle}>{children}</DIv>
+      </ThemeProvider>
+    )
 }
