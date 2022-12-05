@@ -775,7 +775,7 @@ export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: Glob
     `
     return { wrapperStyle, theme }
   }
-  const style = createGlobalStyle`
+  const style = `
     :root {
     ${Object.entries(cssVarMap)
       .map(([key, value]) => {

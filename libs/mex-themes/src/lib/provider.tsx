@@ -4,7 +4,7 @@ import styled, { FlattenSimpleInterpolation, ThemeProvider } from 'styled-compon
 import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
 import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
 import { generateGlobalStyles } from './globalStyles'
-import { ThemeMode, UserThemePreferences } from './types/theme'
+import { MexThemeData, ThemeMode, UserThemePreferences } from './types/theme'
 import { ThemeTokens } from './types/tokens'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
@@ -17,7 +17,7 @@ type ThemeProviderContextType = {
   /**
    * All available themes
    */
-  themes: typeof defaultThemes
+  themes: MexThemeData[]
 
   /**
    * Change to a theme (and optionally mode)
@@ -35,10 +35,17 @@ export const useThemeContext = () => useContext(ThemeContext)
 
 interface ProviderProps {
   children: React.ReactNode
+
+  /**
+   * If provided these are used instead of default theme
+   */
+  availableThemes?: MexThemeData[]
+
   /**
    * The key to use for local storage of user theme preferences
    */
   localStorageKey?: string
+
   /**
    * If false, the legacy theme will be set to antiLegacy
    * to facilitate removal of the legacy theme
@@ -48,10 +55,12 @@ interface ProviderProps {
 
 export const Provider = ({
   children,
+  availableThemes = defaultThemes,
   localStorageKey = DEFAULT_LOCAL_STORAGE_KEY,
   legacySupport = true
 }: ProviderProps) => {
-  const defaultThemeId = useMemo(() => defaultThemes[0].id, [])
+  const defaultThemeId = useMemo(() => availableThemes[0].id, [availableThemes])
+
   const [pref, setPref] = useState<UserThemePreferences>(
     getInitialTheme(localStorageKey) ?? {
       themeId: defaultThemeId,
@@ -59,16 +68,16 @@ export const Provider = ({
     }
   )
   const tokens = useMemo(() => {
-    const themeTokens = defaultThemes.find((theme) => theme.id === pref.themeId)
+    const themeTokens = availableThemes.find((theme) => theme.id === pref.themeId)
     return themeTokens
-  }, [pref])
+  }, [pref, availableThemes])
 
-  const { theme: currentTheme, style: GlobalStyle } = generateGlobalStyles(tokens?.data[pref.mode] ?? mexThemeNew, {
+  const { theme: currentTheme, style: globalStyle } = generateGlobalStyles(tokens?.data[pref.mode] ?? mexThemeNew, {
     antiLegacy: !legacySupport
   })
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
-    const newTheme = defaultThemes.find((theme) => theme.id === themeId)
+    const newTheme = availableThemes.find((theme) => theme.id === themeId)
     if (newTheme) {
       setPref((pref) => {
         const newPref = { themeId, mode: mode ?? pref.mode }
@@ -89,9 +98,9 @@ export const Provider = ({
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <ThemeContext.Provider value={{ preferences: pref, themes: defaultThemes, changeTheme, toggleMode }}>
+      <ThemeContext.Provider value={{ preferences: pref, themes: availableThemes, changeTheme, toggleMode }}>
+        <style>{globalStyle}</style>
         {children}
-        {GlobalStyle ? <GlobalStyle /> : null}
       </ThemeContext.Provider>
     </ThemeProvider>
   )

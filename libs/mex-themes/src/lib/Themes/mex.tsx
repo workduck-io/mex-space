@@ -1,4 +1,3 @@
-import { generateTheme } from '../themeGenerator'
 import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
