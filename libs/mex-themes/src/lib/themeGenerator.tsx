@@ -6,17 +6,17 @@ import { DefaultTheme, FlattenInterpolation } from 'styled-components'
 import { LayoutStyle, ThemePalette } from './types/theme-legacy'
 
 const LayoutTheme: LayoutStyle = {
-  spacing: {
-    large: '2rem',
-    medium: '1rem',
-    small: '0.5rem',
-    tiny: '0.25rem'
-  },
-  borderRadius: {
-    large: '1rem',
-    small: '0.5rem',
-    tiny: '0.25rem'
-  },
+  // spacing: {
+  //   large: '2rem',
+  //   medium: '1rem',
+  //   small: '0.5rem',
+  //   tiny: '0.25rem'
+  // },
+  // borderRadius: {
+  //   large: '1rem',
+  //   small: '0.5rem',
+  //   tiny: '0.25rem'
+  // },
   width: {
     nav: 300,
     sidebar: 300

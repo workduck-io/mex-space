@@ -1,6 +1,6 @@
 import { ThemeTokens } from '../types/tokens'
 
-export const mexThemeNew: ThemeTokens = {
+export const mexThemeNew: ThemeTokens<string> = {
   // Palettes
   surfaces: {
     s: {

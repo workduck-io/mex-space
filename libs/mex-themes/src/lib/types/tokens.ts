@@ -1,92 +1,85 @@
 import { DefaultTheme } from 'styled-components'
 
-type Shadow = string
-type HexColor = string
-
-export interface LayoutTokens {
+export interface LayoutTokens<T> {
   spacing: {
-    large: string
-    medium: string
-    small: string
-    tiny: string
+    large: T
+    medium: T
+    small: T
+    tiny: T
   }
   borderRadius: {
-    large: string
-    small: string
-    tiny: string
+    large: T
+    small: T
+    tiny: T
   }
 }
 
-interface TextColorPalette {
-  heading: HexColor
-  default: HexColor
-  subheading: HexColor
-  fade: HexColor
-  disabled: HexColor
-  accent: HexColor
-  code: HexColor
+interface TextColorPalette<T, HexGeneric = T> {
+  heading: HexGeneric
+  default: HexGeneric
+  subheading: HexGeneric
+  fade: HexGeneric
+  disabled: HexGeneric
+  accent: HexGeneric
+  code: HexGeneric
 }
 
-export interface BackgroundImages {
-  app: string
-  preview: string
+export interface BackgroundImages<T> {
+  app: T
+  preview: T
 }
 
-export interface SurfaceLayers {
-  0: HexColor
-  1: HexColor
-  2: HexColor
-  3: HexColor
-  4: HexColor
-  5: HexColor
-  6: HexColor
+export interface SurfaceLayers<T, HexGeneric = T> {
+  0: HexGeneric
+  1: HexGeneric
+  2: HexGeneric
+  3: HexGeneric
+  4: HexGeneric
+  5: HexGeneric
+  6: HexGeneric
 }
 
-interface Surfaces {
-  s: SurfaceLayers
-  sidebar: HexColor
-  modal: HexColor
-  separator: HexColor
-  highlight: HexColor
-  code: HexColor
+interface Surfaces<T, Hex = T> {
+  s: SurfaceLayers<T>
+  sidebar: Hex
+  modal: Hex
+  separator: Hex
+  highlight: Hex
+  code: Hex
   tooltip: {
-    default: HexColor
-    primary: HexColor
-    info: HexColor
+    default: Hex
+    primary: Hex
+    info: Hex
   }
 }
 
-interface ColorPalette {
+interface ColorPalette<T, Hex = T> {
   primary: {
-    default: HexColor
-    hover: HexColor
-    active: HexColor
-    disabled: HexColor
-    text: HexColor
+    default: Hex
+    hover: Hex
+    active: Hex
+    disabled: Hex
+    text: Hex
   }
-  fade: HexColor
-  secondary: HexColor
-  white: HexColor
-  black: HexColor
-  green: HexColor
-  yellow: HexColor
-  red: HexColor
-  blue: HexColor
-}
-
-export interface DefaultTokens {
-  layout: LayoutTokens
+  fade: Hex
+  secondary: Hex
+  white: Hex
+  black: Hex
+  green: Hex
+  yellow: Hex
+  red: Hex
+  blue: Hex
 }
 
 // What is fed
-export interface ThemeTokens {
-  colors: ColorPalette
-  text: TextColorPalette
-  surfaces: Surfaces
+export interface ThemeTokens<T> {
+  colors: ColorPalette<T>
+  text: TextColorPalette<T>
+  surfaces: Surfaces<T>
   shadow: {
-    small: Shadow
-    medium: Shadow
-    large: Shadow
+    small: T
+    medium: T
+    large: T
   }
   additionalTheme?: Partial<DefaultTheme>
 }

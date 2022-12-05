@@ -2,7 +2,7 @@ import { generateTheme } from '../themeGenerator'
 import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
-export const mexTheme: ThemeTokens = {
+export const mexTheme: ThemeTokens<string> = {
   // Palettes
   surfaces: {
     s: {
@@ -54,7 +54,7 @@ export const mexTheme: ThemeTokens = {
   shadow: shadows
 }
 
-export const mexLightTheme: ThemeTokens = {
+export const mexLightTheme: ThemeTokens<string> = {
   surfaces: {
     s: {
       0: '#ffffff', // Lightest

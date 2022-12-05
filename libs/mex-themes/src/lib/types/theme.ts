@@ -24,9 +24,8 @@ type KeyOfBaseElementStyle<T> = keyof BaseElementStyle<T>
 type RequiredBaseElementStyle<T, K extends KeyOfBaseElementStyle<T>> = Required<Pick<BaseElementStyle<T>, K>>
 //
 
-//What is generated:
-//
-//
+// What is generated:
+
 export interface ElementStyle<T> extends BaseElementStyle<T> {
   // Should focus be different from hover?
   hover?: BaseElementStyle<T>
@@ -39,6 +38,7 @@ type RequiredElementStyle<T, K extends keyof ElementStyle<T>> = Required<Pick<El
 export interface ListStyle<T> {
   marker?: BaseElementStyle<T>
 }
+
 type ButtonState<T> = RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'>
 
 export interface ButtonStyle<T> extends ButtonState<T> {
@@ -60,24 +60,6 @@ type TodoStyle<T> = {
   controls: ButtonStyle<T>
 }
 
-// {
-//   text: {
-//     color: T
-//   },
-//   iconColor: T
-//   hover: {
-//     surface: T
-//     text: {
-//       color: tokens.colors.primary.hover
-//     }
-//   },
-//   active: {
-//     surface: tokens.surfaces.s[3],
-//     text: {
-//       color: tokens.colors.primary.active
-//     }
-//   }
-// },
 export type MenuItem<T> = Required<
   Pick<ElementStyle<T>, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled'>
 >
@@ -148,6 +130,7 @@ export interface LayoutTheme<
   GenericCard = Card<T>,
   GenericEmbedViewStyle = EmbedViewStyle<T>
 > {
+  tokens: ThemeTokens<T>
   // For base styles
   //  Required of BaseElementStyle: surface
   app: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'> & {
@@ -435,11 +418,11 @@ type ThemeCssTokens = LayoutTheme<CssVariableAccessor>
 export interface MexThemeData {
   name: string
   id: string
-  data: Record<ThemeMode, ThemeTokens>
+  data: Record<ThemeMode, ThemeTokens<string>>
 }
 
-export interface MexTheme extends LayoutTokens, ThemeCssTokens, LegacyTheme {
-  backgroundImages?: BackgroundImages
+export interface MexTheme extends LayoutTokens<CssVariableAccessor>, ThemeCssTokens, LegacyTheme {
+  backgroundImages?: BackgroundImages<CssVariableAccessor>
   additional: {
     profilePalette: string[]
     reactSelect: any

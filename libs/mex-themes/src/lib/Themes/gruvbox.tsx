@@ -2,7 +2,7 @@ import { generateTheme } from '../themeGenerator'
 import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
-export const gruvboxTheme: ThemeTokens = {
+export const gruvboxTheme: ThemeTokens<string> = {
   // Palettes
   //   gray: {
   //     10: '#1d2021', // Darkest
@@ -69,7 +69,7 @@ export const gruvboxTheme: ThemeTokens = {
   shadow: shadows
 }
 
-export const gruvboxLightTheme: ThemeTokens = {
+export const gruvboxLightTheme: ThemeTokens<string> = {
   // // Palettes
   // gray: {
   //   1: '#1d2021', // Darkest

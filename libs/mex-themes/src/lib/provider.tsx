@@ -1,16 +1,10 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
-import styled, {
-  DefaultTheme,
-  FlattenInterpolation,
-  FlattenSimpleInterpolation,
-  ThemeProvider
-} from 'styled-components'
+import styled, { FlattenSimpleInterpolation, ThemeProvider } from 'styled-components'
 
 import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
-import { mexTheme } from './Themes/mex'
 import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
 import { generateGlobalStyles } from './globalStyles'
-import { MexTheme, ThemeMode, UserThemePreferences } from './types/theme'
+import { ThemeMode, UserThemePreferences } from './types/theme'
 import { ThemeTokens } from './types/tokens'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
@@ -107,7 +101,7 @@ interface ManagedProviderProps {
   /**
    * Theme to display for this provider
    */
-  tokens: ThemeTokens
+  tokens: ThemeTokens<string>
   /**
    * If false, the legacy theme will be set to antiLegacy
    * to facilitate removal of the legacy theme

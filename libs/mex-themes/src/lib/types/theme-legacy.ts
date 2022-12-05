@@ -1,17 +1,6 @@
 import { DefaultTheme } from 'styled-components'
 
 export interface LayoutStyle {
-  spacing: {
-    large: string
-    medium: string
-    small: string
-    tiny: string
-  }
-  borderRadius: {
-    large: string
-    small: string
-    tiny: string
-  }
   width: {
     nav: Pixels
     sidebar: Pixels

@@ -1,6 +1,6 @@
-import { set, get } from 'lodash'
 import { createGlobalStyle, css } from 'styled-components'
 
+import { keyConverter } from './objHelpers'
 import { generateTheme } from './themeGenerator'
 import {
   LayoutTheme,
@@ -16,7 +16,7 @@ import {
 } from './types/theme'
 import { LayoutTokens, ThemeTokens } from './types/tokens'
 
-const layoutTokens: LayoutTokens = {
+const layoutTokens: LayoutTokens<string> = {
   spacing: {
     large: '2rem',
     medium: '1rem',
@@ -35,7 +35,7 @@ interface GeneratorOptions {
 }
 
 export const getGlobalStylesAndTheme = (
-  tokens: ThemeTokens,
+  tokens: ThemeTokens<string>,
   options?: GeneratorOptions
 ): { theme: MexTheme; cssVarMap: Record<CssVariable, string> } => {
   const app = {
@@ -238,6 +238,7 @@ export const getGlobalStylesAndTheme = (
 
   const theme: LayoutTheme<string> = {
     // For base styles
+    tokens,
     app,
 
     sidebar: {
@@ -724,18 +725,20 @@ export const getGlobalStylesAndTheme = (
         }
   )
 
+  const { obj: layoutTokensInCssVar, keys: layoutTokensVarMap } = keyConverter<string>(layoutTokens as any)
+
   // const cssVariable = `--${key}`
   return {
     theme: {
       ...legacyTheme,
-      ...layoutTokens,
+      ...layoutTokensInCssVar,
       ...cssTheme,
       additional: {
-        profilePalette: [],
-        reactSelect: {}
+        profilePalette: [] as string[],
+        reactSelect: {} as any
       }
     },
-    cssVarMap: themeCssvariables
+    cssVarMap: { ...themeCssvariables, ...layoutTokensVarMap }
   }
 }
 
@@ -747,47 +750,19 @@ const getVarAndThemeMap = (
    * first the theme map in CssVariables
    * and the second of CssVariables and their values
    */
-  const themeMap = {}
-  const cssVariablesMap = {}
-
-  const leaveKeys = getKeyOfLeaves(theme as any)
-
-  console.log({ leaveKeys })
-
-  leaveKeys.forEach((key) => {
-    const cssVariableAccessor: CssVariableAccessor = `var(--theme-${key.join('-')})`
-    const cssVariable = `--theme-${key.join('-')}`
-    set(themeMap, key, cssVariableAccessor)
-    set(cssVariablesMap, cssVariable, get(theme, key))
-  })
+  const { obj: themeMap, keys: cssVariablesMap } = keyConverter<string>(theme as any)
 
   return {
-    theme: themeMap as LayoutTheme<CssVariableAccessor>,
+    theme: themeMap as unknown as LayoutTheme<CssVariableAccessor>,
     cssVariables: cssVariablesMap as Record<CssVariable, string>
   }
-}
-
-interface DeepObject {
-  [key: string]: DeepObject | string
-}
-
-const getKeyOfLeaves = (obj: DeepObject): Array<string[]> => {
-  const keys: Array<string[]> = []
-  const leaves = (obj: DeepObject | string, path: string[] = []) => {
-    if (typeof obj === 'string') {
-      keys.push(path)
-    } else {
-      Object.keys(obj).forEach((key) => leaves(obj[key], [...path, key]))
-    }
-  }
-  leaves(obj)
-  return keys
 }
 
 interface GlobalStyleOptions extends GeneratorOptions {
   wrapperStyles?: boolean
 }
-export const generateGlobalStyles = (tokens: ThemeTokens, options?: GlobalStyleOptions) => {
+
+export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: GlobalStyleOptions) => {
   const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens, options)
   const varStr = Object.entries(cssVarMap)
     .map(([key, value]) => {
