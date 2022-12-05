@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import styled, { FlattenSimpleInterpolation, ThemeProvider } from 'styled-components'
 
 import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
 import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
-import { generateGlobalStyles } from './globalStyles'
+import { appendGlobalStyle, generateGlobalStyles } from './globalStyles'
 import { MexThemeData, ThemeMode, UserThemePreferences } from './types/theme'
 import { ThemeTokens } from './types/tokens'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
@@ -76,6 +76,10 @@ export const Provider = ({
     antiLegacy: !legacySupport
   })
 
+  useEffect(() => {
+    if (globalStyle) appendGlobalStyle(globalStyle)
+  }, [globalStyle])
+
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
     const newTheme = availableThemes.find((theme) => theme.id === themeId)
     if (newTheme) {
@@ -99,7 +103,6 @@ export const Provider = ({
   return (
     <ThemeProvider theme={currentTheme}>
       <ThemeContext.Provider value={{ preferences: pref, themes: availableThemes, changeTheme, toggleMode }}>
-        <style>{globalStyle}</style>
         {children}
       </ThemeContext.Provider>
     </ThemeProvider>
@@ -133,6 +136,8 @@ export const ManagedProvider = ({ tokens, children, legacySupport = true }: Mana
     [tokens, legacySupport]
   )
   if (!WrapperStyle) {
+    // Note that here the wrapper styles could not be generated, which is a error
+    console.error('Could not generate wrapper styles')
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>
   } else
     return (

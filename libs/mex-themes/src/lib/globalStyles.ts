@@ -1,5 +1,6 @@
-import { createGlobalStyle, css } from 'styled-components'
+import { css } from 'styled-components'
 
+import { GLOBAL_STYLE_ID } from './defaults'
 import { keyConverter } from './objHelpers'
 import { generateTheme } from './themeGenerator'
 import {
@@ -769,20 +770,26 @@ export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: Glob
       return `${key}: ${value};`
     })
     .join('\n')
+
   if (options?.wrapperStyles) {
     const wrapperStyle = css`
       ${varStr}
     `
     return { wrapperStyle, theme }
   }
-  const style = `
-    :root {
-    ${Object.entries(cssVarMap)
-      .map(([key, value]) => {
-        return `${key}: ${value};`
-      })
-      .join('\n')}
-    }
-  `
+
+  const style = ` :root { ${varStr} } `
   return { theme, style }
+}
+
+export const appendGlobalStyle = (style: string, id = GLOBAL_STYLE_ID) => {
+  const el = document.getElementById(id)
+  if (el) {
+    el.innerHTML = style
+  } else {
+    const styleEl = document.createElement('style')
+    styleEl.id = id
+    styleEl.innerHTML = style
+    document.head.appendChild(styleEl)
+  }
 }
