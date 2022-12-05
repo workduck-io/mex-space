@@ -58,14 +58,14 @@ export const Provider = ({
       mode: 'light'
     }
   )
-
-  const { theme: currentTheme, GlobalStyle } = useMemo(() => {
+  const tokens = useMemo(() => {
     const themeTokens = defaultThemes.find((theme) => theme.id === pref.themeId)
-    const { theme, style: GlobalStyle } = generateGlobalStyles(themeTokens?.data[pref.mode] ?? mexThemeNew, {
-      antiLegacy: !legacySupport
-    })
-    return { theme, GlobalStyle }
-  }, [pref, legacySupport])
+    return themeTokens
+  }, [pref])
+
+  const { theme: currentTheme, style: GlobalStyle } = generateGlobalStyles(tokens?.data[pref.mode] ?? mexThemeNew, {
+    antiLegacy: !legacySupport
+  })
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
     const newTheme = defaultThemes.find((theme) => theme.id === themeId)
