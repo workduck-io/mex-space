@@ -1,488 +1,455 @@
-import { DefaultTheme } from 'styled-components'
+import { LegacyTheme } from './theme-legacy'
+import { BackgroundImages, LayoutTokens, ThemeTokens } from './tokens'
 
-export interface LayoutStyle {
-  spacing: {
-    large: string
-    medium: string
-    small: string
-    tiny: string
-  }
-  borderRadius: {
-    large: string
-    small: string
-    tiny: string
-  }
-  width: {
-    nav: Pixels
-    sidebar: Pixels
-  }
-  indent: { sidebar: Pixels }
+export type ThemeMode = 'light' | 'dark'
+
+/*
+ * CSS variable string type that accpets:
+ * --var-name
+ * where var-name is comprised of keys of the LayoutTheme
+ */
+export type CssPrefix = '--theme-'
+export type CssVariable = `${CssPrefix}${string}`
+export type CssVariableAccessor = `var(${CssVariable})`
+
+export interface BaseElementStyle<T> {
+  surface?: T
+  textColor?: T
+  iconColor?: T
+  border?: T
+  borderLeft?: T
+}
+type KeyOfBaseElementStyle<T> = keyof BaseElementStyle<T>
+//Required<Pick<BaseElementStyle<T>, K>>
+type RequiredBaseElementStyle<T, K extends KeyOfBaseElementStyle<T>> = Required<Pick<BaseElementStyle<T>, K>>
+//
+
+// What is generated:
+
+export interface ElementStyle<T> extends BaseElementStyle<T> {
+  /**
+   * When an element is hovered over
+   */
+  hover?: BaseElementStyle<T>
+
+  /**
+   * When an element is active (clicked)
+   */
+  active?: BaseElementStyle<T>
+
+  /**
+   * When an element is disabled
+   */
+  disabled?: BaseElementStyle<T>
+
+  /**
+   * When an element is selected
+   */
+  selected?: BaseElementStyle<T>
 }
 
-export interface ShadePalette {
-  10: string // Darkest
-  9: string
-  8: string
-  7: string
-  6: string
-  5: string
-  4: string
-  3: string
-  2: string
-  1: string // Lightest
+type RequiredElementStyle<T, K extends keyof ElementStyle<T>> = Required<Pick<ElementStyle<T>, K>>
+
+export interface ListStyle<T> {
+  marker?: BaseElementStyle<T>
 }
 
-export interface ColorPalette_ {
-  white: string
-  black: string
-  green: string
-  yellow: string
-  red: string
-  blue: string
+type ButtonState<T> = RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'>
+
+export interface ButtonStyle<T> extends ButtonState<T> {
+  hover: ButtonState<T>
+  active: ButtonState<T>
+  disabled: ButtonState<T>
 }
 
-export interface TextPalette {
-  heading: string
-  default: string
-  subheading: string
-  fade: string
-  disabled: string
-  accent: string
-  oppositePrimary: string
+export interface SelectableButtonStyle<T> extends ButtonStyle<T> {
+  selected: ButtonState<T>
 }
 
-export interface ButtonPalette {
-  default: string
-  hover: string
-  focus: string
-  active: string
-  disabled: string
+interface CreateNew<T> extends Menu<T> {
+  button: ButtonStyle<T>
 }
 
-export interface ElementStyle {
-  text: TextPalette
-  surface: string
+type SimpleIcon<T> = RequiredBaseElementStyle<T, 'iconColor'>
+type TextColor<T> = { textColor: T }
+
+type TodoStyle<T> = {
+  self: TextColor<T>
+  checkbox: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
+  controls: ButtonStyle<T>
 }
 
-export interface Theme {
-  components: {
-    navigation: {
-      // Toolbar: ElementStyle
-      nav: {
-        surface: string
-      }
-      sidebar: {
-        surface: string
-      }
-    }
-  }
+export type MenuItem<T> = Required<
+  Pick<ElementStyle<T>, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled' | 'selected'>
+>
+
+export type Card<T> = {
+  surface: T
 }
 
-export interface BackgroundImages {
-  app: string
-  preview: string
+export type SelectableCard<T> = Card<T> & {
+  selected: Card<T>
 }
 
-export interface ThemePalette {
-  // Colors
-  primary: string
-  secondary: string
-
-  // Palettes
-  gray: ShadePalette
-  palette: Partial<ColorPalette_>
-
-  backgroundImages?: BackgroundImages
-
-  text?: TextPalette
-
-  custom?: string
-  additionalTheme?: Partial<DefaultTheme>
-  hasBlocks?: boolean
-}
-type Pixels = number // Pixels in integer
-
-interface ColorPalette {
-  white: string
-  black: string
-  green: string
-  yellow: string
-  red: string
-  blue: string
+export interface Menu<T> {
+  item: MenuItem<T>
+  menu: Card<T>
 }
 
-interface Surfaces {
-  card: string
-  sidebar: string
-  nav: string
-  modal: string
-  tooltip: {
-    default: string
-    primary: string
-    info: string
-  }
-  editor: string
-  appBackground: string
+export interface Combobox<T> extends Menu<T> {
+  groupLabel: TextColor<T> & SimpleIcon<T>
+  preview: Card<T>
 }
 
-interface ThemeTokens {
-  colors: ColorPalette
-  surfaces: string[]
-  shadow: {
-    small: string
-    medium: string
-    large: string
-  }
-}
-
-interface BaseElementStyle {
-  surface?: string
-  text?: {
-    size?: string
-    color?: string
-    weight?: string
-    family?: string
-  }
-  iconColor?: string
-  border?: string
-}
-
-interface GenericElementStyle extends BaseElementStyle {
-  // Should focus be different from hover?
-  hover?: BaseElementStyle
-  active?: BaseElementStyle
-  disabled?: BaseElementStyle
-}
-
-interface ListStyle extends BaseElementStyle {
-  marker?: BaseElementStyle
-}
-
-interface EmbedViewStyle {
-  wrapper: BaseElementStyle
+export interface EmbedViewStyle<T> {
+  wrapper: Card<T>
   toolbar: {
-    wrapper: BaseElementStyle
-    icon: BaseElementStyle
-    input: BaseElementStyle
-    button: BaseElementStyle
+    wrapper: Card<T>
+    iconColor: T
+    input: InputStyle<T>
+    button: ButtonStyle<T>
   }
 }
 
-interface LayoutTheme {
-  // For base styles
-  app: GenericElementStyle
+export interface ShortcutStyle<T> {
+  surface: T
+  iconColor: T
+  border: T
+  hover: {
+    surface: T
+    iconColor: T
+    border: T
+  }
+}
 
-  nav: {
-    wrapper: GenericElementStyle
-    logo: GenericElementStyle
-    search: GenericElementStyle
-    link: { main: GenericElementStyle; end: GenericElementStyle }
-    backForward: GenericElementStyle
+type TooltipStyle<T> = Card<T> & TextColor<T>
+
+interface InputStyle<T> extends RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'> {
+  hover: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
+  active: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'border'>
+  disabled: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>
+}
+
+type SpotlightItemStyle<T> = RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'> & {
+  hover: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
+  active: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>
+  selected: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>
+}
+
+interface TableStyle<T> {
+  wrapper: RequiredBaseElementStyle<T, 'surface'>
+  tr: TextColor<T>
+  td: TextColor<T>
+  th: TextColor<T>
+}
+
+type ReminderStatusStyle<T> = RequiredBaseElementStyle<T, 'textColor' | 'iconColor'>
+
+export interface LayoutTheme<
+  T,
+  GenericListStyle = ListStyle<T>,
+  GenericButtonStyle = ButtonStyle<T>,
+  GenericSelectableButtonStyle = SelectableButtonStyle<T>,
+  GenericTextColor = TextColor<T>,
+  GenericIcon = SimpleIcon<T>,
+  GenericCard = Card<T>,
+  GenericSelectableCard = SelectableCard<T>,
+  GenericEmbedViewStyle = EmbedViewStyle<T>
+> {
+  tokens: ThemeTokens<T>
+  // For base styles
+  //  Required of BaseElementStyle: surface
+  app: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'> & {
+    text: {
+      size: T
+      weight: T
+      family: T
+    }
   }
 
   sidebar: {
-    toggle: GenericElementStyle
-    tabs: {
-      wrapper: GenericElementStyle
-      tab: GenericElementStyle
-      indicator: GenericElementStyle
+    toggle: GenericIcon
+    wrapper: GenericCard
+    nav: {
+      logo: GenericIcon
+      search: GenericButtonStyle
+      link: {
+        main: GenericSelectableButtonStyle
+        end: GenericSelectableButtonStyle
+      }
+      backForward: GenericButtonStyle
     }
+    tabs: {
+      // wrapper: GenericElementStyle
+      tab: GenericSelectableButtonStyle
+      indicator: GenericCard
+    }
+    filter: InputStyle<T>
     tree: {
-      wrapper: GenericElementStyle
+      // wrapper: GenericElementStyle
       item: {
-        wrapper: GenericElementStyle
-        collpaseToggle: GenericElementStyle
-        icon: GenericElementStyle
-        label: GenericElementStyle
-        count: GenericElementStyle
+        wrapper: MenuItem<T>
+        collpaseToggle: GenericIcon
+        icon: GenericIcon
+        label: GenericTextColor
+        count: GenericTextColor
       }
     }
+    spaces: {
+      // wrapper: GenericElementStyle
+      item: {
+        wrapper: GenericSelectableCard
+        icon: RequiredElementStyle<T, 'iconColor' | 'hover' | 'active' | 'selected'>
+      }
+    }
+    createNew: CreateNew<T>
     infobar: {
-      wrapper: GenericElementStyle
-      toolbar: GenericElementStyle
+      toolbar: GenericCard
       context: {
-        tags: GenericElementStyle
-        outlineItem: GenericElementStyle
-        ilink: GenericElementStyle
+        outlineItem: GenericTextColor
+        ilink: RequiredBaseElementStyle<T, 'textColor' | 'iconColor'>
         collapsable: {
-          header: GenericElementStyle
-          toggle: GenericElementStyle
+          header: RequiredBaseElementStyle<T, 'textColor' | 'iconColor'>
+          toggle: GenericIcon
         }
       }
-      graph: GenericElementStyle
-      smartSuggestion: GenericElementStyle
-      reminders: GenericElementStyle
+      graph: {
+        controlsWrapper: GenericCard
+      }
+      smartSuggestion: GenericCard
+      reminders: GenericCard
     }
+  }
+
+  fleet: {
+    item: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled' | 'selected'>
   }
 
   editor: {
     toolbar: {
-      wrapper: GenericElementStyle
-      title: GenericElementStyle
-      button: GenericElementStyle
+      // wrapper: GenericCard
+      title: GenericTextColor
+      button: GenericButtonStyle
       balloonToolbar: {
-        wrapper: GenericElementStyle
-        button: GenericElementStyle
-        separator: GenericElementStyle
+        wrapper: GenericCard
+        button: GenericButtonStyle
       }
     }
 
-    metadata: GenericElementStyle
-    content: GenericElementStyle
+    metadata: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover'>
+    // content: GenericElementStyle
     preview: {
-      wrapper: GenericElementStyle
-      header: GenericElementStyle
-      editor: GenericElementStyle
+      wrapper: GenericCard
+      header: GenericTextColor
+      // editor: GenericElementStyle
     }
-    dnd: GenericElementStyle
+    dnd: RequiredElementStyle<T, 'surface' | 'iconColor' | 'hover' | 'active'>
     elements: {
-      paragraph: GenericElementStyle
+      paragraph: GenericTextColor
       heading: {
-        h1: GenericElementStyle
-        h2: GenericElementStyle
-        h3: GenericElementStyle
-        h4: GenericElementStyle
-        h5: GenericElementStyle
-        h6: GenericElementStyle
+        h1: GenericTextColor
+        h2: GenericTextColor
+        h3: GenericTextColor
+        h4: GenericTextColor
+        h5: GenericTextColor
+        h6: GenericTextColor
       }
       marks: {
-        highlight: GenericElementStyle
-        bold: GenericElementStyle
-        code: GenericElementStyle
-        italic: GenericElementStyle
-        strikethrough: GenericElementStyle
+        highlight: GenericCard
+        bold: GenericTextColor
+        code: RequiredBaseElementStyle<T, 'textColor' | 'surface'>
+        italic: GenericTextColor
+        strikethrough: GenericTextColor
       }
       list: {
-        ul: ListStyle
-        ol: ListStyle
+        ul: GenericListStyle
+        ol: GenericListStyle
       }
-      tag: GenericElementStyle
+      tag: GenericTextColor
       mention: {
-        self: GenericElementStyle
-        invited: GenericElementStyle
-        default: GenericElementStyle
+        self: GenericTextColor
+        invited: GenericTextColor
+        default: GenericTextColor
       }
-      todo: {
-        self: GenericElementStyle
-        checkbox: GenericElementStyle
-        actions: GenericElementStyle // Better name maybe
-      }
+      todo: TodoStyle<T>
       ilink: {
         preview: {
-          wrapper: GenericElementStyle
-          content: GenericElementStyle
-          header: GenericElementStyle
-          close: GenericElementStyle
+          wrapper: GenericCard
+          // content: GenericElementStyle
+          header: GenericTextColor
+          close: RequiredElementStyle<T, 'iconColor' | 'hover'>
         }
-        default: GenericElementStyle
-        missing: GenericElementStyle
-        archived: GenericElementStyle
-        shared: GenericElementStyle
+        default: GenericTextColor
+        missing: GenericTextColor
+        archived: GenericTextColor
+        shared: GenericTextColor
       }
-      weblink: GenericElementStyle
-      code: GenericElementStyle
-      blockquote: GenericElementStyle
-      codeblock: GenericElementStyle
-      table: {
-        tr: GenericElementStyle
-        td: GenericElementStyle
-        th: GenericElementStyle
-      }
+      weblink: GenericTextColor
+      blockquote: RequiredBaseElementStyle<T, 'textColor' | 'surface' | 'borderLeft'>
+      codeblock: GenericCard
+      table: TableStyle<T>
       image: {
-        image: GenericElementStyle
-        caption: GenericElementStyle
+        // image: GenericElementStyle
+        caption: RequiredBaseElementStyle<T, 'textColor' | 'surface'>
       }
-      webEmbed: EmbedViewStyle
-      canvas: EmbedViewStyle
-      qaBlock: GenericElementStyle
+      webEmbed: GenericEmbedViewStyle
+      canvas: GenericEmbedViewStyle
+      qaBlock: RequiredBaseElementStyle<T, 'textColor' | 'iconColor' | 'surface' | 'border'>
     }
-    combobox: {
-      wrapper: GenericElementStyle
-      item: {
-        wrapper: GenericElementStyle
-        label: GenericElementStyle
-        icon: GenericElementStyle
-      }
-      groupLabel: GenericElementStyle
-      preview: GenericElementStyle
-    }
+    combobox: Combobox<T>
   }
 
   search: {
     result: {
-      list: GenericElementStyle
-      card: GenericElementStyle
+      list: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
+      card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
     }
-    input: GenericElementStyle
-    viewToggle: GenericElementStyle
+    input: InputStyle<T>
+    viewToggle: MenuItem<T>
     filters: {
-      container: GenericElementStyle
+      container: GenericCard
       filter: {
-        wrapper: GenericElementStyle
-        icon: GenericElementStyle
-        label: GenericElementStyle
-        count: GenericElementStyle
+        wrapper: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active'>
+        count: GenericTextColor
       }
     }
     preview: {
-      wrapper: GenericElementStyle
-      title: GenericElementStyle
-      editor: GenericElementStyle
+      wrapper: GenericCard
+      title: GenericTextColor
+      editor: GenericCard
     }
   }
 
   integrations: {
     card: {
-      wrapper: GenericElementStyle
-      icon: GenericElementStyle
-      text: GenericElementStyle
-      checked: GenericElementStyle
+      wrapper: GenericCard
+      iconColor: T
+      textColor: T
+      checkedColor: T
     }
     details: {
-      wrapper: GenericElementStyle
+      wrapper: GenericCard
+      textColor: T
     }
   }
 
   reminders: {
     reminder: {
-      wrapper: GenericElementStyle
+      wrapper: GenericCard
       status: {
-        active: GenericElementStyle
-        snooze: GenericElementStyle
-        seen: GenericElementStyle
-        missed: GenericElementStyle
+        surface: T
+        active: ReminderStatusStyle<T>
+        snooze: ReminderStatusStyle<T>
+        seen: ReminderStatusStyle<T>
+        missed: ReminderStatusStyle<T>
       }
-      note: GenericElementStyle
+      note: GenericTextColor
       controls: {
-        button: GenericElementStyle
-        snoozeControls: GenericElementStyle
+        button: GenericButtonStyle
+        snoozeControls: GenericButtonStyle
       }
     }
   }
 
+  // TODO:
+  // These are highlights shown in sidebar and in links
+  highlight: GenericCard
+
+  links: {
+    // wrapper: GenericCard
+    link: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
+  }
+
   spotlight: {
-    input: GenericElementStyle
-    logo: GenericElementStyle
+    input: InputStyle<T>
+    logo: GenericIcon
     list: {
-      item: GenericElementStyle
-      groupLabel: GenericElementStyle
+      item: SpotlightItemStyle<T>
+      groupLabel: GenericTextColor
     }
-    preview: GenericElementStyle
+    preview: GenericCard
     toast: {
-      success: GenericElementStyle
-      error: GenericElementStyle
+      success: TooltipStyle<T>
+      error: TooltipStyle<T>
     }
   }
 
   modal: {
-    overlay: GenericElementStyle
-    content: GenericElementStyle
+    overlay: GenericCard
+    // content: GenericElementStyle
   }
 
-  helpButton: GenericElementStyle
+  helpButton: GenericButtonStyle
 
   generic: {
+    tags: {
+      wrapper: GenericCard
+      tag: GenericTextColor
+    }
     button: {
-      default: GenericElementStyle
-      primary: GenericElementStyle
-      secondary: GenericElementStyle
+      default: GenericButtonStyle
+      primary: GenericButtonStyle
+      secondary: GenericButtonStyle
+      danger: GenericButtonStyle
     }
     tooltip: {
-      default: GenericElementStyle
-      primary: GenericElementStyle
-      info: GenericElementStyle
+      default: TooltipStyle<T>
+      primary: TooltipStyle<T>
+      info: TooltipStyle<T>
     }
     // The selection dropdown for selecting a note
     // While renaming, refactoring, lookup etc
-    noteSelect: {
-      wrapper: GenericElementStyle
-      item: GenericElementStyle
-      status: {
-        selected: GenericElementStyle
-        empty: GenericElementStyle
-      }
+    noteSelect: Menu<T> & {
+      // status: {
+      //   selected: GenericElementStyle
+      //   empty: GenericElementStyle
+      // }
     }
-    pageTitle: GenericElementStyle
+    pageTitle: GenericTextColor
     form: {
-      input: GenericElementStyle
-      select: GenericElementStyle
-      textarea: GenericElementStyle
-      checkbox: GenericElementStyle
-      radio: GenericElementStyle
-      label: GenericElementStyle
+      // Use input for textarea, select as well
+      input: InputStyle<T>
+      control: GenericTextColor & GenericIcon
+      label: GenericTextColor
     }
-    shortcut: GenericElementStyle
+    shortcut: ShortcutStyle<T>
     toast: {
-      success: GenericElementStyle
-      error: GenericElementStyle
+      success: GenericCard & GenericTextColor
+      error: RequiredBaseElementStyle<T, 'textColor' | 'surface' | 'iconColor'>
     }
-    contextMenu: {
-      wrapper: GenericElementStyle
-      item: {
-        icon: GenericElementStyle
-        label: GenericElementStyle
-      }
-    }
+    contextMenu: Menu<T>
+    separator: GenericIcon
   }
 
   kanban: {
-    card: GenericElementStyle
-    column: GenericElementStyle
-    columnHeader: GenericElementStyle
+    card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
+    column: GenericCard
+    columnHeader: GenericTextColor
   }
 
   settings: {
-    sidebar: GenericElementStyle
-    content: GenericElementStyle
-    importCard: GenericElementStyle
-    themeCard: GenericElementStyle
+    sidebar: GenericCard
+    content: GenericCard
+    importCard: GenericCard
+    themeCard: GenericSelectableCard
   }
 }
 
-export interface MexTheme extends LayoutStyle {
-  colors: {
-    primary: string
-    secondary: string
-    palette: ColorPalette
-    gray: ShadePalette
+export interface UserThemePreferences {
+  themeId: string
+  mode: ThemeMode
+}
 
-    background: {
-      app: string
-      card: string
-      modal: string
-      sidebar: string
-      highlight: string
-    }
-    divider: string
-    fade: {
-      primary: string
-      secondary: string
-      background: string
-    }
-    form: {
-      input: {
-        bg: string
-        fg: string
-        border: string
-      }
-      button: {
-        bg: string
-        fg: string
-        hover: string
-        border: string
-      }
-    }
-    text: {
-      heading: string
-      subheading: string
-      default: string
-      fade: string
-      disabled: string
-      accent: string
-      oppositePrimary: string
-    }
-  }
-  backgroundImages?: BackgroundImages
+type ThemeCssTokens = LayoutTheme<CssVariableAccessor>
+
+export interface MexThemeData {
+  name: string
+  id: string
+  data: Record<ThemeMode, ThemeTokens<string>>
+}
+
+export interface MexTheme extends LayoutTokens<CssVariableAccessor>, ThemeCssTokens, LegacyTheme {
+  backgroundImages?: BackgroundImages<CssVariableAccessor>
   additional: {
     profilePalette: string[]
     reactSelect: any

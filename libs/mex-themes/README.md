@@ -20,21 +20,77 @@ declare module 'styled-components' {
 4. For adding theme switcher:
 
 ```typescript
-// A sample theme switcher
+// A sample implementation
 function ThemeSwitcher() {
-  const { themes, themeId, changeTheme } = useThemeContext()
+  const { themes, preferences, changeTheme, toggleMode } = useThemeContext()
   return (
     <div>
-      <p>Current Theme: {themeId}</p>
-      {themes.map((theme) => (
-        <MyWrapper key={theme.id}>
-          <h1>{theme.id}</h1>
-          <button onClick={() => changeTheme(theme.id)}>Set Theme</button>
-        </MyWrapper>
-      ))}
+      <p>
+        Current Theme: {preferences.themeId} Current Mode: {preferences.mode}
+      </p>
+      {themes.map((theme) =>
+        (['light', 'dark'] as ThemeMode[]).map((mode) => (
+          <ManagedProvider theme={theme.data[mode]}>
+            <MyWrapper key={theme.id}>
+              <h1>
+                {theme.id} {mode}
+              </h1>
+              <DivWrapper>
+                {Array.from(Array(10).keys()).map((i) => (
+                  // This div just renders the color in gray palette
+                  <StyledDiv key={i + 1} colorNum={i + 1} />
+                ))}
+              </DivWrapper>
+              <button onClick={() => changeTheme(theme.id, mode)}>Set Theme</button>
+            </MyWrapper>
+          </ManagedProvider>
+        ))
+      )}
+      <button onClick={toggleMode}>Toggle Mode</button>
     </div>
   )
 }
+```
+
+## Style usage
+
+```typescript-react
+const buttonStyles = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-size: ${({ theme }) => theme.app.text.size};
+`;
+
+export const PrimaryButton = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${genButtonStyles(theme.generic.button.primary)}
+  `}
+`;
+
+export const Button = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${genButtonStyles(theme.generic.button.default)}
+  `}
+`;
+
+// Note that generateStyleGeneric and genButtonStyles differ yet do the same thing,
+// convert the button styles to css styles
+export const SecondaryButton = styled.div`
+  ${buttonStyles}
+  ${({ theme }) => css`
+    ${generateStyleGeneric(theme.generic.button.secondary)}
+  `}
+`;
+
+
 ```
 
 ## Running unit tests

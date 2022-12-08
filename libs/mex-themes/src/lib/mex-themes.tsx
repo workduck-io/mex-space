@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export interface MexThemesProps {}
 
 const StyledMexThemes = styled.div`
-  color: pink;
+  color: ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.gray[10]};
 `
 
