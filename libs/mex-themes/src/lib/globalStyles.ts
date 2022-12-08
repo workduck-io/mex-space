@@ -839,34 +839,37 @@ export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: Glob
     })
     .join('\n')
 
-  // transition: --stop 0.5s, --colorPrimary 0.2s;
-  const transitionStr = Object.entries(cssVarMap)
-    .map(([key, _]) => {
-      return `${key} 0.2s`
-    })
-    .join(', ')
-
   if (options?.wrapperStyles) {
     const wrapperStyle = css`
       ${varStr}
+      .no-transition * {
+        transition: none !important;
+      }
     `
     return { wrapperStyle, theme }
   }
 
-  const style = ` :root { ${varStr}
-    transition: ${transitionStr};
-  } `
+  const style = ` :root { ${varStr} } .no-transition * { transition: none !important; }`
+
   return { theme, style }
 }
 
 export const appendGlobalStyle = (style: string, id = GLOBAL_STYLE_ID) => {
   const el = document.getElementById(id)
+  const body = document.body
   if (el) {
+    // Add noStyle to body
+    body.classList.add('no-transition')
     el.innerHTML = style
+    setTimeout(() => {
+      body.classList.remove('no-transition')
+    }, 100)
   } else {
     const styleEl = document.createElement('style')
     styleEl.id = id
     styleEl.innerHTML = style
+    body.classList.add('no-transition')
     document.head.appendChild(styleEl)
+    body.classList.remove('no-transition')
   }
 }
