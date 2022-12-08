@@ -27,10 +27,25 @@ type RequiredBaseElementStyle<T, K extends KeyOfBaseElementStyle<T>> = Required<
 // What is generated:
 
 export interface ElementStyle<T> extends BaseElementStyle<T> {
-  // Should focus be different from hover?
+  /**
+   * When an element is hovered over
+   */
   hover?: BaseElementStyle<T>
+
+  /**
+   * When an element is active (clicked)
+   */
   active?: BaseElementStyle<T>
+
+  /**
+   * When an element is disabled
+   */
   disabled?: BaseElementStyle<T>
+
+  /**
+   * When an element is selected
+   */
+  selected?: BaseElementStyle<T>
 }
 
 type RequiredElementStyle<T, K extends keyof ElementStyle<T>> = Required<Pick<ElementStyle<T>, K>>
@@ -47,6 +62,10 @@ export interface ButtonStyle<T> extends ButtonState<T> {
   disabled: ButtonState<T>
 }
 
+export interface SelectableButtonStyle<T> extends ButtonStyle<T> {
+  selected: ButtonState<T>
+}
+
 interface CreateNew<T> extends Menu<T> {
   button: ButtonStyle<T>
 }
@@ -61,11 +80,15 @@ type TodoStyle<T> = {
 }
 
 export type MenuItem<T> = Required<
-  Pick<ElementStyle<T>, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled'>
+  Pick<ElementStyle<T>, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled' | 'selected'>
 >
 
 export type Card<T> = {
   surface: T
+}
+
+export type SelectableCard<T> = Card<T> & {
+  selected: Card<T>
 }
 
 export interface Menu<T> {
@@ -110,6 +133,7 @@ interface InputStyle<T> extends RequiredBaseElementStyle<T, 'surface' | 'textCol
 type SpotlightItemStyle<T> = RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'> & {
   hover: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
   active: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>
+  selected: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>
 }
 
 interface TableStyle<T> {
@@ -125,9 +149,11 @@ export interface LayoutTheme<
   T,
   GenericListStyle = ListStyle<T>,
   GenericButtonStyle = ButtonStyle<T>,
+  GenericSelectableButtonStyle = SelectableButtonStyle<T>,
   GenericTextColor = TextColor<T>,
   GenericIcon = SimpleIcon<T>,
   GenericCard = Card<T>,
+  GenericSelectableCard = SelectableCard<T>,
   GenericEmbedViewStyle = EmbedViewStyle<T>
 > {
   tokens: ThemeTokens<T>
@@ -148,14 +174,14 @@ export interface LayoutTheme<
       logo: GenericIcon
       search: GenericButtonStyle
       link: {
-        main: GenericButtonStyle
-        end: GenericButtonStyle
+        main: GenericSelectableButtonStyle
+        end: GenericSelectableButtonStyle
       }
       backForward: GenericButtonStyle
     }
     tabs: {
       // wrapper: GenericElementStyle
-      tab: GenericButtonStyle
+      tab: GenericSelectableButtonStyle
       indicator: GenericCard
     }
     filter: InputStyle<T>
@@ -172,8 +198,8 @@ export interface LayoutTheme<
     spaces: {
       // wrapper: GenericElementStyle
       item: {
-        wrapper: GenericCard
-        icon: RequiredElementStyle<T, 'iconColor' | 'hover' | 'active'>
+        wrapper: GenericSelectableCard
+        icon: RequiredElementStyle<T, 'iconColor' | 'hover' | 'active' | 'selected'>
       }
     }
     createNew: CreateNew<T>
@@ -196,7 +222,7 @@ export interface LayoutTheme<
   }
 
   fleet: {
-    item: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled'>
+    item: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'disabled' | 'selected'>
   }
 
   editor: {
@@ -275,8 +301,8 @@ export interface LayoutTheme<
 
   search: {
     result: {
-      list: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active'>
-      card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active'>
+      list: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
+      card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
     }
     input: InputStyle<T>
     viewToggle: MenuItem<T>
@@ -331,7 +357,7 @@ export interface LayoutTheme<
 
   links: {
     // wrapper: GenericCard
-    link: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active'>
+    link: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
   }
 
   spotlight: {
@@ -364,6 +390,7 @@ export interface LayoutTheme<
       default: GenericButtonStyle
       primary: GenericButtonStyle
       secondary: GenericButtonStyle
+      danger: GenericButtonStyle
     }
     tooltip: {
       default: TooltipStyle<T>
@@ -395,7 +422,7 @@ export interface LayoutTheme<
   }
 
   kanban: {
-    card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active'>
+    card: RequiredElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'hover' | 'active' | 'selected'>
     column: GenericCard
     columnHeader: GenericTextColor
   }
@@ -404,7 +431,7 @@ export interface LayoutTheme<
     sidebar: GenericCard
     content: GenericCard
     importCard: GenericCard
-    themeCard: GenericCard
+    themeCard: GenericSelectableCard
   }
 }
 

@@ -1,4 +1,3 @@
-import { generateTheme } from '../themeGenerator'
 import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
@@ -26,6 +25,7 @@ export const gruvboxTheme: ThemeTokens<string> = {
       5: '#7c6f64',
       6: '#a89984'
     },
+    app: '#1d2021',
     sidebar: '#1d2021',
     modal: '#3c3836',
     separator: '#665c54',
@@ -37,15 +37,12 @@ export const gruvboxTheme: ThemeTokens<string> = {
       info: '#665c54'
     }
   },
-  //   // Colors
-  //   primary: '#b8bb26',
-  //   secondary: '#fabd2f',
   colors: {
     primary: {
       default: '#b8bb26',
-      hover: '#b8bb26',
-      active: '#b8bb26',
-      disabled: '#b8bb26',
+      hover: '#d1d43c',
+      active: '#a9ac22',
+      disabled: '#919341',
       text: '#1d2021'
     },
     fade: '#bdae93',
@@ -66,7 +63,7 @@ export const gruvboxTheme: ThemeTokens<string> = {
     accent: '#fe8019',
     code: '#a89984'
   },
-  shadow: shadows
+  shadow: shadows('38deg 45% 6%')
 }
 
 export const gruvboxLightTheme: ThemeTokens<string> = {
@@ -86,13 +83,14 @@ export const gruvboxLightTheme: ThemeTokens<string> = {
   surfaces: {
     s: {
       0: '#fbf1c7', // Lightest
-      1: '#d5c4a1',
-      2: '#bdae93',
-      3: '#a89984',
-      4: '#7c6f64',
-      5: '#665c54',
-      6: '#504945'
+      1: '#fcf4d3',
+      2: '#fdf8e3',
+      3: '#fffff0',
+      4: '#fffff0',
+      5: '#ffffff',
+      6: '#ffffff'
     },
+    app: '#fbf1c7',
     sidebar: '#d5c4a1',
     modal: '#bdae93',
     separator: '#665c54',
@@ -110,9 +108,9 @@ export const gruvboxLightTheme: ThemeTokens<string> = {
   colors: {
     primary: {
       default: '#b8bb26',
-      hover: '#b8bb26',
-      active: '#b8bb26',
-      disabled: '#b8bb26',
+      hover: '#d1d43c',
+      active: '#a9ac22',
+      disabled: '#919341',
       text: '#1d2021'
     },
     fade: '#bdae93',
@@ -133,5 +131,5 @@ export const gruvboxLightTheme: ThemeTokens<string> = {
     accent: '#fe8019',
     code: '#a89984'
   },
-  shadow: shadows
+  shadow: shadows('38deg 36% 54%')
 }

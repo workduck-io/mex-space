@@ -41,6 +41,7 @@ export interface SurfaceLayers<T, HexGeneric = T> {
 
 interface Surfaces<T, Hex = T> {
   s: SurfaceLayers<T>
+  app: Hex
   sidebar: Hex
   modal: Hex
   separator: Hex
@@ -77,6 +78,7 @@ export interface ThemeTokens<T> {
   text: TextColorPalette<T>
   surfaces: Surfaces<T>
   shadow: {
+    color: T
     small: T
     medium: T
     large: T

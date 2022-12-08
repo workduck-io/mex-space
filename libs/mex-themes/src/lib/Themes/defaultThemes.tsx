@@ -2,10 +2,12 @@ import { MexThemeData } from '../types/theme'
 import { gruvboxLightTheme, gruvboxTheme } from './gruvbox'
 import { mexLightTheme, mexTheme } from './mex'
 import { mexThemeNew } from './mex-new'
+import { xemLightTheme, xemTheme } from './xem'
 
 export const defaultThemes: MexThemeData[] = [
   { id: 'mex', name: 'Mex', data: { light: mexLightTheme, dark: mexTheme } },
-  { id: 'gruvbox', name: 'Gruvbox', data: { light: gruvboxLightTheme, dark: gruvboxTheme } }
+  { id: 'gruvbox', name: 'Gruvbox', data: { light: gruvboxLightTheme, dark: gruvboxTheme } },
+  { id: 'xem', name: 'Xem', data: { light: xemLightTheme, dark: xemTheme } }
 ]
 
 export { mexThemeNew }

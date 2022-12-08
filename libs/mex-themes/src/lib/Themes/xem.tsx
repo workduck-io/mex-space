@@ -1,28 +1,28 @@
 import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
-export const mexTheme: ThemeTokens<string> = {
+export const xemTheme: ThemeTokens<string> = {
   // Palettes
   surfaces: {
     s: {
-      0: '#191B2B', // Darkest
-      1: '#26283e',
-      2: '#2b2e4a',
-      3: '#363959',
-      4: '#525579',
-      5: '#878BAE',
-      6: '#8F94C1'
+      0: '#181b20', // Darkest
+      1: '#292d30',
+      2: '#2f353a',
+      3: '#40444B',
+      4: '#4E525A',
+      5: '#646A75',
+      6: '#8E9096'
     },
-    app: '#191B2B',
-    sidebar: '#1F2138',
-    modal: '#1F2138',
-    separator: '#525579',
-    highlight: '#525579',
-    code: '#525579',
+    app: '#181b20',
+    sidebar: '#292d30',
+    modal: '#2f353a',
+    separator: '#4E525A',
+    highlight: '#4E525A',
+    code: '#4E525A',
     tooltip: {
-      default: '#525579',
-      primary: '#525',
-      info: '#525579'
+      default: '#4E525A',
+      primary: '#4E525A',
+      info: '#4E525A'
     }
   },
   colors: {
@@ -34,7 +34,7 @@ export const mexTheme: ThemeTokens<string> = {
       text: '#1F2933'
     },
     fade: '#55A2EA',
-    secondary: '#B877EC',
+    secondary: '#128C7E',
     white: '#ffffff',
     black: '#000000',
     green: '#00e676',
@@ -44,30 +44,30 @@ export const mexTheme: ThemeTokens<string> = {
   },
   text: {
     heading: '#E4F1FF',
-    default: '#B9C1D6',
+    default: '#cbd2d8',
     subheading: '#D1E5FB',
-    fade: '#9aa2c9',
-    code: '#9aa2c9',
+    fade: '#a1a4a9',
     disabled: '#72767D',
+    code: '#a1a4a9',
     accent: '#fe8019'
   },
   shadow: shadows('234deg 36% 7%')
 }
 
-export const mexLightTheme: ThemeTokens<string> = {
+export const xemLightTheme: ThemeTokens<string> = {
   surfaces: {
     s: {
-      0: '#DFE0EE',
-      1: '#e6e8f4',
-      2: '#ededf7',
-      3: '#f4f5fa',
-      4: '#f8f9fc',
+      0: '#e6e6e6',
+      1: '#ebebeb',
+      2: '#f0f0f0',
+      3: '#f5f5f5',
+      4: '#fafafa',
       5: '#ffffff',
       6: '#ffffff'
     },
-    app: '#DFE0EE',
-    sidebar: '#B9C1D6',
-    modal: '#B9C1D6',
+    app: '#e6e6e6',
+    sidebar: '#ebebeb',
+    modal: '#f0f0f0',
     separator: '#525579',
     highlight: '#525579',
     code: '#525579',
@@ -86,7 +86,7 @@ export const mexLightTheme: ThemeTokens<string> = {
       text: '#ffffff'
     },
     fade: '#363959',
-    secondary: '#B877EC',
+    secondary: '#128C7E',
     white: '#ffffff',
     black: '#000000',
     green: '#00e676',
@@ -103,5 +103,5 @@ export const mexLightTheme: ThemeTokens<string> = {
     disabled: '#72767D',
     accent: '#fe8019'
   },
-  shadow: shadows('234deg 13% 65%')
+  shadow: shadows('0deg 0% 63%')
 }

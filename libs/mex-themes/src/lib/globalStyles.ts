@@ -13,7 +13,8 @@ import {
   Menu,
   MenuItem,
   ButtonStyle,
-  CssVariableAccessor
+  CssVariableAccessor,
+  SelectableButtonStyle
 } from './types/theme'
 import { LayoutTokens, ThemeTokens } from './types/tokens'
 
@@ -40,7 +41,7 @@ export const getGlobalStylesAndTheme = (
   options?: GeneratorOptions
 ): { theme: MexTheme; cssVarMap: Record<CssVariable, string> } => {
   const app = {
-    surface: tokens.surfaces.s[0],
+    surface: tokens.surfaces.app,
     textColor: tokens.text.default,
     text: {
       size: '16px',
@@ -71,6 +72,10 @@ export const getGlobalStylesAndTheme = (
     disabled: {
       surface: 'transparent',
       textColor: tokens.text.disabled
+    },
+    selected: {
+      surface: tokens.surfaces.s[level + 2],
+      textColor: tokens.colors.primary.active
     }
   })
 
@@ -100,43 +105,83 @@ export const getGlobalStylesAndTheme = (
     }
   }
 
-  const IconButtonTitle = (level: number, transparent = true): ButtonStyle<string> => ({
-    surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
-    textColor: tokens.colors.primary.default,
-    iconColor: tokens.colors.primary.default,
-    hover: {
-      surface: tokens.surfaces.s[level + 2],
-      textColor: tokens.colors.primary.hover,
-      iconColor: tokens.colors.primary.hover
-    },
-    active: {
-      surface: tokens.surfaces.s[level + 2],
-      textColor: tokens.colors.primary.active,
-      iconColor: tokens.colors.primary.active
-    },
-    disabled: {
-      surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
-      textColor: tokens.text.disabled,
-      iconColor: tokens.text.disabled
+  const IconButtonTitle = (
+    level: number,
+    transparent = true,
+    selectable = false
+  ): ButtonStyle<string> | SelectableButtonStyle<string> => {
+    const style = {
+      surface: transparent ? 'transparent' : tokens.surfaces.s[level + 2],
+      textColor: tokens.colors.primary.default,
+      iconColor: tokens.colors.primary.default,
+      hover: {
+        surface: tokens.surfaces.s[level + 2],
+        textColor: tokens.colors.primary.hover,
+        iconColor: tokens.colors.primary.hover
+      },
+      active: {
+        surface: tokens.surfaces.s[level + 1],
+        textColor: tokens.colors.primary.active,
+        iconColor: tokens.colors.primary.active
+      },
+      disabled: {
+        surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
+        textColor: tokens.text.disabled,
+        iconColor: tokens.text.disabled
+      }
     }
-  })
+    if (!selectable) return style as ButtonStyle<string>
+    else
+      return {
+        ...style,
+
+        ...(selectable && {
+          selected: {
+            surface: tokens.surfaces.s[level + 2],
+            textColor: tokens.colors.primary.active,
+            iconColor: tokens.colors.primary.active
+          }
+        })
+      } as SelectableButtonStyle<string>
+  }
 
   const button = (level: number, transparent = false): ButtonStyle<string> => ({
-    surface: transparent ? 'transparent' : tokens.surfaces.s[level + 1],
+    surface: transparent ? 'transparent' : tokens.surfaces.s[level + 2],
     textColor: tokens.text.default,
     iconColor: tokens.text.default,
     hover: {
-      surface: tokens.surfaces.s[level + (transparent ? 1 : 2)],
-      textColor: tokens.text.default,
-      iconColor: tokens.text.default
+      surface: tokens.surfaces.s[level + (transparent ? 2 : 3)],
+      textColor: tokens.text.heading,
+      iconColor: tokens.text.heading
     },
     active: {
-      surface: tokens.surfaces.s[level + (transparent ? 2 : 3)],
+      surface: tokens.surfaces.s[level + 1],
       textColor: tokens.text.default,
       iconColor: tokens.text.default
     },
     disabled: {
       surface: 'transparent',
+      textColor: tokens.text.disabled,
+      iconColor: tokens.text.disabled
+    }
+  })
+
+  const dangerButton = (level: number): ButtonStyle<string> => ({
+    surface: tokens.surfaces.s[level + 2],
+    textColor: tokens.colors.red,
+    iconColor: tokens.colors.red,
+    hover: {
+      surface: tokens.colors.red,
+      textColor: tokens.text.default,
+      iconColor: tokens.text.default
+    },
+    active: {
+      surface: tokens.colors.red,
+      textColor: tokens.text.heading,
+      iconColor: tokens.text.heading
+    },
+    disabled: {
+      surface: tokens.surfaces.s[level],
       textColor: tokens.text.disabled,
       iconColor: tokens.text.disabled
     }
@@ -204,6 +249,10 @@ export const getGlobalStylesAndTheme = (
     active: {
       surface: tokens.surfaces.s[level + 2],
       iconColor: tokens.colors.primary.active
+    },
+    selected: {
+      surface: tokens.surfaces.s[level + 2],
+      iconColor: tokens.colors.primary.active
     }
   })
   const input = (level: number) => ({
@@ -251,7 +300,10 @@ export const getGlobalStylesAndTheme = (
           iconColor: tokens.colors.primary.default
         },
         search: button(0, true),
-        link: { main: IconButtonTitle(1, true), end: IconButtonTitle(1, true) },
+        link: {
+          main: IconButtonTitle(1, true, true) as SelectableButtonStyle<string>,
+          end: IconButtonTitle(1, true, true) as SelectableButtonStyle<string>
+        },
         backForward: IconButtonTitle(1, true)
       },
       toggle: {
@@ -259,7 +311,7 @@ export const getGlobalStylesAndTheme = (
       },
       tabs: {
         // wrapper: {},
-        tab: IconButtonTitle(0, true),
+        tab: IconButtonTitle(0, true, true) as SelectableButtonStyle<string>,
         indicator: {
           surface: tokens.colors.primary.default
         }
@@ -281,7 +333,10 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[1]
+            surface: tokens.surfaces.s[1],
+            selected: {
+              surface: tokens.surfaces.s[2]
+            }
           },
           icon: {
             iconColor: tokens.colors.fade,
@@ -289,6 +344,9 @@ export const getGlobalStylesAndTheme = (
               iconColor: tokens.colors.primary.hover
             },
             active: {
+              iconColor: tokens.colors.primary.default
+            },
+            selected: {
               iconColor: tokens.colors.primary.default
             }
           }
@@ -342,6 +400,10 @@ export const getGlobalStylesAndTheme = (
         disabled: {
           surface: tokens.surfaces.s[0],
           iconColor: tokens.text.disabled
+        },
+        selected: {
+          surface: tokens.surfaces.s[2],
+          iconColor: tokens.colors.primary.default
         }
       }
     },
@@ -583,6 +645,11 @@ export const getGlobalStylesAndTheme = (
             surface: tokens.surfaces.s[2],
             textColor: tokens.colors.primary.default,
             iconColor: tokens.colors.primary.active
+          },
+          selected: {
+            surface: tokens.surfaces.s[2],
+            textColor: tokens.colors.primary.default,
+            iconColor: tokens.colors.primary.active
           }
         },
         groupLabel: fadeText
@@ -612,7 +679,8 @@ export const getGlobalStylesAndTheme = (
       button: {
         default: button(1),
         primary: primaryButton,
-        secondary: button(1, true)
+        secondary: button(1, true),
+        danger: dangerButton(1)
       },
       tooltip: {
         default: defaultTooltip,
@@ -655,7 +723,7 @@ export const getGlobalStylesAndTheme = (
       sidebar: card(1),
       content: card(1),
       importCard: card(1),
-      themeCard: card(1)
+      themeCard: { ...card(1), selected: card(2) }
     }
   }
 
@@ -771,6 +839,13 @@ export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: Glob
     })
     .join('\n')
 
+  // transition: --stop 0.5s, --colorPrimary 0.2s;
+  const transitionStr = Object.entries(cssVarMap)
+    .map(([key, _]) => {
+      return `${key} 0.2s`
+    })
+    .join(', ')
+
   if (options?.wrapperStyles) {
     const wrapperStyle = css`
       ${varStr}
@@ -778,7 +853,9 @@ export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: Glob
     return { wrapperStyle, theme }
   }
 
-  const style = ` :root { ${varStr} } `
+  const style = ` :root { ${varStr}
+    transition: ${transitionStr};
+  } `
   return { theme, style }
 }
 

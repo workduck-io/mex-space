@@ -1,4 +1,5 @@
 import { ThemeTokens } from '../types/tokens'
+import { shadows } from './shadows'
 
 export const mexThemeNew: ThemeTokens<string> = {
   // Palettes
@@ -12,6 +13,7 @@ export const mexThemeNew: ThemeTokens<string> = {
       5: '#878BAE',
       6: '#8F94C1'
     },
+    app: '#191B2B',
     sidebar: '#1F2138',
     modal: '#1F2138',
     separator: '#525579',
@@ -49,9 +51,5 @@ export const mexThemeNew: ThemeTokens<string> = {
     disabled: '#72767D',
     accent: '#fe8019'
   },
-  shadow: {
-    small: '0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.1)',
-    medium: '0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    large: '0 0 0 1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-  }
+  shadow: shadows('234deg 36% 7%')
 }
