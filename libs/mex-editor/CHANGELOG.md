@@ -1,5 +1,11 @@
 # @workduck-io/mex-editor
 
+## 0.0.4
+
+### Patch Changes
+
+- 0285207: Add mex-themes
+
 ## 0.0.3
 
 ### Patch Changes
