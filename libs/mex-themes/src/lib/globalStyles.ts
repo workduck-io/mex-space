@@ -870,6 +870,8 @@ export const appendGlobalStyle = (style: string, id = GLOBAL_STYLE_ID) => {
     styleEl.innerHTML = style
     body.classList.add('no-transition')
     document.head.appendChild(styleEl)
-    body.classList.remove('no-transition')
+    setTimeout(() => {
+      body.classList.remove('no-transition')
+    }, 100)
   }
 }
