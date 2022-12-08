@@ -38,6 +38,18 @@
         "jestConfig": "libs/mex-themes/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-themes:build",
+          "cp .npmrc dist/libs/mex-themes",
+          "cd dist/libs/mex-themes && npm publish"
+        ],
+        "parallel": false
+      }
     }
   }
 }
