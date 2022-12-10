@@ -26,7 +26,7 @@ export const gruvboxTheme: ThemeTokens<string> = {
       5: '#7c6f64',
       6: '#a89984'
     },
-    app: '#1d2021',
+    app: '#282828',
     sidebar: '#1d2021',
     modal: '#3c3836',
     separator: '#665c54',
@@ -91,8 +91,8 @@ export const gruvboxLightTheme: ThemeTokens<string> = {
       5: '#ffffff',
       6: '#ffffff'
     },
-    app: '#fbf1c7',
-    sidebar: '#d5c4a1',
+    app: '#fcf4d3',
+    sidebar: '#fbf1c7',
     modal: '#fffff0',
     separator: '#665c54',
     highlight: '#665c54',

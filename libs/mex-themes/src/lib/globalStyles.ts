@@ -112,7 +112,7 @@ export const getGlobalStylesAndTheme = (
   ): ButtonStyle<string> | SelectableButtonStyle<string> => {
     const style = {
       surface: transparent ? 'transparent' : tokens.surfaces.s[level + 2],
-      textColor: tokens.colors.primary.default,
+      textColor: tokens.text.default,
       iconColor: tokens.colors.primary.default,
       hover: {
         surface: tokens.surfaces.s[level + 2],
@@ -333,9 +333,9 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[1],
+            surface: tokens.surfaces.s[4],
             selected: {
-              surface: tokens.surfaces.s[2]
+              surface: tokens.surfaces.s[5]
             }
           },
           icon: {

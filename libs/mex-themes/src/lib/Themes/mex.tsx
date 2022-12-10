@@ -14,8 +14,8 @@ export const mexTheme: ThemeTokens<string> = {
       5: '#878BAE',
       6: '#8F94C1'
     },
-    app: '#191B2B',
-    sidebar: '#1F2138',
+    app: '#1F2138',
+    sidebar: '#191B2B',
     modal: '#1F2138',
     separator: '#525579',
     highlight: '#525579',
@@ -66,8 +66,8 @@ export const mexLightTheme: ThemeTokens<string> = {
       5: '#ffffff',
       6: '#ffffff'
     },
-    app: '#DFE0EE',
-    sidebar: '#B9C1D6',
+    app: '#e6e8f4',
+    sidebar: '#DFE0EE',
     modal: '#F8F9FC',
     separator: '#525579',
     highlight: '#525579',
