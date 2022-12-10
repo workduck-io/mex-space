@@ -1,5 +1,13 @@
 # @workduck-io/mex-components
 
+## 0.0.18
+
+### Patch Changes
+
+- 686b829: Add better themes and use in mex-components
+- Updated dependencies [686b829]
+  - @workduck-io/mex-themes@0.0.4
+
 ## 0.0.17
 
 ### Patch Changes
