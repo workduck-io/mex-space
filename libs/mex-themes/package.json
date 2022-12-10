@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-themes",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
