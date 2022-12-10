@@ -1,5 +1,5 @@
-import { shade, transparentize } from 'polished'
 import styled from 'styled-components'
+import { rgba } from '../Helpers/Colors'
 
 export const ShortcutWrapper = styled.div`
   display: flex;
@@ -13,8 +13,9 @@ export const ShortcutBox = styled.div`
   font-size: 0.7rem;
   padding: 4px ${({ theme }) => theme.spacing.tiny};
   border-radius: 4px;
-  background-color: ${({ theme }) => transparentize(0.75, theme.colors.palette.black)};
-  color: ${({ theme }) => transparentize(0.2, theme.colors.palette.white)};
+  background-color: ${({ theme }) => rgba(theme.rgbTokens.surfaces.s[2], 0.75)};
+  color: ${({ theme }) => theme.tokens.text.fade};
+  box-shadow: ${({ theme }) => theme.tokens.shadow.small};
 `
 
 export const TooltipShortcut = styled.span`
@@ -27,7 +28,7 @@ export const TooltipShortcut = styled.span`
   }
   ${ShortcutBox} {
     font-size: 0.75rem;
-    background-color: ${({ theme }) => shade(0.1, theme.colors.primary)};
-    color: ${({ theme }) => theme.colors.text.oppositePrimary};
+    background-color: ${({ theme }) => theme.tokens.colors.primary.default};
+    color: ${({ theme }) => theme.tokens.colors.primary.text};
   }
 `

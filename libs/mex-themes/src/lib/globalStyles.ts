@@ -727,8 +727,6 @@ export const getGlobalStylesAndTheme = (
     }
   }
 
-  const { theme: cssTheme, cssVariables: themeCssvariables } = getVarAndThemeMap(theme)
-
   const legacyTheme = generateTheme(
     options?.antiLegacy
       ? {
@@ -794,7 +792,10 @@ export const getGlobalStylesAndTheme = (
         }
   )
 
+  const { theme: cssTheme, cssVariables: themeCssvariables } = getVarAndThemeMap(theme)
   const { obj: layoutTokensInCssVar, keys: layoutTokensVarMap } = keyConverter<string>(layoutTokens as any)
+  const { obj: rgbTokens, keys: rgbTokenKeys } = keyConverter<string>(tokens as any, true)
+  // console.log('rgbTokens', { rgbTokens, rgbTokenKeys })
 
   // const cssVariable = `--${key}`
   return {
@@ -802,12 +803,13 @@ export const getGlobalStylesAndTheme = (
       ...legacyTheme,
       ...layoutTokensInCssVar,
       ...cssTheme,
+      rgbTokens: rgbTokens as any,
       additional: {
         profilePalette: [] as string[],
         reactSelect: {} as any
       }
     },
-    cssVarMap: { ...themeCssvariables, ...layoutTokensVarMap }
+    cssVarMap: { ...themeCssvariables, ...layoutTokensVarMap, ...rgbTokenKeys }
   }
 }
 

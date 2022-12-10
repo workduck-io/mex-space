@@ -32,9 +32,9 @@ export const gruvboxTheme: ThemeTokens<string> = {
     highlight: '#665c54',
     code: '#3c3836',
     tooltip: {
-      default: '#665c54',
-      primary: '#525',
-      info: '#665c54'
+      default: '#504945',
+      primary: '#665c54',
+      info: '#504945'
     }
   },
   colors: {
@@ -92,14 +92,14 @@ export const gruvboxLightTheme: ThemeTokens<string> = {
     },
     app: '#fbf1c7',
     sidebar: '#d5c4a1',
-    modal: '#bdae93',
+    modal: '#fffff0',
     separator: '#665c54',
     highlight: '#665c54',
     code: '#bdae93',
     tooltip: {
-      default: '#665c54',
-      primary: '#525',
-      info: '#665c54'
+      default: '#fffff0',
+      primary: '#FFa',
+      info: '#fffff0'
     }
   },
   //   // Colors

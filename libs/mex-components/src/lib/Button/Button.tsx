@@ -1,17 +1,15 @@
 import React from 'react'
-import { SButton } from './Button.style'
+import { Button, PrimaryButton, DangerButton, SecondaryButton } from './Button.style'
 
 /**
  * The button component
  *
  */
 
-export const Button = SButton
+export { PrimaryButton, DangerButton, SecondaryButton, Button }
 
 Button.defaultProps = {
   children: 'Button',
-  primary: false,
   large: false,
-  highlight: false,
-  transparent: false
+  async: false
 }

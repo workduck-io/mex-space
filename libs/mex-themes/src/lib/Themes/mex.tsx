@@ -20,9 +20,9 @@ export const mexTheme: ThemeTokens<string> = {
     highlight: '#525579',
     code: '#525579',
     tooltip: {
-      default: '#525579',
-      primary: '#525',
-      info: '#525579'
+      default: '#363959',
+      primary: '#525579',
+      info: '#363959'
     }
   },
   colors: {
@@ -67,14 +67,14 @@ export const mexLightTheme: ThemeTokens<string> = {
     },
     app: '#DFE0EE',
     sidebar: '#B9C1D6',
-    modal: '#B9C1D6',
+    modal: '#F8F9FC',
     separator: '#525579',
     highlight: '#525579',
     code: '#525579',
     tooltip: {
-      default: '#525579',
-      primary: '#525',
-      info: '#525579'
+      default: '#FFF',
+      primary: '#ccF',
+      info: '#f8f9fc'
     }
   },
   colors: {

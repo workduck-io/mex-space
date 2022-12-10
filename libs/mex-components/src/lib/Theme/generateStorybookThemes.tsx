@@ -1,4 +1,5 @@
 import { defaultThemes, ManagedProvider } from '@workduck-io/mex-themes'
+import GlobalStyle from '../Global/GlobalStyle'
 
 export const storybookThemes = defaultThemes
   .map((t) => {
@@ -21,6 +22,7 @@ export const providerFn = ({ theme, children }) => {
   // console.log({ theme })
   return (
     <ManagedProvider legacySupport={false} globalInjection tokens={theme.data}>
+      <GlobalStyle />
       {children}
     </ManagedProvider>
   )
