@@ -12,7 +12,7 @@ export const CollapseToggle = styled.div`
   svg {
     padding: ${({ theme }) => theme.spacing.tiny};
     border-radius: ${({ theme }) => theme.borderRadius.tiny};
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.tokens.colors.primary.default};
     height: 28px;
     width: 28px;
   }
@@ -29,7 +29,7 @@ export const CollapseHeader = styled.div<{ collapsed?: boolean }>`
   :hover {
     ${CollapseToggle} {
       svg {
-        background-color: ${({ theme }) => theme.colors.gray[8]};
+        background-color: ${({ theme }) => theme.tokens.surfaces.s[2]};
       }
     }
   }
@@ -37,7 +37,7 @@ export const CollapseHeader = styled.div<{ collapsed?: boolean }>`
     flex-grow: 1;
     font-size: 14px;
     font-weight: bold;
-    color: ${({ theme }) => theme.colors.text.fade};
+    color: ${({ theme }) => theme.tokens.text.fade};
     margin: 0;
   }
 
@@ -46,7 +46,7 @@ export const CollapseHeader = styled.div<{ collapsed?: boolean }>`
     css`
       ${CollapseToggle} {
         svg {
-          color: ${({ theme }) => theme.colors.text.fade};
+          color: ${({ theme }) => theme.tokens.text.fade};
         }
       }
     `}

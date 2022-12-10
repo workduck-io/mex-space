@@ -114,11 +114,19 @@ interface ManagedProviderProps {
    * Theme to display for this provider
    */
   tokens: ThemeTokens<string>
+
   /**
    * If false, the legacy theme will be set to antiLegacy
    * to facilitate removal of the legacy theme
    */
   legacySupport?: boolean
+
+  /**
+   * Global Injection
+   * @default false
+   */
+  globalInjection?: boolean
+
   children: React.ReactNode
 }
 
@@ -126,18 +134,32 @@ const DIv = styled.div<{ styl: FlattenSimpleInterpolation }>`
   ${({ styl }) => styl}
 `
 
-export const ManagedProvider = ({ tokens, children, legacySupport = true }: ManagedProviderProps) => {
-  const { theme, wrapperStyle: WrapperStyle } = useMemo(
+export const ManagedProvider = ({
+  tokens,
+  children,
+  legacySupport = true,
+  globalInjection = false
+}: ManagedProviderProps) => {
+  const {
+    theme,
+    style,
+    wrapperStyle: WrapperStyle
+  } = useMemo(
     () =>
       generateGlobalStyles(tokens, {
-        wrapperStyles: true,
+        wrapperStyles: !globalInjection,
         antiLegacy: !legacySupport
       }),
-    [tokens, legacySupport]
+    [tokens, legacySupport, globalInjection]
   )
+  if (globalInjection) {
+    useEffect(() => {
+      if (style) appendGlobalStyle(style)
+    }, [style])
+  }
   if (!WrapperStyle) {
-    // Note that here the wrapper styles could not be generated, which is a error
-    console.error('Could not generate wrapper styles')
+    // Note that here the wrapper styles could not be generated, which is not a error
+    // console.error('Could not generate wrapper styles')
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>
   } else
     return (

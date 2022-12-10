@@ -2,7 +2,7 @@ import React from 'react'
 import { useTheme } from 'styled-components'
 
 import Loading from '../../Primitives/Loading/Loading'
-import { AsyncButton as StyledAsyncButton } from '../Button.style'
+import { Button as StyledAsyncButton } from '../Button.style'
 
 export const AsyncButton = StyledAsyncButton
 
@@ -24,7 +24,7 @@ export type LoadingButtonProps = React.ComponentProps<typeof StyledAsyncButton> 
 export const LoadingButton = ({ dots, loading, alsoDisabled, ...props }: LoadingButtonProps) => {
   const theme = useTheme()
   return (
-    <StyledAsyncButton disabled={alsoDisabled || loading} {...props}>
+    <StyledAsyncButton async disabled={alsoDisabled || loading} {...props}>
       {loading ? (
         <>
           <Loading transparent dots={dots ?? 5} color={theme.colors.primary} />

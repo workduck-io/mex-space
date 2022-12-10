@@ -449,6 +449,7 @@ export interface MexThemeData {
 }
 
 export interface MexTheme extends LayoutTokens<CssVariableAccessor>, ThemeCssTokens, LegacyTheme {
+  rgbTokens: ThemeTokens<CssVariableAccessor>
   backgroundImages?: BackgroundImages<CssVariableAccessor>
   additional: {
     profilePalette: string[]

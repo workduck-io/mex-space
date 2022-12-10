@@ -1,110 +1,68 @@
-import { transparentize } from 'polished'
+import { LoadingWrapper } from '../Primitives/Loading/Loading.style'
+import { generateStyle } from '@workduck-io/mex-themes'
 import styled, { css } from 'styled-components'
 
-import { centeredCss } from '../Helpers'
-import { LoadingWrapper } from '../Primitives/Loading/Loading.style'
-import { ButtonProps } from './Button.types'
+type ShadowStyle = 'none' | 'medium' | 'large'
 
-export const SButton = styled.button<ButtonProps>`
+export const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.small};
+`
+
+const buttonStyles = (shadowStyle: ShadowStyle, large: boolean) => css`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.small};
-  border-radius: ${({ theme }) => theme.borderRadius.small};
+  user-select: none;
   border: none;
   outline: none;
-  color: ${({ theme }) => theme.colors.text.subheading};
+
   cursor: pointer;
-  transition: 0.3s ease;
-  background-color: ${({ theme }) => theme.colors.form.button.bg};
+  line-height: 1.15;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-size: ${({ theme }) => (large ? '1.5rem' : theme.app.text.size)};
+  width: max-content;
+  gap: ${({ theme }) => theme.spacing.tiny};
 
   flex-shrink: 0;
   flex-grow: 0;
 
-  &:focus {
-    color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
-  }
+  box-shadow: ${({ theme }) =>
+    shadowStyle === 'medium'
+      ? theme.tokens.shadow.small
+      : shadowStyle === 'large'
+      ? theme.tokens.shadow.medium
+      : 'none'};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
+    box-shadow: ${({ theme }) =>
+      shadowStyle === 'medium'
+        ? theme.tokens.shadow.medium
+        : shadowStyle === 'large'
+        ? theme.tokens.shadow.large
+        : theme.tokens.shadow.small};
+  }
+
+  &:active {
+    transform: scale(0.95) translateY(1px);
   }
 
   &:disabled {
-    background-color: ${({ theme }) => theme.colors.form.button.bg};
-    color: ${({ theme }) => transparentize(0.5, theme.colors.form.button.fg)};
     cursor: not-allowed;
     pointer-events: none;
   }
 
-  ${({ primary, transparent, theme }) =>
-    !primary &&
-    transparent &&
-    css`
-      background-color: transparent;
-      &:hover {
-        background-color: ${theme.colors.form.button.bg};
-      }
-      &:disabled {
-        background-color: ${({ theme }) => theme.colors.gray[6]};
-        cursor: default;
-      }
-    `}
+  &:disabled:active {
+    transform: none;
+  }
 
-  ${({ theme: { spacing }, large }) =>
-    large
-      ? css`
-          padding: ${`${spacing.small} ${spacing.medium}`};
-          font-size: 1.2rem;
-        `
-      : css`
-          padding: ${spacing.small};
-        `}
-
-  ${({ theme, primary }) =>
-    primary
-      ? css`
-          background-color: ${theme.colors.primary};
-          color: ${theme.colors.text.oppositePrimary};
-          &:hover {
-            background-color: ${theme.colors.fade.primary};
-            color: ${theme.colors.text.oppositePrimary};
-          }
-          &:disabled {
-            background-color: ${({ theme }) => theme.colors.gray[6]};
-            cursor: default;
-          }
-          &:focus {
-            color: ${theme.colors.text.oppositePrimary};
-            box-shadow: 0px 6px 12px ${({ theme }) => transparentize(0.75, theme.colors.primary)};
-          }
-        `
-      : ''}
-
-  ${({ theme, highlight }) =>
-    highlight
-      ? css`
-          background-color: ${theme.colors.primary};
-          color: ${theme.colors.text.oppositePrimary};
-          box-shadow: 0px 4px 8px ${({ theme }) => transparentize(0.33, theme.colors.primary)};
-          &:hover {
-            background-color: ${theme.colors.fade.primary};
-            color: ${theme.colors.text.oppositePrimary};
-          }
-          &:disabled {
-            background-color: ${({ theme }) => theme.colors.gray[6]};
-          }
-        `
-      : ''}
+  transition: background-color 0.1s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
 `
 
-// export interface AsyncButtonProps extends ButtonProps {
-//   style?: any
-// }
-
-export const AsyncButton = styled(SButton)`
-  ${centeredCss};
+const asyncCss = css`
   overflow: hidden;
   position: relative;
 
@@ -113,3 +71,45 @@ export const AsyncButton = styled(SButton)`
     margin: auto;
   }
 `
+
+interface ButtonProps {
+  shadowStyle?: ShadowStyle
+  async?: boolean
+  large?: boolean
+}
+
+const basicButton = ({ shadowStyle = 'medium', async = false, large = false }: ButtonProps) => css`
+  ${shadowStyle && buttonStyles(shadowStyle, large)}
+  ${async && asyncCss}
+`
+
+export const PrimaryButton = styled.button<ButtonProps>`
+  ${(props) => basicButton(props)}
+  ${({ theme }) => generateStyle(theme.generic.button.primary)}
+`
+
+export const Button = styled.button<ButtonProps>`
+  ${(props) => basicButton(props)}
+  ${({ theme }) => generateStyle(theme.generic.button.default)}
+`
+
+export const DangerButton = styled.button<ButtonProps>`
+  ${(props) => basicButton(props)}
+  ${({ theme }) => generateStyle(theme.generic.button.danger)}
+`
+
+export const SecondaryButton = styled.button<ButtonProps>`
+  ${(props) => basicButton(props)}
+  ${({ theme }) => generateStyle(theme.generic.button.secondary)}
+`
+
+const defaultProps = {
+  shadowStyle: 'medium' as ShadowStyle
+}
+
+PrimaryButton.defaultProps = defaultProps
+Button.defaultProps = defaultProps
+DangerButton.defaultProps = defaultProps
+SecondaryButton.defaultProps = {
+  shadowStyle: 'none' as ShadowStyle
+}

@@ -11,12 +11,12 @@ export const InfoboxButton = styled.div`
   svg {
     width: 1.25rem;
     height: 1.25rem;
-    color: ${({ theme }) => transparentize(0.5, theme.colors.text.fade)};
+    color: ${({ theme }) => `rgba(${theme.rgbTokens.text.fade}, 0.5)`};
   }
   :hover {
-    background-color: ${({ theme }) => theme.colors.gray[8]};
+    background-color: ${({ theme }) => theme.tokens.surfaces.s[2]};
     svg {
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.tokens.text.fade};
     }
   }
 `
@@ -24,7 +24,7 @@ export const InfoboxButton = styled.div`
 export const InfoboxTip = styled.div`
   font-size: 0.9rem;
   h1 {
-    color: ${({ theme }) => theme.colors.text.accent};
+    color: ${({ theme }) => theme.tokens.text.accent};
     margin: ${({ theme }) => theme.spacing.small} 0;
     font-size: 1rem;
   }

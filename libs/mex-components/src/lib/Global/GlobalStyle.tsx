@@ -32,18 +32,18 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     font-size: 14px;
     font-family: Inter, sans-serif;
-    color: ${({ theme }) => theme.colors.text.heading};
+    color: ${({ theme }) => theme.tokens.text.default};
     ${({ theme }) => {
       if (theme.backgroundImages) {
         return css`
-          background-color: ${({ theme }) => theme.colors.background.app};
+          background-color: ${({ theme }) => theme.tokens.surfaces.app};
           background-image: url(${theme.backgroundImages.app});
           background-size: cover;
         `
       }
 
       return css`
-        background: ${({ theme }) => theme.colors.background.app};
+        background: ${({ theme }) => theme.tokens.surfaces.app};
       `
     }}
 
@@ -54,11 +54,11 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.tokens.colors.primary.default};
 
     &:hover {
       text-decoration: underline;
-      text-decoration-color: ${({ theme }) => theme.colors.primary};
+      text-decoration-color: ${({ theme }) => theme.tokens.colors.primary.hover};
     }
   }
 

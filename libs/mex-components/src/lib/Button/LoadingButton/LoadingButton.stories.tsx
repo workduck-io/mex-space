@@ -29,22 +29,19 @@ export const Base: ComponentStory<typeof LoadingButton> = (args) => (
 Base.args = {
   children: 'Loading Button',
   dots: 5,
-  loading: false,
-  primary: true
+  loading: false
 }
 
 export const LoadingBase = Base.bind({})
 LoadingBase.args = {
   dots: 5,
-  loading: true,
-  primary: true
+  loading: true
 }
 
 export const LoadingWithButtonProps = Base.bind({})
 LoadingBase.args = {
   dots: 5,
   loading: true,
-  primary: true,
   name: 'Loading Button'
 }
 

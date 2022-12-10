@@ -1,9 +1,8 @@
-import { ThemeProvider } from 'styled-components'
-import { addDecorator } from '@storybook/react'
 import { withThemes } from '@react-theming/storybook-addon'
+import { addDecorator } from '@storybook/react'
 import { themes } from '@storybook/theming'
-import { storybookThemes } from '../src/lib/Theme'
-import { StoryWrapper } from '../src/lib/StorybookHelpers/StorybookHelpers'
+import { ThemeProvider } from 'styled-components'
+import { providerFn, storybookThemes } from '../src/lib/Theme/generateStorybookThemes'
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -23,7 +22,8 @@ export const parameters = {
 
 export const onThemeSwitch = (context) => {
   const { theme } = context
-  const background = theme.colors.background.app
+  // console.log('onThemeSwitch', { theme })
+  const background = theme.data.surfaces.app
   const parameters = {
     backgrounds: {
       default: background
@@ -35,10 +35,9 @@ export const onThemeSwitch = (context) => {
   }
 }
 
-addDecorator((story) => <StoryWrapper>{story()}</StoryWrapper>)
-
 addDecorator(
   withThemes(ThemeProvider, storybookThemes, {
-    onThemeSwitch
+    onThemeSwitch,
+    providerFn
   })
 )

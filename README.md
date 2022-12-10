@@ -25,6 +25,8 @@ cd ./libs/mex-components
 yarn storybook
 ```
 
+You may need to link the built version of mex-themes in mex-components for it to recognize and load it correctly
+
 ### Publishing the mex-components
 
 0. Bump the version

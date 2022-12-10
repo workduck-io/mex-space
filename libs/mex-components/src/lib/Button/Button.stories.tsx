@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
 import { Rows } from '../StorybookHelpers/StorybookHelpers'
-import { Button } from './Button'
+import { Button, PrimaryButton, SecondaryButton } from './Button'
 
 export default {
   component: Button,
@@ -27,18 +27,12 @@ Base.args = {
 
 export const AllButtons: ComponentStory<typeof Button> = () => (
   <Rows>
-    <Button primary>Primary</Button>
+    <PrimaryButton>Primary</PrimaryButton>
     <Button large>Large</Button>
-    <Button highlight>Highlight</Button>
-    <Button transparent>Transparent</Button>
-    <Button primary large>
-      Primary Large
-    </Button>
-    <Button primary highlight>
-      Primary Highlight
-    </Button>
-    <Button primary transparent>
-      Primary Transparent
-    </Button>
+    <Button>Highlight</Button>
+    <SecondaryButton>Transparent</SecondaryButton>
+    <PrimaryButton large>Primary Large</PrimaryButton>
+    <PrimaryButton>Primary Highlight</PrimaryButton>
+    <SecondaryButton large>Primary Transparent</SecondaryButton>
   </Rows>
 )

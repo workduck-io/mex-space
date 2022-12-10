@@ -35,7 +35,7 @@ export const BreadcrumbItem = styled.div<BreadcrumbItemProps>`
       ? css`
           &:hover {
             cursor: pointer;
-            background: ${theme.colors.gray[9]};
+            background: ${theme.tokens.surfaces.s[2]};
           }
         `
       : css`
@@ -70,7 +70,7 @@ export const BreadcrumbSeparator = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  color: ${({ theme }) => theme.colors.text.fade};
+  color: ${({ theme }) => theme.tokens.text.fade};
 
   svg {
     width: 1.5rem;
@@ -82,7 +82,7 @@ export const SBreadcrumbOverflow = styled.div`
   display: flex;
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.tiny};
-  background-color: ${({ theme }) => theme.colors.gray[9]};
+  background-color: ${({ theme }) => theme.tokens.surfaces.s[2]};
 
   svg {
     width: 1rem;
@@ -95,7 +95,8 @@ export const OverflowTooltipWrapper = styled.div`
   align-items: center;
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  background-color: ${({ theme }) => mix(0.5, theme.colors.gray[10], theme.colors.gray[9])};
+  background-color: ${({ theme }) => theme.tokens.surfaces.tooltip.info};
+  box-shadow: ${({ theme }) => theme.tokens.shadow.large};
 `
 
 export const BreadcrumbOverflowList = styled.div`

@@ -20,9 +20,9 @@ export const xemTheme: ThemeTokens<string> = {
     highlight: '#4E525A',
     code: '#4E525A',
     tooltip: {
-      default: '#4E525A',
+      default: '#40444B',
       primary: '#4E525A',
-      info: '#4E525A'
+      info: '#40444B'
     }
   },
   colors: {
@@ -72,9 +72,9 @@ export const xemLightTheme: ThemeTokens<string> = {
     highlight: '#525579',
     code: '#525579',
     tooltip: {
-      default: '#525579',
-      primary: '#525',
-      info: '#525579'
+      default: '#FFF',
+      primary: '#FAA',
+      info: '#FAFAFA'
     }
   },
   colors: {
