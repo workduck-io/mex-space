@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.19
+
+### Patch Changes
+
+- 2f64533: Fix types for release
+
 ## 0.0.18
 
 ### Patch Changes
