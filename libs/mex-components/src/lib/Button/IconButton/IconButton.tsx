@@ -12,37 +12,18 @@ export type IconButtonProps = {
   size?: string | number
   onClick?: any // eslint-disable-line @typescript-eslint/no-explicit-any
   singleton?: TippyProps['singleton']
-  /** By default the button is transparent, to remove transparency use false */
-  transparent?: boolean
-  highlight?: boolean
   disabled?: boolean
   color?: string
   shortcut?: string
 }
 
-export const IconButton = ({
-  icon,
-  disabled,
-  title,
-  size,
-  onClick,
-  transparent,
-  shortcut,
-  highlight,
-  color,
-  singleton
-}: IconButtonProps) => {
+export const IconButton = ({ icon, disabled, title, size, onClick, shortcut, color, singleton }: IconButtonProps) => {
   return (
     <ToolbarTooltip
       content={shortcut !== undefined ? <TitleWithShortcut shortcut={shortcut} title={title} /> : <span>{title}</span>}
       singleton={singleton}
     >
-      <Button
-        transparent={transparent !== undefined ? transparent : true}
-        disabled={disabled}
-        onClick={onClick}
-        highlight={highlight}
-      >
+      <Button disabled={disabled} onClick={onClick}>
         <Icon color={color} icon={icon} height={size} />
       </Button>
     </ToolbarTooltip>

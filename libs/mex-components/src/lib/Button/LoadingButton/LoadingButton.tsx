@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components'
 import Loading from '../../Primitives/Loading/Loading'
 import { Button as StyledAsyncButton } from '../Button.style'
 
-export const AsyncButton = StyledAsyncButton
+// export const AsyncButton = StyledAsyncButton
 
 export type LoadingButtonProps = React.ComponentProps<typeof StyledAsyncButton> & {
   /**
