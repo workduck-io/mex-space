@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button, PrimaryButton, DangerButton, SecondaryButton } from './Button.style'
+import { Button, ButtonRow, PrimaryButton, DangerButton, SecondaryButton } from './Button.style'
 
 /**
  * The button component
  *
  */
 
-export { PrimaryButton, DangerButton, SecondaryButton, Button }
+export { PrimaryButton, DangerButton, SecondaryButton, Button, ButtonRow }
 
 Button.defaultProps = {
   children: 'Button',
