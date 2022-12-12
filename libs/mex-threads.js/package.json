@@ -1,0 +1,93 @@
+{
+  "name": "threads",
+  "version": "1.7.0",
+  "description": "Web workers & worker threads as simple as a function call",
+  "license": "MIT",
+  "module": "dist/index.js",
+  "type": "module",
+  "author": "Andy Wermke (https://github.com/andywer)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/workduck-io/shared-threads.js"
+  },
+  "scripts": {
+    "clean": "rimraf dist/ ",
+    "dev": "yarn clean && tsc -p tsconfig.json --watch",
+    "build": "yarn clean && tsc -p tsconfig.json",
+    "test": "yarn test:library && yarn test:tooling && yarn test:puppeteer:basic",
+    "test:library": "ava ./test/**/*.test.ts",
+    "test:tooling": "ava ./test-tooling/**/*.test.ts",
+    "test:puppeteer:basic": "puppet-run --plugin=mocha --bundle=./test/workers/:workers/ --serve=./bundle/worker.js:/worker.js ./test/*.chromium*.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./worker": {
+      "import": "./dist/worker/index.js",
+      "default": "./dist/worker/index.js"
+    },
+    "./register": {
+      "import": "./dist/master/register.js",
+      "default": "./dist/master/register.js"
+    },
+    "./observable": {
+      "import": "./dist/master/observable.js",
+      "default": "./dist/master/observable.js"
+    }
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "is-observable": "^2.1.0",
+    "observable-fns": "^0.6.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/debug": "^4.1.5",
+    "@types/execa": "^2.0.0",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.14.5",
+    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/parser": "^5.45.1",
+    "ava": "^5.1.0",
+    "chai": "^4.2.0",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "execa": "^4.0.3",
+    "mocha": "^8.2.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.0",
+    "puppet-run": "^0.11.3",
+    "puppet-run-plugin-mocha": "^0.10.0-alpha",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.6.4"
+  },
+  "engines": {
+    "node": ">=14.13.1 <17"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm",
+      "--experimental-specifier-resolution=node"
+    ]
+  },
+  "browser": {
+    "ts-node/register": false,
+    "./dist/master/implementation.js": "./dist/master/implementation.browser.js",
+    "./dist/worker/implementation.js": "./dist/worker/implementation.browser.js"
+  },
+  "files": [
+    "dist/**",
+    "*.js",
+    "*.mjs",
+    "*.ts"
+  ]
+}

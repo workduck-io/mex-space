@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "target": "es2015",
+    "module": "ES2020",
+    "lib": ["es2015"],
+    "outDir": "dist",
+    "strict": false,
+    "moduleResolution": "node"
+  },
+
+  "include": ["./src/index.ts", "./src/observable.ts", "./src/master/*", "./src/worker/*", "./types/is-observable.d.ts"]
+}
