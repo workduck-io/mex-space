@@ -5,6 +5,7 @@
     "mex-editor": "libs/mex-editor",
     "mex-themes": "libs/mex-themes",
     "mex-utils": "libs/mex-utils",
-    "web": "apps/web"
+    "web": "apps/web",
+    "mex-threads.js": "libs/mex-threads.js"
   }
 }

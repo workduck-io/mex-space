@@ -1,0 +1,44 @@
+{
+  "root": "libs/mex-threads.js",
+  "sourceRoot": "libs/mex-threads.js/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mex-utils",
+        "main": "libs/mex-utils/src/index.ts",
+        "tsConfig": "libs/mex-utils/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-threads.js/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["vitest"],
+        "parallel": false,
+        "cwd": "libs/mex-threads.js"
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-threads.js:build",
+          "cp .npmrc dist/libs/mex-threads.js",
+          "cd dist/libs/mex-threads.js && npm publish"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}
