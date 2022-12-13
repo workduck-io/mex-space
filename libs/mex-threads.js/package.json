@@ -1,11 +1,14 @@
 {
-  "name": "threads",
-  "version": "1.7.0",
-  "description": "Web workers & worker threads as simple as a function call",
+  "name": "@workduck-io/mex-threads.js",
+  "version": "0.1.0",
+  "description": "Shared Workers as simple as a function call; Fork of threads.js",
   "license": "MIT",
   "module": "dist/index.js",
   "type": "module",
   "author": "Andy Wermke (https://github.com/andywer)",
+  "contributors": [
+    "Mukul Mehta <mukul@workduck.io>"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/workduck-io/shared-threads.js"
@@ -13,11 +16,7 @@
   "scripts": {
     "clean": "rimraf dist/ ",
     "dev": "yarn clean && tsc -p tsconfig.json --watch",
-    "build": "yarn clean && tsc -p tsconfig.json",
-    "test": "yarn test:library && yarn test:tooling && yarn test:puppeteer:basic",
-    "test:library": "ava ./test/**/*.test.ts",
-    "test:tooling": "ava ./test-tooling/**/*.test.ts",
-    "test:puppeteer:basic": "puppet-run --plugin=mocha --bundle=./test/workers/:workers/ --serve=./bundle/worker.js:/worker.js ./test/*.chromium*.ts"
+    "build": "yarn clean && tsc -p tsconfig.json"
   },
   "exports": {
     ".": {
