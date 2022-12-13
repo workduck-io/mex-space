@@ -1,22 +1,22 @@
 import { css } from 'styled-components'
 
-import { GLOBAL_STYLE_ID } from './defaults'
-import { keyConverter } from './objHelpers'
-import { generateTheme } from './themeGenerator'
 import {
+  ButtonStyle,
+  Card,
+  CssVariable,
+  CssVariableAccessor,
+  EmbedViewStyle,
   LayoutTheme,
   ListStyle,
-  EmbedViewStyle,
-  MexTheme,
-  CssVariable,
-  Card,
   Menu,
   MenuItem,
-  ButtonStyle,
-  CssVariableAccessor,
+  MexTheme,
   SelectableButtonStyle
 } from './types/theme'
 import { LayoutTokens, ThemeTokens } from './types/tokens'
+import { GLOBAL_STYLE_ID } from './defaults'
+import { keyConverter } from './objHelpers'
+import { generateTheme } from './themeGenerator'
 
 const layoutTokens: LayoutTokens<string> = {
   spacing: {

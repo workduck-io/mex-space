@@ -1,7 +1,7 @@
 import ColorScheme from 'color-scheme'
 import merge from 'deepmerge'
 import { getLuminance, lighten, mix, tint } from 'polished'
-import { DefaultTheme, FlattenInterpolation } from 'styled-components'
+import { DefaultTheme } from 'styled-components'
 
 import { LayoutStyle, ThemePalette } from './types/theme-legacy'
 

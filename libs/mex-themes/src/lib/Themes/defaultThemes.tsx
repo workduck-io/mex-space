@@ -1,4 +1,5 @@
 import { MexThemeData } from '../types/theme'
+
 import { gruvboxLightTheme, gruvboxTheme } from './gruvbox'
 import { mexLightTheme, mexTheme } from './mex'
 import { mexThemeNew } from './mex-new'

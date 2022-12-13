@@ -1,5 +1,5 @@
-import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
 import { ThemeMode, UserThemePreferences } from './types/theme'
+import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
 
 export function saveThemePreferenceToLocalStorage(
   props: { themeId: string; mode: ThemeMode },
