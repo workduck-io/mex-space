@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components'
 import Modal from 'react-modal'
-import { transparentize } from 'polished'
 
-export const FleetStyled = styled.section<{ index: number, total: number }>`
+import { transparentize } from 'polished'
+import styled, { css } from 'styled-components'
+
+export const FleetStyled = styled.section<{ index: number; total: number }>`
   display: flex;
   align-items: center;
   position: relative;
@@ -15,12 +16,12 @@ export const FleetStyled = styled.section<{ index: number, total: number }>`
         content: '';
         display: block;
         position: absolute;
-        width: calc(100% / ${total}); 
+        width: calc(100% / ${total});
         height: 100%;
         border-radius: ${({ theme }) => theme.borderRadius.large};
         top: 0;
         left: 0;
-        box-shadow: inset 0 0 50px ${({ theme }) => theme.colors.gray[10]}; 
+        box-shadow: inset 0 0 50px ${({ theme }) => theme.colors.gray[10]};
         background-color: ${({ theme }) => transparentize(0, theme.colors.background.app)};
         transform: translateX(${index * 100}%);
         transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
@@ -33,7 +34,7 @@ export const StyledModal = styled(Modal)`
 `
 
 export const FleetSectionTitle = styled.div`
-  width: 8rem; 
+  width: 8rem;
   display: flex;
   justify-content: center;
   margin: 0;
@@ -42,29 +43,33 @@ export const FleetSectionTitle = styled.div`
 `
 
 export const AnimateZoom = styled.span<{ selected?: boolean }>`
-  transition: transform .2s;
+  transition: transform 0.2s;
 
-  ${({ selected }) => selected && css`
-    transform: scale(1.15)
-  `
-  }
+  ${({ selected }) =>
+    selected &&
+    css`
+      transform: scale(1.15);
+    `}
 `
 
 export const FleetSection = styled.div<{ highlight?: boolean }>`
   border-radius: ${({ theme }) => theme.borderRadius.large};
   display: flex;
   flex: 1;
-  padding: ${({ theme }) => `${theme.spacing.large} ${theme.spacing.large}`}; 
+  padding: ${({ theme }) => `${theme.spacing.large} ${theme.spacing.large}`};
   flex-direction: column;
   z-index: 1;
   align-items: center;
   justify-content: center;
   transition: color 0.1s;
-    ${({ highlight, theme }) => highlight ? css`
-        color: ${theme.colors.primary};`
-    : css`
-        opacity: 0.5;
-        color: ${theme.colors.text.default};
-`}
+  ${({ highlight, theme }) =>
+    highlight
+      ? css`
+          color: ${theme.colors.primary};
+        `
+      : css`
+          opacity: 0.5;
+          color: ${theme.colors.text.default};
+        `}
   gap: ${({ theme }) => theme.spacing.medium};
 `

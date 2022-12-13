@@ -1,7 +1,8 @@
-import { IconButton } from './IconButton'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Rows } from '../../StorybookHelpers/StorybookHelpers'
+
+import { IconButton } from './IconButton'
 
 export default {
   component: IconButton,

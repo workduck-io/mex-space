@@ -1,6 +1,7 @@
-import data from '@emoji-mart/data'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 import React from 'react'
+
+import data from '@emoji-mart/data'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import { EmojiPicker } from './EmojiPicker'
 import { Emoji } from './EmojiPicker.types'

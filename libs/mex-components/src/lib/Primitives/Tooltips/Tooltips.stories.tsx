@@ -1,7 +1,9 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 import React from 'react'
 
+import { ComponentMeta } from '@storybook/react'
+
 import { Rows } from '../../StorybookHelpers/StorybookHelpers'
+
 import { NavTooltip, ToolbarTooltip } from './Tooltips'
 
 export default {

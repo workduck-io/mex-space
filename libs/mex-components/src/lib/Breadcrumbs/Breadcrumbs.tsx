@@ -1,16 +1,18 @@
+import { useEffect, useRef, useState } from 'react'
+
 import { Icon } from '@iconify/react'
 import Tippy from '@tippyjs/react'
 import { debounce } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
 
 import { useIntersectionContainer } from '../hooks/useContainerResize'
+
 import {
-  BreadcrumbSeparator,
-  BreadcrumbSection,
-  BreadcrumbWrapper,
-  BreadcrumbLabel,
   BreadcrumbItem,
-  BreadcrumbOverflowList
+  BreadcrumbLabel,
+  BreadcrumbOverflowList,
+  BreadcrumbSection,
+  BreadcrumbSeparator,
+  BreadcrumbWrapper
 } from './Breadcrumbs.style'
 import { BreadcrumbOverflow } from './Breadcrumbs.tooltips'
 import { BreadcrumbProps } from './Breadcrumbs.types'

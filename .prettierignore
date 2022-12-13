@@ -2,5 +2,6 @@
 
 /dist
 /coverage
-.prettierrc
+.prettierrc.js
 *.yml
+**/node_modules/*

@@ -1,4 +1,3 @@
-import { mix } from 'polished'
 import styled, { css } from 'styled-components'
 
 export const BreadcrumbWrapper = styled.div`

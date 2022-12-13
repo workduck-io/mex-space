@@ -1,7 +1,8 @@
 // import informationLine from '@iconify/icons-ri/information-line'
+import React from 'react'
+
 import { Icon } from '@iconify/react'
 import Tippy, { TippyProps } from '@tippyjs/react'
-import React from 'react'
 
 import { InfoboxButton, InfoboxTip } from './Infobox.style'
 

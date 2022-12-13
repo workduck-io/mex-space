@@ -1,12 +1,10 @@
-import { css } from 'styled-components';
-import { FocusModeProp } from '../types/FocusMode';
-const FOCUS_MODE_OPACITY = 0.5;
+import { css } from 'styled-components'
 
-export const focusStyles = ({
-  focusMode,
-  focusHover,
-  overrideOpacity,
-}: FocusModeProp) => {
+import { FocusModeProp } from '../types/FocusMode'
+
+const FOCUS_MODE_OPACITY = 0.5
+
+export const focusStyles = ({ focusMode, focusHover, overrideOpacity }: FocusModeProp) => {
   if (focusMode)
     return focusHover
       ? css`
@@ -14,6 +12,6 @@ export const focusStyles = ({
         `
       : css`
           opacity: ${overrideOpacity ?? FOCUS_MODE_OPACITY};
-        `;
-  return css``;
-};
+        `
+  return css``
+}

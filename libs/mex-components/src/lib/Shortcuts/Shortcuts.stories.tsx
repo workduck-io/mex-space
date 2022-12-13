@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
+
 import { Rows } from '../StorybookHelpers/StorybookHelpers'
+
 import { DisplayShortcut, TitleWithShortcut } from './Shortcuts'
 
 export default {

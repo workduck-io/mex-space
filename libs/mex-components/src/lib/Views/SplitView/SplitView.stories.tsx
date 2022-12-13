@@ -1,7 +1,9 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
 import React from 'react'
 
+import { ComponentMeta, ComponentStory } from '@storybook/react'
+
 import { LongContent } from '../../StorybookHelpers/StorybookHelpers'
+
 import SplitView from './SplitView'
 import { SplitType } from './SplitView.types'
 
