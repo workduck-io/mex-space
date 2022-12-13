@@ -1,7 +1,8 @@
 import { uniq } from 'lodash'
 
-import { ELEMENT_TAG, ELEMENT_MENTION, ELEMENT_TODO_LI } from '../constants/editorElements'
+import { ELEMENT_MENTION, ELEMENT_TAG, ELEMENT_TODO_LI } from '../constants/editorElements'
 import { NodeEditorContent } from '../types'
+
 import { generateTempId } from './idGenerators'
 
 export const getTagsFromContent = (content: any[]): string[] => {

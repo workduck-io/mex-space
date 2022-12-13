@@ -1,22 +1,21 @@
 import { customAlphabet } from 'nanoid'
 
 import {
-  SnippetCommandPrefix,
-  SEPARATOR,
-  NODE_ID_PREFIX,
+  DRAFT_PREFIX,
   ID_SEPARATOR,
-  WORKSPACE_ID_PREFIX,
   IG_ID_PREFIX,
-  SYNC_BLOCK_ID_PREFIX,
-  TEMP_ID_PREFIX,
-  SNIPPET_PREFIX,
-  SYNCTEMP_PREFIX,
-  TODO_PREFIX,
+  NODE_ID_PREFIX,
   QUESTION_ID_PREFIX,
   REMINDER_ID_PREFIX,
-  DRAFT_PREFIX,
-  TASK_VIEW_PREFIX
-} from '../constants/prefixes'
+  SEPARATOR,
+  SNIPPET_PREFIX,
+  SnippetCommandPrefix,
+  SYNC_BLOCK_ID_PREFIX,
+  SYNCTEMP_PREFIX,
+  TASK_VIEW_PREFIX,
+  TEMP_ID_PREFIX,
+  TODO_PREFIX,
+  WORKSPACE_ID_PREFIX} from '../constants/prefixes'
 
 const nolookalikes = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
 const nanoid = customAlphabet(nolookalikes, 21)

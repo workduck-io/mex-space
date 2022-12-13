@@ -1,6 +1,7 @@
-import { expect, test, beforeEach } from 'vitest'
+import { beforeEach,expect, test } from 'vitest'
 
 import { GenericSearchData } from '../../src/types/search'
+
 import { createGenricSearchIndex } from './../../src/search/flexsearch'
 
 beforeEach(async (context) => {
