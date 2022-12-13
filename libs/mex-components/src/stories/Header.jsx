@@ -1,7 +1,9 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
 
 import { Button } from './Button'
+
 // Importing these styles messes up with custom styled defined in other stories
 // import './header.css';
 

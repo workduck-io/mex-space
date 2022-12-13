@@ -1,6 +1,8 @@
-import { LoadingWrapper } from '../Primitives/Loading/Loading.style'
-import { generateStyle } from '@workduck-io/mex-themes'
 import styled, { css } from 'styled-components'
+
+import { generateStyle } from '@workduck-io/mex-themes'
+
+import { LoadingWrapper } from '../Primitives/Loading/Loading.style'
 
 type ShadowStyle = 'none' | 'medium' | 'large'
 

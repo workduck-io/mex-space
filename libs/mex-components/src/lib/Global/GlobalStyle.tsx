@@ -2,6 +2,7 @@ import { createGlobalStyle, css } from 'styled-components'
 
 import { ThinScrollbar } from '../Helpers'
 import { TippyBalloonStyles } from '../Primitives/Tooltips/Tooltips.style'
+
 import normalize from './normalize'
 
 const GlobalStyle = createGlobalStyle`

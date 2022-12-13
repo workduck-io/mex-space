@@ -1,4 +1,5 @@
 import { defaultThemes, ManagedProvider } from '@workduck-io/mex-themes'
+
 import GlobalStyle from '../Global/GlobalStyle'
 
 export const storybookThemes = defaultThemes

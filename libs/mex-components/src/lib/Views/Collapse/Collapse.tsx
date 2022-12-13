@@ -1,9 +1,11 @@
-import { Icon, IconifyIcon } from '@iconify/react'
 import React, { useMemo } from 'react'
 import { useSpring } from 'react-spring'
+
+import { Icon, IconifyIcon } from '@iconify/react'
 import styled from 'styled-components'
 
 import { Infobox, InfoboxProps } from '../../Infobox'
+
 import { CollapseContent, CollapseHeader, CollapseToggle, CollapseWrapper } from './Collapse.style'
 
 interface CollapseProps {

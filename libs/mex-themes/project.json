@@ -31,14 +31,6 @@
         "lintFilePatterns": ["libs/mex-themes/**/*.{ts,tsx,js,jsx}"]
       }
     },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/mex-themes"],
-      "options": {
-        "jestConfig": "libs/mex-themes/jest.config.js",
-        "passWithNoTests": true
-      }
-    },
     "publish": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {

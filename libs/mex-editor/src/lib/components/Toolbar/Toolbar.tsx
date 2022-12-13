@@ -1,22 +1,19 @@
+import React from 'react'
+
 import { Icon } from '@iconify/react'
 import {
-  usePlateEditorRef,
-  getPluginType,
-  MARK_BOLD,
-  MARK_ITALIC,
-  MARK_UNDERLINE,
-  BalloonToolbar,
-  MarkToolbarButton,
   AlignToolbarButton,
+  BalloonToolbar,
   BlockToolbarButton,
   ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
-  ELEMENT_OL,
-  ELEMENT_UL,
-  ListToolbarButton
-} from '@udecode/plate'
-import React from 'react'
+  getPluginType,
+  MARK_BOLD,
+  MARK_ITALIC,
+  MARK_UNDERLINE,
+  MarkToolbarButton,
+  usePlateEditorRef} from '@udecode/plate'
 
 import { Separator } from './Seperator'
 

@@ -1,5 +1,6 @@
-import { rgba } from '../../Helpers/Colors'
 import styled, { css } from 'styled-components'
+
+import { rgba } from '../../Helpers/Colors'
 
 export const getTippyStyles = (name: string, textColor: string, background: string, border?: string) => css`
   .tippy-box[data-theme~='${name}'] {

@@ -1,5 +1,6 @@
-import { TEditor } from '@udecode/plate'
 import { useCallback } from 'react'
+
+import { TEditor } from '@udecode/plate'
 
 import getTextFromTriggers from '../components/MultiCombobox/getMultiTextFromTrigger'
 import { ComboboxType } from '../components/MultiCombobox/types'

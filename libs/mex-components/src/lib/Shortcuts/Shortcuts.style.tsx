@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { rgba } from '../Helpers/Colors'
 
 export const ShortcutWrapper = styled.div`

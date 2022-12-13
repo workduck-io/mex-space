@@ -1,11 +1,13 @@
-import { RenderFunction } from '@udecode/plate'
 import React from 'react'
+
+import { RenderFunction } from '@udecode/plate'
 
 import { useComboboxControls } from '../../hooks/useComboboxControls'
 import { getCreateableOnSelect } from '../../hooks/useComboboxOnKeyDown'
 import { useComboboxStore } from '../../store/combobox'
 import { Combobox } from '../ComboBox'
 import { ComboboxItemProps, ComboboxKeyDownConfig } from '../ComboBox/types'
+
 import { useOnSelectItem } from './useMultiComboboxOnKeyDown'
 
 export interface SingleComboboxConfig {

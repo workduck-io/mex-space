@@ -1,6 +1,7 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import { Rows } from '../StorybookHelpers/StorybookHelpers'
+
 import { Button, PrimaryButton, SecondaryButton } from './Button'
 
 export default {

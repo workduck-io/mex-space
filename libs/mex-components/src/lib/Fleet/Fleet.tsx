@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import { useTheme } from 'styled-components'
 
 import { MexIcon } from '../Helpers/Layout'
-import { StyledModal, AnimateZoom, FleetStyled, FleetSection, FleetSectionTitle } from './Fleet.style'
+
+import { AnimateZoom, FleetSection, FleetSectionTitle, FleetStyled, StyledModal } from './Fleet.style'
 import { FleetProps } from './Fleet.types'
 
 export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {

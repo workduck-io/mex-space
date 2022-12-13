@@ -1,10 +1,12 @@
-import { useEditorRef } from '@udecode/plate'
 import * as React from 'react'
+
+import { useEditorRef } from '@udecode/plate'
 import { Transforms } from 'slate'
 import { useFocused, useSelected } from 'slate-react'
 
 import { useHotkeys } from '../../../hooks/useHotKeys'
 import { useOnMouseClick } from '../../../hooks/useOnMouseClick'
+
 import { STag, STagRoot } from './TagElement.styles'
 import { TagElementProps } from './TagElement.types'
 

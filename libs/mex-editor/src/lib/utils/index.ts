@@ -1,32 +1,31 @@
 export { SEPARATOR } from './constants'
 export { getHugeDocument } from './content'
 export { getTextFromTrigger } from './getTextFromTrigger'
-export { Settify, getAllParentIds, removeLink, removeNulls, typeInvert, withoutDelimiter } from './helper'
+export { getAllParentIds, removeLink, removeNulls, Settify, typeInvert, withoutDelimiter } from './helper'
 export {
-  ID_SEPARATOR,
-  NODE_ID_PREFIX,
-  WORKSPACE_ID_PREFIX,
-  IG_ID_PREFIX,
-  SYNC_BLOCK_ID_PREFIX,
-  TEMP_ID_PREFIX,
-  SNIPPET_PREFIX,
-  SYNCTEMP_PREFIX,
-  TODO_PREFIX,
-  DRAFT_PREFIX,
-  MEETING_PREFIX,
-  QUESTION_ID_PREFIX,
   DRAFT_NODE,
-  generateNodeUID,
-  generateNodeId,
-  generateWorkspaceId,
+  DRAFT_PREFIX,
   generateIgId,
-  generateSyncBlockId,
-  generateTempId,
+  generateNodeId,
+  generateNodeUID,
+  generateQuestionId,
   generateSnippetId,
+  generateSyncBlockId,
   generateSyncTempId,
+  generateTempId,
   generateTodoId,
-  generateQuestionId
-} from './idGenerators'
+  generateWorkspaceId,
+  ID_SEPARATOR,
+  IG_ID_PREFIX,
+  MEETING_PREFIX,
+  NODE_ID_PREFIX,
+  QUESTION_ID_PREFIX,
+  SNIPPET_PREFIX,
+  SYNC_BLOCK_ID_PREFIX,
+  SYNCTEMP_PREFIX,
+  TEMP_ID_PREFIX,
+  TODO_PREFIX,
+  WORKSPACE_ID_PREFIX} from './idGenerators'
 export { fuzzySearch } from './lib'
 export { mog } from './mog'
 export { setElementPositionByRange } from './setElementPositionByRange'

@@ -1,5 +1,6 @@
 import {
   AnyObject,
+  AutoformatRule,
   ELEMENT_BLOCKQUOTE,
   ELEMENT_CODE_BLOCK,
   ELEMENT_CODE_LINE,
@@ -33,9 +34,7 @@ import {
   PlateEditor,
   TEditor,
   toggleList,
-  unwrapList,
-  AutoformatRule
-} from '@udecode/plate'
+  unwrapList} from '@udecode/plate'
 
 import { generateTempId } from '../utils/idGenerators'
 

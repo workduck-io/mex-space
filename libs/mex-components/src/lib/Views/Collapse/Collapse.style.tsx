@@ -1,4 +1,5 @@
 import { animated } from 'react-spring'
+
 import styled, { css } from 'styled-components'
 
 export const CollapseWrapper = styled.div`

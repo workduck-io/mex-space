@@ -1,8 +1,9 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { info } from 'console'
 import React from 'react'
 
+import { ComponentMeta, ComponentStory } from '@storybook/react'
+
 import { Rows } from '../../StorybookHelpers/StorybookHelpers'
+
 import { LoadingButton } from './LoadingButton'
 
 export default {

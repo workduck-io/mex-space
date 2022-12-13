@@ -5,6 +5,7 @@ import { ComboboxKey, IComboboxItem } from '../components/ComboBox/types'
 import { useSlashCommandOnChange } from '../components/SlashCommands/useSlashCommandOnChange'
 import { useComboboxStore } from '../store/combobox'
 import { useMexEditorStore } from '../store/editor'
+
 import { useElementOnChange } from './useElementOnChange'
 
 const pure = (id: string) => {

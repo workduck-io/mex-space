@@ -1,4 +1,4 @@
-import { getSlateClass, createPluginFactory } from '@udecode/plate-core'
+import { createPluginFactory,getSlateClass } from '@udecode/plate-core'
 
 import TagElement from './components/TagElement'
 

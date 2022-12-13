@@ -1,19 +1,18 @@
 import {
-  ELEMENT_EXCALIDRAW,
-  ELEMENT_QA_BLOCK,
   ELEMENT_ACTION_BLOCK,
-  ELEMENT_TODO_LI,
-  ELEMENT_MEDIA_EMBED,
+  ELEMENT_CODE_BLOCK,
+  ELEMENT_EXCALIDRAW,
   ELEMENT_IMAGE,
-  ELEMENT_LINK,
-  ELEMENT_TABLE,
   ELEMENT_INLINE_BLOCK,
-  ELEMENT_CODE_BLOCK
-} from '../constants/editorElements'
-import { indexNames, diskIndex } from '../constants/search'
+  ELEMENT_LINK,
+  ELEMENT_MEDIA_EMBED,
+  ELEMENT_QA_BLOCK,
+  ELEMENT_TABLE,
+  ELEMENT_TODO_LI} from '../constants/editorElements'
+import { diskIndex,indexNames } from '../constants/search'
 import { insertId } from '../helpers/content'
 import { textChildren } from '../helpers/smallContent'
-import { getSlug, camelCase } from '../helpers/strings'
+import { camelCase,getSlug } from '../helpers/strings'
 import { BlockType, NodeEditorContent } from '../types/core'
 import { GenericSearchData, PersistentData, SearchRepExtra } from '../types/search'
 

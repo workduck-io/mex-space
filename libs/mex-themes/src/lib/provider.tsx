@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+
 import styled, { FlattenSimpleInterpolation, ThemeProvider } from 'styled-components'
 
 import { defaultThemes, mexThemeNew } from './Themes/defaultThemes'
-import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
-import { appendGlobalStyle, generateGlobalStyles } from './globalStyles'
 import { MexThemeData, ThemeMode, UserThemePreferences } from './types/theme'
 import { ThemeTokens } from './types/tokens'
+import { DEFAULT_LOCAL_STORAGE_KEY } from './defaults'
+import { appendGlobalStyle, generateGlobalStyles } from './globalStyles'
 import { getInitialTheme, saveThemePreferenceToLocalStorage } from './userPref'
 
 type ThemeProviderContextType = {
@@ -30,7 +31,7 @@ type ThemeProviderContextType = {
   toggleMode: () => void
 }
 
-const ThemeContext = createContext<ThemeProviderContextType>(undefined!)
+const ThemeContext = createContext<ThemeProviderContextType | undefined>(undefined)
 export const useThemeContext = () => useContext(ThemeContext)
 
 interface ProviderProps {
