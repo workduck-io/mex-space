@@ -207,21 +207,6 @@ on the website for details.
 TODO
 -->
 
-## Debug
-
-We are using the [`debug`](https://github.com/visionmedia/debug) package to provide opt-in debug logging. All the package's debug messages have a scope starting with `threads:`, with different sub-scopes:
-
-- `threads:master:messages`
-- `threads:master:spawn`
-- `threads:master:thread-utils`
-- `threads:pool:${poolName || poolID}`
-
-Set it to `DEBUG=threads:*` to enable all the library's debug logging. To run its tests with full debug logging, for instance:
-
-```
-DEBUG=threads:* npm test
-```
-
 ## License
 
 MIT

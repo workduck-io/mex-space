@@ -1,5 +1,5 @@
-import DebugLogger from 'debug'
 import { Observable } from 'observable-fns'
+import { mog } from '@workduck-io/mex-utils'
 
 import { deserialize } from '../common'
 import { createPromiseWithResolver } from '../promise'
@@ -35,10 +35,6 @@ export type ExposedToThreadType<Exposed extends WorkerFunction | WorkerModule<an
     ? ModuleThread<Exposed>
     : never
 
-const debugMessages = DebugLogger('threads:master:messages')
-const debugSpawn = DebugLogger('threads:master:spawn')
-const debugThreadUtils = DebugLogger('threads:master:thread-utils')
-
 type EventListenerType = 'message' | 'unhandledrejection'
 
 const addEventListener = (worker: WorkerType, listener: EventListener, type: EventListenerType = 'message') => {
@@ -72,7 +68,7 @@ function receiveInitMessage(worker: WorkerType): Promise<WorkerInitMessage> {
   const porter = worker instanceof SharedWorker ? worker.port : worker
   return new Promise((resolve, reject) => {
     const messageHandler = ((event: MessageEvent) => {
-      console.log('Message from worker before finishing initialization:', event.data)
+      mog('[MASTER] Message from worker before finishing initialization', { data: event.data })
       if (isInitMessage(event.data)) {
         porter.removeEventListener('message', messageHandler)
         resolve(event.data)
@@ -89,7 +85,6 @@ function createEventObservable(worker: WorkerType, workerTermination: Promise<an
   const porter = worker instanceof SharedWorker ? worker.port : worker
   return new Observable<WorkerEvent>((observer) => {
     const messageHandler = ((messageEvent: MessageEvent) => {
-      console.log('Message Recvd in master: ', messageEvent)
       const workerEvent: WorkerMessageEvent<any> = {
         type: WorkerEventType.message,
         data: messageEvent.data
@@ -97,7 +92,7 @@ function createEventObservable(worker: WorkerType, workerTermination: Promise<an
       observer.next(workerEvent)
     }) as EventListener
     const rejectionHandler = ((errorEvent: PromiseRejectionEvent) => {
-      console.log('Unhandled promise rejection event in thread:', errorEvent)
+      mog('[MASTER] Unhandled Promise Rejection in worker', { error: errorEvent })
       const workerEvent: WorkerInternalErrorEvent = {
         type: WorkerEventType.internalError,
         error: Error(errorEvent.reason)
@@ -127,7 +122,7 @@ function createEventObservable(worker: WorkerType, workerTermination: Promise<an
 function createTerminator(worker: TWorker): { termination: Promise<void>; terminate: () => Promise<void> } {
   const [termination, resolver] = createPromiseWithResolver<void>()
   const terminate = async () => {
-    console.log('Terminating worker')
+    mog('[MASTER] Terminating Web Worker')
     worker.terminate()
     resolver()
   }
@@ -140,7 +135,7 @@ function createSharedWorkerTerminator(worker: SharedWorker): {
 } {
   const [termination, resolver] = createPromiseWithResolver<void>()
   const terminate = async () => {
-    console.log('Terminating shared worker')
+    mog('[MASTER] Terminating Shared Worker')
     worker.port.close()
     resolver()
   }
@@ -179,7 +174,7 @@ export async function spawn<Exposed extends WorkerFunction | WorkerModule<any> =
   worker: WorkerType,
   options?: { timeout?: number }
 ): Promise<ExposedToThreadType<Exposed>> {
-  console.log('Initializing new thread')
+  mog('[MASTER] Initializing New Thread')
 
   if (worker instanceof SharedWorker) worker.port.start()
 

@@ -4,7 +4,6 @@
  *
  * Keep in mind that this code can make or break the program's performance! Need to optimize more…
  */
-import DebugLogger from 'debug'
 import { multicast, Observable } from 'observable-fns'
 
 import { deserialize, serialize } from '../common'
@@ -19,8 +18,6 @@ import {
   WorkerJobStartMessage,
   WorkerMessageType
 } from '../types/messages'
-
-const debugMessages = DebugLogger('threads:master:messages')
 
 let nextJobUID = 1
 
@@ -46,7 +43,6 @@ function createObservableForJob<ResultType>(worker: WorkerType, jobUID: number):
     let asyncType: 'observable' | 'promise' | undefined
 
     const messageHandler = ((event: MessageEvent) => {
-      console.log('Message from worker:', event.data)
       if (!event.data || event.data.uid !== jobUID) return
 
       if (isJobStartMessage(event.data)) {
@@ -127,7 +123,6 @@ export function createProxyFunction<Args extends any[], ReturnType>(worker: Work
       args
     }
     const porter = worker instanceof SharedWorker ? worker.port : worker
-    console.log('Sending command to run function to worker:', runMessage)
 
     try {
       porter.postMessage(runMessage)

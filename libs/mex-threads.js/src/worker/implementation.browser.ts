@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 import { AbstractedWorkerAPI } from '../types/worker'
+import { mog } from '@workduck-io/mex-utils'
 
 interface WorkerGlobalScope {
   addEventListener(eventName: string, listener: (event: Event) => void): void
@@ -18,7 +19,6 @@ const isWorkerRuntime: AbstractedWorkerAPI['isWorkerRuntime'] = function isWorke
 const postMessageToMaster: AbstractedWorkerAPI['postMessageToMaster'] = function postMessageToMaster(data) {
   const porter = self.porter
 
-  console.log('Trying to send a message: ', { data, porter })
   porter?.postMessage(data)
 }
 
@@ -32,11 +32,11 @@ const subscribeToMasterMessages: AbstractedWorkerAPI['subscribeToMasterMessages'
 
   if (port) {
     self.porter = port
-    console.log('Subscribing to master messages; Inside of a shared worker')
+    mog('[SHARED WORKER] Subscribing to master messages')
     port.addEventListener('message', messageHandler as EventListener)
     port.start()
   } else {
-    console.log('Subscribing to master messages; Inside of a normal worker')
+    mog('[WEB WORKER] Subscribing to master messages')
     self.addEventListener('message', messageHandler as EventListener)
     self.porter = self
   }
