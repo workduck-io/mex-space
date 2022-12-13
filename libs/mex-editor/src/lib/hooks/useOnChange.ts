@@ -1,11 +1,13 @@
 //@ts-nocheck
+import { useCallback } from 'react'
+
 import { MentionNodeData } from '@udecode/plate'
 import { TEditor } from '@udecode/plate-core'
-import { useCallback } from 'react'
 import shallow from 'zustand/shallow'
 
 import { IComboboxItem } from '../components/ComboBox/types'
 import { ComboboxKey, useComboboxStore } from '../store/combobox'
+
 import { useComboboxOnChange } from './useComboOnChange'
 
 export const useTagOnChange = (editor: TEditor, data: MentionNodeData[]) => {

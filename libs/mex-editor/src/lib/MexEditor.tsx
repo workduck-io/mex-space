@@ -1,9 +1,9 @@
+import React, { useEffect,useState } from 'react'
+
 import { Plate, selectEditor, usePlateEditorRef } from '@udecode/plate'
-import React, { useState, useEffect } from 'react'
 
 import { useComboboxConfig } from './components/ComboBox/config'
 import { MultiComboboxContainer } from './components/MultiCombobox/multiComboboxContainer'
-import Toolbar from './components/Toolbar/Toolbar'
 import { useMexEditorStore } from './store/editor'
 import { MexEditorProps, MexEditorValue } from './types/editor'
 

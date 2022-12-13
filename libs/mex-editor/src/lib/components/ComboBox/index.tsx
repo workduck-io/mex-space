@@ -1,13 +1,15 @@
+import React, { useEffect } from 'react'
+
 import { Icon } from '@iconify/react'
 import useMergedRef from '@react-hook/merged-ref'
 import { getPreventDefaultHandler, PortalBody, useEditorState } from '@udecode/plate'
-import React, { useEffect } from 'react'
 
 import { useComboboxControls } from '../../hooks/useComboboxControls'
 import { useComboboxIsOpen } from '../../hooks/useComboboxIsOpen'
 import { useComboboxStore } from '../../store/combobox'
 import { mog } from '../../utils'
 import { setElementPositionByRange } from '../../utils/setElementPositionByRange'
+
 import { ComboboxItem, ComboboxRoot, ItemCenterWrapper, ItemDesc, ItemRightIcons, ItemTitle } from './styled'
 import { ComboboxProps } from './types'
 
@@ -21,7 +23,7 @@ export const Combobox = ({ onSelectItem, onRenderItem, isSlash, portalElement }:
   const isOpen = useComboboxIsOpen()
   const search = useComboboxStore((state) => state.search)
 
-  const ref = React.useRef<any>(null) // eslint-disable-line @typescript-eslint/no -explicit-any
+  const ref = React.useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
   const editor = useEditorState()
 
   useEffect(() => {

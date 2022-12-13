@@ -1,9 +1,11 @@
-import { getBlockAbove, getPluginType, insertNodes, PlateEditor, TElement } from '@udecode/plate'
 import { useCallback } from 'react'
+
+import { getBlockAbove, getPluginType, insertNodes, PlateEditor, TElement } from '@udecode/plate'
 import { Editor, Transforms } from 'slate'
 
 import { IComboboxItem } from '../components/ComboBox/types'
 import { ComboboxKey, useComboboxStore } from '../store/combobox'
+
 import { useComboboxIsOpen } from './useComboboxIsOpen'
 
 /**

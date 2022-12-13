@@ -1,11 +1,13 @@
+import React from 'react'
+
 import { Icon } from '@iconify/react'
 import { useEditorRef } from '@udecode/plate'
-import React from 'react'
 import { Transforms } from 'slate'
 import { useFocused, useSelected } from 'slate-react'
 import styled from 'styled-components'
 
 import { useHotkeys } from '../../../hooks/useHotKeys'
+
 import { ILinkProps } from './QuickLink.types'
 import { SILink, SILinkRoot } from './QuickLinkElement.styles'
 

@@ -19,7 +19,7 @@ export const useElementOnChange = (elementComboType: ComboboxItemType, keys?: Ar
 
       const targetRange = useComboboxStore.getState().targetRange
       const parentPath = useMexEditorStore.getState().metaData.path
-      const type = getPluginType(editor, comboType.slateElementType!)
+      const type = getPluginType(editor, comboType.slateElementType as string)
 
       if (targetRange) {
         // console.log('useElementOnChange 1', { comboType, type });

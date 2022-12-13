@@ -2,6 +2,7 @@ import { isCollapsed, TEditor } from '@udecode/plate'
 import { Range } from 'slate'
 
 import { getTextFromTrigger } from '../../utils/getTextFromTrigger'
+
 import { ComboboxType } from './types'
 
 export default function getTextFromTriggers(editor: TEditor, keys: { [type: string]: ComboboxType }) {
