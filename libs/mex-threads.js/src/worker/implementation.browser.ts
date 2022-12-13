@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import { AbstractedWorkerAPI } from '../types/worker'
-import { mog } from '@workduck-io/mex-utils'
+import { mog } from '../utils'
 
 interface WorkerGlobalScope {
   addEventListener(eventName: string, listener: (event: Event) => void): void

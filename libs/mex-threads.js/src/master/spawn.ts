@@ -1,5 +1,5 @@
 import { Observable } from 'observable-fns'
-import { mog } from '@workduck-io/mex-utils'
+import { mog } from '../utils'
 
 import { deserialize } from '../common'
 import { createPromiseWithResolver } from '../promise'

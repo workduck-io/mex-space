@@ -3,14 +3,25 @@
   "sourceRoot": "libs/mex-threads.js/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "outputPath": "dist/libs/mex-utils",
-        "main": "libs/mex-utils/src/index.ts",
-        "tsConfig": "libs/mex-utils/tsconfig.lib.json"
+        "commands": ["rm -rf dist"]
       }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "libs/mex-threads.js",
+        "commands": ["yarn tsc -p tsconfig.lib.json", "cp package.json ../../dist/libs/mex-threads.js"],
+        "parallel": false
+      },
+      "dependsOn": [
+        {
+          "target": "clean",
+          "projects": "self"
+        }
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
