@@ -9,6 +9,9 @@
   "contributors": [
     "Mukul Mehta <mukul@workduck.io>"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/workduck-io"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/workduck-io/mex-space.git"
