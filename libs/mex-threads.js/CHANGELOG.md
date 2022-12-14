@@ -6,6 +6,8 @@
 
 - 2bb49a5: Add v1 of mex-threads.js library
 
+- 427a1d8: Exported sharedExpose and added publishConfig
+
 ## v1.0
 
 For newer versions of `threads`, visit the [releases page](https://github.com/andywer/threads.js/releases) on GitHub.
