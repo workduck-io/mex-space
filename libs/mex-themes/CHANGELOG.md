@@ -1,5 +1,11 @@
 # @workduck-io/mex-themes
 
+## 0.0.5
+
+### Patch Changes
+
+- eab07ea: Common ESLInt Config; Move dependencies around and remove unused #62
+
 ## 0.0.4
 
 ### Patch Changes

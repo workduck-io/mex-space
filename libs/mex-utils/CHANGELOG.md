@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.6
+
+### Patch Changes
+
+- eab07ea: Common ESLInt Config; Move dependencies around and remove unused #62
+
 ## 0.0.5
 
 ### Patch Changes
