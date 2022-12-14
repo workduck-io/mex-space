@@ -1,0 +1,55 @@
+{
+  "root": "libs/mex-threads.js",
+  "sourceRoot": "libs/mex-threads.js/src",
+  "projectType": "library",
+  "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rm -rf dist"]
+      }
+    },
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "libs/mex-threads.js",
+        "commands": ["yarn tsc -p tsconfig.lib.json", "cp package.json ../../dist/libs/mex-threads.js"],
+        "parallel": false
+      },
+      "dependsOn": [
+        {
+          "target": "clean",
+          "projects": "self"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-threads.js/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["vitest"],
+        "parallel": false,
+        "cwd": "libs/mex-threads.js"
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-threads.js:build",
+          "cp .npmrc dist/libs/mex-threads.js",
+          "cd dist/libs/mex-threads.js && npm publish"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}
