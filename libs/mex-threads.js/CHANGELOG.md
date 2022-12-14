@@ -1,16 +1,12 @@
 # Changelog - threads.js
 
-## 0.1.3
-
-### Patch Changes
-
-- 427a1d8: Exported sharedExpose and added publishConfig
-
 ## 0.1.2
 
 ### Patch Changes
 
 - 2bb49a5: Add v1 of mex-threads.js library
+
+- 427a1d8: Exported sharedExpose and added publishConfig
 
 ## v1.0
 
