@@ -19,7 +19,6 @@ import Implementation from './implementation'
 
 /** Returns `true` if this code is currently running in a worker. */
 export const isWorkerRuntime = Implementation.isWorkerRuntime
-
 let exposeCalled = false
 
 const activeSubscriptions = new Map<number, Subscription<any>>()
@@ -153,7 +152,8 @@ export function expose(exposed: WorkerFunction | WorkerModule<any>, e?: MessageP
   if (!Implementation.isWorkerRuntime()) {
     throw Error('expose() called in the master thread.')
   }
-  if (exposeCalled) {
+
+  if (exposeCalled && !e) {
     throw Error(
       'expose() called more than once. This is not possible. Pass an object to expose() if you want to expose multiple functions.'
     )
@@ -207,7 +207,6 @@ export function exposeShared(exposed: WorkerFunction | WorkerModule<any>) {
 
   _self.onconnect = function (e: MessageEvent) {
     const port = e.ports[0]
-
     expose(exposed, port)
   }
 }
