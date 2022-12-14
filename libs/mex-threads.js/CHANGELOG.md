@@ -1,5 +1,11 @@
 # Changelog - threads.js
 
+## 0.1.3
+
+### Patch Changes
+
+- 7c4c1c6: In a shared worker do not check for multiple invocations of expose()
+
 ## 0.1.2
 
 ### Patch Changes

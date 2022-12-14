@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-threads.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Shared Workers as simple as a function call; Fork of threads.js",
   "license": "MIT",
   "module": "index.js",
