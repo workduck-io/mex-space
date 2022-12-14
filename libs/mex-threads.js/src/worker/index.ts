@@ -153,7 +153,7 @@ export function expose(exposed: WorkerFunction | WorkerModule<any>, e?: MessageP
     throw Error('expose() called in the master thread.')
   }
 
-  if (exposeCalled && !!e) {
+  if (exposeCalled && !e) {
     throw Error(
       'expose() called more than once. This is not possible. Pass an object to expose() if you want to expose multiple functions.'
     )
