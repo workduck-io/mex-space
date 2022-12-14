@@ -1,5 +1,11 @@
 # Changelog - threads.js
 
+## 0.1.3
+
+### Patch Changes
+
+- 427a1d8: Exported sharedExpose and added publishConfig
+
 ## 0.1.2
 
 ### Patch Changes
