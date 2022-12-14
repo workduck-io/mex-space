@@ -198,6 +198,20 @@ export function expose(exposed: WorkerFunction | WorkerModule<any>, e?: MessageP
   }
 }
 
+interface SharedWorkerGlobalScope {
+  onconnect: (event: MessageEvent) => void
+}
+
+export function exposeShared(exposed: WorkerFunction | WorkerModule<any>) {
+  const _self: SharedWorkerGlobalScope = self as any
+
+  _self.onconnect = function (e: MessageEvent) {
+    const port = e.ports[0]
+
+    expose(exposed, port)
+  }
+}
+
 if (typeof self !== 'undefined' && typeof self.addEventListener === 'function' && Implementation.isWorkerRuntime()) {
   self.addEventListener('error', (event) => {
     // Post with some delay, so the master had some time to subscribe to messages
