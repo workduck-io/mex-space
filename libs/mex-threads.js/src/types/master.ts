@@ -5,6 +5,7 @@ import { Observable } from 'observable-fns'
 
 import { ObservablePromise } from '../observable-promise'
 import { $errors, $events, $terminate, $worker } from '../symbols'
+import { WorkerFunction, WorkerModule } from './worker'
 
 interface ObservableLikeSubscription {
   unsubscribe(): any
@@ -110,5 +111,18 @@ export interface WorkerMessageEvent<Data> {
 export interface WorkerTerminationEvent {
   type: WorkerEventType.termination
 }
+
+export type ArbitraryWorkerInterface = WorkerFunction &
+  WorkerModule<string> & { somekeythatisneverusedinproductioncode123: 'magicmarker123' }
+export type ArbitraryThreadType = FunctionThread<any, any> & ModuleThread<any>
+
+export type ExposedToThreadType<Exposed extends WorkerFunction | WorkerModule<any>> =
+  Exposed extends ArbitraryWorkerInterface
+    ? ArbitraryThreadType
+    : Exposed extends WorkerFunction
+    ? FunctionThread<Parameters<Exposed>, StripAsync<ReturnType<Exposed>>>
+    : Exposed extends WorkerModule<any>
+    ? ModuleThread<Exposed>
+    : never
 
 export type WorkerEvent = WorkerInternalErrorEvent | WorkerMessageEvent<any> | WorkerTerminationEvent

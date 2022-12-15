@@ -5,10 +5,9 @@ import { deserialize } from '../common'
 import { createPromiseWithResolver } from '../promise'
 import { $errors, $events, $terminate, $worker } from '../symbols'
 import {
-  FunctionThread,
-  ModuleThread,
+  ArbitraryWorkerInterface,
+  ExposedToThreadType,
   PrivateThreadProps,
-  StripAsync,
   Worker as TWorker,
   WorkerEvent,
   WorkerEventType,
@@ -21,19 +20,6 @@ import { WorkerFunction, WorkerModule } from '../types/worker'
 import { createProxyFunction, createProxyModule } from './invocation-proxy'
 
 type WorkerType = SharedWorker | TWorker
-
-type ArbitraryWorkerInterface = WorkerFunction &
-  WorkerModule<string> & { somekeythatisneverusedinproductioncode123: 'magicmarker123' }
-type ArbitraryThreadType = FunctionThread<any, any> & ModuleThread<any>
-
-export type ExposedToThreadType<Exposed extends WorkerFunction | WorkerModule<any>> =
-  Exposed extends ArbitraryWorkerInterface
-    ? ArbitraryThreadType
-    : Exposed extends WorkerFunction
-    ? FunctionThread<Parameters<Exposed>, StripAsync<ReturnType<Exposed>>>
-    : Exposed extends WorkerModule<any>
-    ? ModuleThread<Exposed>
-    : never
 
 type EventListenerType = 'message' | 'unhandledrejection'
 
