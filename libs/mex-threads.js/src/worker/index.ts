@@ -6,6 +6,7 @@ import {
   MasterJobCancelMessage,
   MasterJobRunMessage,
   MasterMessageType,
+  MasterTerminateMessage,
   SerializedError,
   WorkerInitMessage,
   WorkerJobErrorMessage,
@@ -27,6 +28,8 @@ const isMasterJobCancelMessage = (thing: any): thing is MasterJobCancelMessage =
   thing && thing.type === MasterMessageType.cancel
 const isMasterJobRunMessage = (thing: any): thing is MasterJobRunMessage =>
   thing && thing.type === MasterMessageType.run
+const isMasterTerminateMessage = (thing: any): thing is MasterTerminateMessage =>
+  thing && thing.type === MasterMessageType.terminate
 
 /**
  * There are issues with `is-observable` not recognizing zen-observable's instances.
@@ -173,6 +176,8 @@ export function expose(exposed: WorkerFunction | WorkerModule<any>, e?: MessageP
           subscription.unsubscribe()
           activeSubscriptions.delete(jobUID)
         }
+      } else if (isMasterTerminateMessage(messageData)) {
+        Implementation.terminate(e)
       }
     }, e)
     postFunctionInitMessage(e)
@@ -188,6 +193,8 @@ export function expose(exposed: WorkerFunction | WorkerModule<any>, e?: MessageP
           subscription.unsubscribe()
           activeSubscriptions.delete(jobUID)
         }
+      } else if (isMasterTerminateMessage(messageData)) {
+        Implementation.terminate(e)
       }
     }, e)
 

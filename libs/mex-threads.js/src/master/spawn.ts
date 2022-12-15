@@ -17,7 +17,7 @@ import {
 } from '../types/master'
 import { WorkerInitMessage, WorkerUncaughtErrorMessage } from '../types/messages'
 import { WorkerFunction, WorkerModule } from '../types/worker'
-import { createProxyFunction, createProxyModule } from './invocation-proxy'
+import { createProxyFunction, createProxyModule, sendTerminationMessageToSharedWorker } from './invocation-proxy'
 
 type WorkerType = SharedWorker | TWorker
 
@@ -120,8 +120,10 @@ function createSharedWorkerTerminator(worker: SharedWorker): {
   terminate: () => Promise<void>
 } {
   const [termination, resolver] = createPromiseWithResolver<void>()
+
+  console.log('Setting terminator for shared worker: ', { termination, resolver })
   const terminate = async () => {
-    mog('[MASTER] Terminating Shared Worker')
+    sendTerminationMessageToSharedWorker(worker)
     worker.port.close()
     resolver()
   }

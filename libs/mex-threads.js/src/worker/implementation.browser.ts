@@ -51,8 +51,15 @@ const subscribeToMasterMessages: AbstractedWorkerAPI['subscribeToMasterMessages'
   return unsubscribe
 }
 
+const terminate = (e?: MessagePort) => {
+  if (e) {
+    e.close()
+  }
+}
+
 export default {
   isWorkerRuntime,
   postMessageToMaster,
-  subscribeToMasterMessages
+  subscribeToMasterMessages,
+  terminate
 }
