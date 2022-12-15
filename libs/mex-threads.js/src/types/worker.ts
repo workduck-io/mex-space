@@ -2,7 +2,7 @@ type UnsubscribeFn = () => void
 
 export interface AbstractedWorkerAPI {
   isWorkerRuntime(): boolean
-  postMessageToMaster(message: any): void
+  postMessageToMaster(message: any, e?: MessagePort): void
   subscribeToMasterMessages(onMessage: (data: any) => void, e?: MessagePort): UnsubscribeFn
 }
 

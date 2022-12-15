@@ -10,7 +10,8 @@ export interface SerializedError {
 
 export enum MasterMessageType {
   cancel = 'cancel',
-  run = 'run'
+  run = 'run',
+  terminate = 'terminate'
 }
 
 export type MasterJobCancelMessage = {
@@ -23,6 +24,10 @@ export type MasterJobRunMessage = {
   uid: number
   method?: string
   args: any[]
+}
+
+export type MasterTerminateMessage = {
+  type: MasterMessageType.terminate
 }
 
 export type MasterSentMessage = MasterJobCancelMessage | MasterJobRunMessage

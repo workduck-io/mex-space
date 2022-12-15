@@ -4,9 +4,8 @@ import { mog } from '../utils'
 
 interface WorkerGlobalScope {
   addEventListener(eventName: string, listener: (event: Event) => void): void
-  postMessage(message: any): void
+  postMessage(message: any, e?: MessagePort): void
   removeEventListener(eventName: string, listener: (event: Event) => void): void
-  porter?: WorkerGlobalScope & { start?: () => void }
 }
 
 declare const self: WorkerGlobalScope
@@ -16,10 +15,12 @@ const isWorkerRuntime: AbstractedWorkerAPI['isWorkerRuntime'] = function isWorke
   return typeof self !== 'undefined' && !isWindowContext ? true : false
 }
 
-const postMessageToMaster: AbstractedWorkerAPI['postMessageToMaster'] = function postMessageToMaster(data) {
-  const porter = self.porter
-
-  porter?.postMessage(data)
+const postMessageToMaster: AbstractedWorkerAPI['postMessageToMaster'] = function postMessageToMaster(
+  data,
+  port?: MessagePort
+) {
+  if (!port) self.postMessage(data)
+  else port.postMessage(data)
 }
 
 const subscribeToMasterMessages: AbstractedWorkerAPI['subscribeToMasterMessages'] = function subscribeToMasterMessages(
@@ -31,25 +32,34 @@ const subscribeToMasterMessages: AbstractedWorkerAPI['subscribeToMasterMessages'
   }
 
   if (port) {
-    self.porter = port
     mog('[SHARED WORKER] Subscribing to master messages')
     port.addEventListener('message', messageHandler as EventListener)
     port.start()
   } else {
     mog('[WEB WORKER] Subscribing to master messages')
     self.addEventListener('message', messageHandler as EventListener)
-    self.porter = self
   }
 
   const unsubscribe = () => {
-    self.porter?.removeEventListener('message', messageHandler as EventListener)
+    if (port) {
+      port.removeEventListener('message', messageHandler as EventListener)
+    } else {
+      self.removeEventListener('message', messageHandler as EventListener)
+    }
   }
 
   return unsubscribe
 }
 
+const terminate = (e?: MessagePort) => {
+  if (e) {
+    e.close()
+  }
+}
+
 export default {
   isWorkerRuntime,
   postMessageToMaster,
-  subscribeToMasterMessages
+  subscribeToMasterMessages,
+  terminate
 }

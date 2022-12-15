@@ -18,6 +18,7 @@ import {
   WorkerJobStartMessage,
   WorkerMessageType
 } from '../types/messages'
+import { mog } from '../utils'
 
 let nextJobUID = 1
 
@@ -132,6 +133,20 @@ export function createProxyFunction<Args extends any[], ReturnType>(worker: Work
 
     return ObservablePromise.from(multicast(createObservableForJob<ReturnType>(worker, uid)))
   }) as any as ProxyableFunction<Args, ReturnType>
+}
+
+export function sendTerminationMessageToSharedWorker(worker: WorkerType) {
+  if (worker instanceof SharedWorker) {
+    mog('[MASTER] Terminating Shared Worker')
+    const terminateMessage = {
+      type: MasterMessageType.terminate
+    }
+    try {
+      worker.port.postMessage(terminateMessage)
+    } catch (error) {
+      mog('[MASTER] Could not terminate worker with error', { error })
+    }
+  }
 }
 
 export function createProxyModule<Methods extends ModuleMethods>(

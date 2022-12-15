@@ -5,10 +5,9 @@ import { deserialize } from '../common'
 import { createPromiseWithResolver } from '../promise'
 import { $errors, $events, $terminate, $worker } from '../symbols'
 import {
-  FunctionThread,
-  ModuleThread,
+  ArbitraryWorkerInterface,
+  ExposedToThreadType,
   PrivateThreadProps,
-  StripAsync,
   Worker as TWorker,
   WorkerEvent,
   WorkerEventType,
@@ -18,22 +17,9 @@ import {
 } from '../types/master'
 import { WorkerInitMessage, WorkerUncaughtErrorMessage } from '../types/messages'
 import { WorkerFunction, WorkerModule } from '../types/worker'
-import { createProxyFunction, createProxyModule } from './invocation-proxy'
+import { createProxyFunction, createProxyModule, sendTerminationMessageToSharedWorker } from './invocation-proxy'
 
 type WorkerType = SharedWorker | TWorker
-
-type ArbitraryWorkerInterface = WorkerFunction &
-  WorkerModule<string> & { somekeythatisneverusedinproductioncode123: 'magicmarker123' }
-type ArbitraryThreadType = FunctionThread<any, any> & ModuleThread<any>
-
-export type ExposedToThreadType<Exposed extends WorkerFunction | WorkerModule<any>> =
-  Exposed extends ArbitraryWorkerInterface
-    ? ArbitraryThreadType
-    : Exposed extends WorkerFunction
-    ? FunctionThread<Parameters<Exposed>, StripAsync<ReturnType<Exposed>>>
-    : Exposed extends WorkerModule<any>
-    ? ModuleThread<Exposed>
-    : never
 
 type EventListenerType = 'message' | 'unhandledrejection'
 
@@ -134,8 +120,10 @@ function createSharedWorkerTerminator(worker: SharedWorker): {
   terminate: () => Promise<void>
 } {
   const [termination, resolver] = createPromiseWithResolver<void>()
+
+  console.log('Setting terminator for shared worker: ', { termination, resolver })
   const terminate = async () => {
-    mog('[MASTER] Terminating Shared Worker')
+    sendTerminationMessageToSharedWorker(worker)
     worker.port.close()
     resolver()
   }
