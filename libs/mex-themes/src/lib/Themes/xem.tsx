@@ -69,9 +69,9 @@ export const xemLightTheme: ThemeTokens<string> = {
     app: '#ebebeb',
     sidebar: '#e6e6e6',
     modal: '#f0f0f0',
-    separator: '#525579',
+    separator: '#c3c3cb',
     highlight: '#525579',
-    code: '#525579',
+    code: '#c3c3cb',
     tooltip: {
       default: '#FFF',
       primary: '#FAA',

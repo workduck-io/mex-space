@@ -66,10 +66,6 @@ export interface SelectableButtonStyle<T> extends ButtonStyle<T> {
   selected: ButtonState<T>
 }
 
-interface CreateNew<T> extends Menu<T> {
-  button: ButtonStyle<T>
-}
-
 type SimpleIcon<T> = RequiredBaseElementStyle<T, 'iconColor'>
 type TextColor<T> = { textColor: T }
 
@@ -202,7 +198,7 @@ export interface LayoutTheme<
         icon: RequiredElementStyle<T, 'iconColor' | 'hover' | 'active' | 'selected'>
       }
     }
-    createNew: CreateNew<T>
+    createNew: ButtonStyle<T>
     infobar: {
       toolbar: GenericCard
       context: {
