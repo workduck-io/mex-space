@@ -1,5 +1,11 @@
 # Changelog - threads.js
 
+## 0.1.4
+
+### Patch Changes
+
+- 5580389: Fix issue with port in worker getting replaced in new tabs
+
 ## 0.1.3
 
 ### Patch Changes
