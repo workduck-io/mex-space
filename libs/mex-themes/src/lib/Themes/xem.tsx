@@ -3,10 +3,9 @@ import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
 export const xemTheme: ThemeTokens<string> = {
-  // Palettes
   surfaces: {
     s: {
-      0: '#181b20', // Darkest
+      0: '#181b20',
       1: '#292d30',
       2: '#2f353a',
       3: '#40444B',
@@ -24,6 +23,10 @@ export const xemTheme: ThemeTokens<string> = {
       default: '#40444B',
       primary: '#4E525A',
       info: '#40444B'
+    },
+    scrollbar: {
+      thumb: '#808080',
+      thumbHover: '#A9A9A9'
     }
   },
   colors: {
@@ -73,9 +76,13 @@ export const xemLightTheme: ThemeTokens<string> = {
     highlight: '#525579',
     code: '#c3c3cb',
     tooltip: {
-      default: '#FFF',
-      primary: '#FAA',
+      default: '#FFFFFF',
+      primary: '#FFAFAF',
       info: '#FAFAFA'
+    },
+    scrollbar: {
+      thumb: '#808080',
+      thumbHover: '#A9A9A9'
     }
   },
   colors: {

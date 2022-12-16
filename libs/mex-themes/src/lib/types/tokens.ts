@@ -52,6 +52,10 @@ interface Surfaces<T, Hex = T> {
     primary: Hex
     info: Hex
   }
+  scrollbar: {
+    thumb: Hex
+    thumbHover: Hex
+  }
 }
 
 interface ColorPalette<T, Hex = T> {

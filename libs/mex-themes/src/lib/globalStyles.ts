@@ -55,7 +55,7 @@ export const getGlobalStylesAndTheme = (
     surface: tokens.surfaces.s[level]
   })
 
-  const modal = card(3)
+  const modal = card(2)
 
   const menuItem = (level: number, usePrimary = true): MenuItem<string> => ({
     surface: 'transparent',
@@ -277,11 +277,11 @@ export const getGlobalStylesAndTheme = (
   })
 
   const shortcutStyle = {
-    surface: tokens.surfaces.s[1],
+    surface: tokens.surfaces.s[2],
     iconColor: tokens.colors.primary.default,
-    border: '1px solid ' + tokens.colors.primary.default,
+    border: '1px solid ' + tokens.surfaces.s[3],
     hover: {
-      surface: tokens.surfaces.s[2],
+      surface: tokens.surfaces.s[3],
       iconColor: tokens.colors.primary.hover,
       border: '1px solid ' + tokens.colors.primary.default
     }
@@ -482,7 +482,18 @@ export const getGlobalStylesAndTheme = (
             surface: tokens.surfaces.s[0],
             iconColor: tokens.colors.primary.default
           },
-          controls: button(0, true)
+          controls: {
+            ...button(0, false),
+            iconColor: tokens.colors.secondary,
+            hover: {
+              ...button(0, false).hover,
+              iconColor: tokens.colors.secondary
+            },
+            active: {
+              ...button(0, false).active,
+              iconColor: tokens.colors.secondary
+            }
+          }
         },
         ilink: {
           preview: {

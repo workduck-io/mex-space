@@ -3,10 +3,9 @@ import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
 export const mexTheme: ThemeTokens<string> = {
-  // Palettes
   surfaces: {
     s: {
-      0: '#191B2B', // Darkest
+      0: '#191B2B',
       1: '#26283e',
       2: '#2b2e4a',
       3: '#363959',
@@ -24,6 +23,10 @@ export const mexTheme: ThemeTokens<string> = {
       default: '#363959',
       primary: '#525579',
       info: '#363959'
+    },
+    scrollbar: {
+      thumb: '#525579',
+      thumbHover: '#878BAE'
     }
   },
   colors: {
@@ -74,8 +77,12 @@ export const mexLightTheme: ThemeTokens<string> = {
     code: '#525579',
     tooltip: {
       default: '#FFF',
-      primary: '#ccF',
+      primary: '#cfcfff',
       info: '#f8f9fc'
+    },
+    scrollbar: {
+      thumb: '#8080a0',
+      thumbHover: '#878BAE'
     }
   },
   colors: {
