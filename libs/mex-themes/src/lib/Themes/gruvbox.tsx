@@ -51,7 +51,7 @@ export const gruvboxTheme: ThemeTokens<string> = {
     heading: '#f9f5d7',
     default: '#ebdbb2',
     subheading: '#f2e5bc',
-    fade: '#d5c4a1',
+    fade: '#9d9481',
     disabled: '#a89984',
     accent: '#fe8019',
     code: '#a89984'

@@ -55,7 +55,7 @@ export const getGlobalStylesAndTheme = (
     surface: tokens.surfaces.s[level]
   })
 
-  const modal = card(2)
+  const modal = card(1)
 
   const menuItem = (level: number, usePrimary = true): MenuItem<string> => ({
     surface: 'transparent',
@@ -63,11 +63,11 @@ export const getGlobalStylesAndTheme = (
     iconColor: tokens.text.default,
     hover: {
       surface: tokens.surfaces.s[level + 2],
-      textColor: tokens.text.heading
+      textColor: tokens.colors.primary.default
     },
     active: {
       surface: tokens.surfaces.s[level + 3],
-      textColor: tokens.text.heading
+      textColor: tokens.colors.primary.active
     },
     disabled: {
       surface: 'transparent',
@@ -334,9 +334,9 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[4],
+            surface: tokens.surfaces.s[3],
             selected: {
-              surface: tokens.surfaces.s[5]
+              surface: tokens.surfaces.s[4]
             }
           },
           icon: {
@@ -479,7 +479,7 @@ export const getGlobalStylesAndTheme = (
         todo: {
           self: defaultText,
           checkbox: {
-            surface: tokens.surfaces.s[0],
+            surface: 'transparent',
             iconColor: tokens.colors.primary.default
           },
           controls: {

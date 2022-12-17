@@ -29,7 +29,8 @@ export const TooltipShortcut = styled.span`
   }
   ${ShortcutBox} {
     font-size: 0.75rem;
-    background-color: ${({ theme }) => theme.tokens.colors.primary.default};
+    background-color: ${({ theme }) => theme.tokens.colors.primary.hover};
     color: ${({ theme }) => theme.tokens.colors.primary.text};
+    box-shadow: none;
   }
 `
