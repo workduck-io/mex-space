@@ -78,7 +78,11 @@ export const Provider = ({
   })
 
   useEffect(() => {
-    if (globalStyle) appendGlobalStyle(globalStyle)
+    // console.log('global styles')
+    if (globalStyle) {
+      // console.log('global styles found', { globalStyle })
+      appendGlobalStyle(globalStyle)
+    }
   }, [globalStyle])
 
   const changeTheme = (themeId: string, mode?: ThemeMode) => {
@@ -100,6 +104,8 @@ export const Provider = ({
       return newPerf
     })
   }
+
+  // console.log('Rider provider', { currentTheme, pref })
 
   return (
     <ThemeProvider theme={currentTheme}>
@@ -153,11 +159,13 @@ export const ManagedProvider = ({
       }),
     [tokens, legacySupport, globalInjection]
   )
-  if (globalInjection) {
-    useEffect(() => {
+
+  useEffect(() => {
+    if (globalInjection) {
       if (style) appendGlobalStyle(style)
-    }, [style])
-  }
+    }
+  }, [style, globalInjection])
+
   if (!WrapperStyle) {
     // Note that here the wrapper styles could not be generated, which is not a error
     // console.error('Could not generate wrapper styles')
