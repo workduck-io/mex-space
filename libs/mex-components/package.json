@@ -1,6 +1,6 @@
 {
   "name": "@workduck-io/mex-components",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io",
     "files": [
@@ -15,7 +15,7 @@
     "@emoji-mart/data": "^1.0.6",
     "@emoji-mart/react": "^1.0.1",
     "@tippyjs/react": "^4.2.6",
-    "@workduck-io/mex-themes": "^0.0.6",
+    "@workduck-io/mex-themes": "^0.0.7",
     "core-js": "^3.21.0",
     "deepmerge": "^4.2.2",
     "emoji-mart": "^5.2.2",
