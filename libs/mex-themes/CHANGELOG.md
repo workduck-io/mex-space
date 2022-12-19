@@ -1,5 +1,11 @@
 # @workduck-io/mex-themes
 
+## 0.0.6
+
+### Patch Changes
+
+- 6ec5766: Tweaks to theming
+
 ## 0.0.5
 
 ### Patch Changes
