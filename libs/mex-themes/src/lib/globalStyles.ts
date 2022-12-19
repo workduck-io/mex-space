@@ -55,18 +55,18 @@ export const getGlobalStylesAndTheme = (
     surface: tokens.surfaces.s[level]
   })
 
-  const modal = card(3)
+  const modal = card(1)
 
-  const menuItem = (level: number): MenuItem<string> => ({
+  const menuItem = (level: number, usePrimary = true): MenuItem<string> => ({
     surface: 'transparent',
     textColor: tokens.text.default,
     iconColor: tokens.text.default,
     hover: {
-      surface: tokens.surfaces.s[level + 1],
-      textColor: tokens.colors.primary.hover
+      surface: tokens.surfaces.s[level + 2],
+      textColor: tokens.colors.primary.default
     },
     active: {
-      surface: tokens.surfaces.s[level + 2],
+      surface: tokens.surfaces.s[level + 3],
       textColor: tokens.colors.primary.active
     },
     disabled: {
@@ -74,14 +74,14 @@ export const getGlobalStylesAndTheme = (
       textColor: tokens.text.disabled
     },
     selected: {
-      surface: tokens.surfaces.s[level + 2],
-      textColor: tokens.colors.primary.active
+      surface: usePrimary ? tokens.colors.primary.default : tokens.surfaces.s[level + 3],
+      textColor: usePrimary ? tokens.colors.primary.text : tokens.text.heading
     }
   })
 
-  const menu = (level: number): Menu<string> => ({
-    item: menuItem(level),
-    menu: card(level + 1)
+  const menu = (level: number, usePrimary = true): Menu<string> => ({
+    item: menuItem(level, usePrimary),
+    menu: card(level)
   })
 
   const primaryButton: ButtonStyle<string> = {
@@ -112,7 +112,7 @@ export const getGlobalStylesAndTheme = (
   ): ButtonStyle<string> | SelectableButtonStyle<string> => {
     const style = {
       surface: transparent ? 'transparent' : tokens.surfaces.s[level + 2],
-      textColor: tokens.colors.primary.default,
+      textColor: tokens.text.default,
       iconColor: tokens.colors.primary.default,
       hover: {
         surface: tokens.surfaces.s[level + 2],
@@ -194,7 +194,7 @@ export const getGlobalStylesAndTheme = (
   }
 
   const defaultTooltip = {
-    surface: tokens.surfaces.s[1],
+    surface: tokens.surfaces.s[2],
     textColor: tokens.text.default
   }
 
@@ -205,10 +205,10 @@ export const getGlobalStylesAndTheme = (
 
   const infoTooltip = {
     textColor: tokens.text.fade,
-    surface: tokens.surfaces.s[1]
+    surface: tokens.surfaces.s[2]
   }
   const errorTooltip = {
-    surface: tokens.surfaces.s[1],
+    surface: tokens.surfaces.s[2],
     iconColor: tokens.colors.red,
     textColor: tokens.text.default
   }
@@ -259,6 +259,7 @@ export const getGlobalStylesAndTheme = (
     ...card(level + 1),
     ...defaultText,
     iconColor: tokens.colors.fade,
+    border: '1px solid transparent',
     hover: {
       surface: tokens.surfaces.s[level + 2],
       iconColor: tokens.colors.primary.hover
@@ -276,11 +277,11 @@ export const getGlobalStylesAndTheme = (
   })
 
   const shortcutStyle = {
-    surface: tokens.surfaces.s[1],
+    surface: tokens.surfaces.s[2],
     iconColor: tokens.colors.primary.default,
-    border: '1px solid ' + tokens.colors.primary.default,
+    border: '1px solid ' + tokens.surfaces.s[3],
     hover: {
-      surface: tokens.surfaces.s[2],
+      surface: tokens.surfaces.s[3],
       iconColor: tokens.colors.primary.hover,
       border: '1px solid ' + tokens.colors.primary.default
     }
@@ -333,9 +334,9 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[1],
+            surface: tokens.surfaces.s[3],
             selected: {
-              surface: tokens.surfaces.s[2]
+              surface: tokens.surfaces.s[4]
             }
           },
           icon: {
@@ -352,10 +353,7 @@ export const getGlobalStylesAndTheme = (
           }
         }
       },
-      createNew: {
-        button: primaryButton,
-        ...menu(0)
-      },
+      createNew: primaryButton,
       infobar: {
         toolbar: card(0),
         context: {
@@ -414,8 +412,8 @@ export const getGlobalStylesAndTheme = (
         title: headingText,
         button: button(0),
         balloonToolbar: {
-          wrapper: card(1),
-          button: button(1, true)
+          wrapper: card(2),
+          button: button(2, true)
         }
       },
 
@@ -481,14 +479,25 @@ export const getGlobalStylesAndTheme = (
         todo: {
           self: defaultText,
           checkbox: {
-            surface: tokens.surfaces.s[0],
+            surface: 'transparent',
             iconColor: tokens.colors.primary.default
           },
-          controls: button(0, true)
+          controls: {
+            ...button(0, false),
+            iconColor: tokens.colors.secondary,
+            hover: {
+              ...button(0, false).hover,
+              iconColor: tokens.colors.secondary
+            },
+            active: {
+              ...button(0, false).active,
+              iconColor: tokens.colors.secondary
+            }
+          }
         },
         ilink: {
           preview: {
-            wrapper: card(1),
+            wrapper: card(2),
             // content: genericElementStyle,
             header: headingText,
             close: {
@@ -505,13 +514,13 @@ export const getGlobalStylesAndTheme = (
         },
         weblink: primaryText,
         blockquote: {
-          ...card(1),
+          ...card(2),
           ...defaultText,
           borderLeft: '2px solid ' + tokens.colors.fade
         },
-        codeblock: card(1),
+        codeblock: card(2),
         table: {
-          wrapper: card(1),
+          wrapper: card(2),
           tr: defaultText,
           td: defaultText,
           th: headingText
@@ -519,21 +528,21 @@ export const getGlobalStylesAndTheme = (
         image: {
           // image: genericElementStyle,
           caption: {
-            ...card(1),
+            ...card(2),
             ...defaultText
           }
         },
-        webEmbed: embedViewStyle(1),
-        canvas: embedViewStyle(1),
+        webEmbed: embedViewStyle(2),
+        canvas: embedViewStyle(2),
         qaBlock: {
-          ...card(1),
+          ...card(2),
           ...defaultText,
           border: '1px solid ' + tokens.colors.fade,
           iconColor: tokens.colors.fade
         }
       },
       combobox: {
-        ...menu(0),
+        ...menu(0, false),
         groupLabel: {
           textColor: tokens.text.default,
           iconColor: tokens.text.default
@@ -710,7 +719,7 @@ export const getGlobalStylesAndTheme = (
         success: defaultTooltip,
         error: errorTooltip
       },
-      contextMenu: menu(1)
+      contextMenu: menu(2)
     },
 
     kanban: {

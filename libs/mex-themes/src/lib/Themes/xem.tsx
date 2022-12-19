@@ -3,10 +3,9 @@ import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
 export const xemTheme: ThemeTokens<string> = {
-  // Palettes
   surfaces: {
     s: {
-      0: '#181b20', // Darkest
+      0: '#181b20',
       1: '#292d30',
       2: '#2f353a',
       3: '#40444B',
@@ -14,8 +13,8 @@ export const xemTheme: ThemeTokens<string> = {
       5: '#646A75',
       6: '#8E9096'
     },
-    app: '#181b20',
-    sidebar: '#292d30',
+    app: '#292d30',
+    sidebar: '#181b20',
     modal: '#2f353a',
     separator: '#4E525A',
     highlight: '#4E525A',
@@ -24,6 +23,10 @@ export const xemTheme: ThemeTokens<string> = {
       default: '#40444B',
       primary: '#4E525A',
       info: '#40444B'
+    },
+    scrollbar: {
+      thumb: '#808080',
+      thumbHover: '#A9A9A9'
     }
   },
   colors: {
@@ -66,16 +69,20 @@ export const xemLightTheme: ThemeTokens<string> = {
       5: '#ffffff',
       6: '#ffffff'
     },
-    app: '#e6e6e6',
-    sidebar: '#ebebeb',
+    app: '#ebebeb',
+    sidebar: '#e6e6e6',
     modal: '#f0f0f0',
-    separator: '#525579',
+    separator: '#c3c3cb',
     highlight: '#525579',
-    code: '#525579',
+    code: '#c3c3cb',
     tooltip: {
-      default: '#FFF',
-      primary: '#FAA',
+      default: '#FFFFFF',
+      primary: '#FFAFAF',
       info: '#FAFAFA'
+    },
+    scrollbar: {
+      thumb: '#808080',
+      thumbHover: '#A9A9A9'
     }
   },
   colors: {

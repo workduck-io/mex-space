@@ -3,10 +3,9 @@ import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
 export const mexTheme: ThemeTokens<string> = {
-  // Palettes
   surfaces: {
     s: {
-      0: '#191B2B', // Darkest
+      0: '#191B2B',
       1: '#26283e',
       2: '#2b2e4a',
       3: '#363959',
@@ -14,8 +13,8 @@ export const mexTheme: ThemeTokens<string> = {
       5: '#878BAE',
       6: '#8F94C1'
     },
-    app: '#191B2B',
-    sidebar: '#1F2138',
+    app: '#1F2138',
+    sidebar: '#191B2B',
     modal: '#1F2138',
     separator: '#525579',
     highlight: '#525579',
@@ -24,6 +23,10 @@ export const mexTheme: ThemeTokens<string> = {
       default: '#363959',
       primary: '#525579',
       info: '#363959'
+    },
+    scrollbar: {
+      thumb: '#525579',
+      thumbHover: '#878BAE'
     }
   },
   colors: {
@@ -66,16 +69,20 @@ export const mexLightTheme: ThemeTokens<string> = {
       5: '#ffffff',
       6: '#ffffff'
     },
-    app: '#DFE0EE',
-    sidebar: '#B9C1D6',
+    app: '#e6e8f4',
+    sidebar: '#DFE0EE',
     modal: '#F8F9FC',
     separator: '#525579',
     highlight: '#525579',
     code: '#525579',
     tooltip: {
       default: '#FFF',
-      primary: '#ccF',
+      primary: '#cfcfff',
       info: '#f8f9fc'
+    },
+    scrollbar: {
+      thumb: '#8080a0',
+      thumbHover: '#878BAE'
     }
   },
   colors: {
