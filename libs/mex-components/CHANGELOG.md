@@ -1,5 +1,13 @@
 # @workduck-io/mex-components
 
+## 0.0.21
+
+### Patch Changes
+
+- 6ec5766: Tweaks to theming
+- Updated dependencies [6ec5766]
+  - @workduck-io/mex-themes@0.0.6
+
 ## 0.0.20
 
 ### Patch Changes
