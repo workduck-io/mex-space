@@ -1,5 +1,13 @@
 # @workduck-io/mex-components
 
+## 0.0.22
+
+### Patch Changes
+
+- ffeaf94: Fix mex-new vars
+- Updated dependencies [ffeaf94]
+  - @workduck-io/mex-themes@0.0.7
+
 ## 0.0.21
 
 ### Patch Changes
