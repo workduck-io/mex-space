@@ -3,7 +3,7 @@ import { ThemeTokens } from '../types/tokens'
 import { shadows } from './shadows'
 
 export const mexThemeNew: ThemeTokens<string> = {
-  // Palettes
+  // THIS EXISTS ONLY FOR PATH OF COLORS, NOT THE ACTUAL COLORS
   surfaces: {
     s: {
       0: '#191B2B', // Darkest
@@ -24,6 +24,10 @@ export const mexThemeNew: ThemeTokens<string> = {
       default: '#525579',
       primary: '#525',
       info: '#525579'
+    },
+    scrollbar: {
+      thumb: '#525579',
+      thumbHover: '#878BAE'
     }
   },
   colors: {
