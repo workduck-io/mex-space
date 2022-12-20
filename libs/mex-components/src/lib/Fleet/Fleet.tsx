@@ -92,7 +92,7 @@ export const Fleet = ({ sections, isOpen, onClose, onOpen }: FleetProps) => {
                   icon={section.icon}
                   width="40"
                   height="40"
-                  color={isActive ? theme.colors.primary : theme.colors.text.default}
+                  color={isActive ? theme.tokens.colors.primary.default : theme.tokens.text.default}
                 />
               </AnimateZoom>
               <FleetSectionTitle>{section?.name}</FleetSectionTitle>
