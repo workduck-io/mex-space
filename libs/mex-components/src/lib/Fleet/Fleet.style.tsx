@@ -1,6 +1,5 @@
 import Modal from 'react-modal'
 
-import { transparentize } from 'polished'
 import styled, { css } from 'styled-components'
 
 export const FleetStyled = styled.section<{ index: number; total: number }>`
@@ -21,8 +20,8 @@ export const FleetStyled = styled.section<{ index: number; total: number }>`
         border-radius: ${({ theme }) => theme.borderRadius.large};
         top: 0;
         left: 0;
-        box-shadow: inset 0 0 50px ${({ theme }) => theme.colors.gray[10]};
-        background-color: ${({ theme }) => transparentize(0, theme.colors.background.app)};
+        box-shadow: ${({ theme }) => theme.tokens.shadow.large};
+        background-color: ${({ theme }) => theme.tokens.surfaces.modal};
         transform: translateX(${index * 100}%);
         transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
       }
@@ -65,11 +64,11 @@ export const FleetSection = styled.div<{ highlight?: boolean }>`
   ${({ highlight, theme }) =>
     highlight
       ? css`
-          color: ${theme.colors.primary};
+          color: ${theme.tokens.colors.primary.default};
         `
       : css`
           opacity: 0.5;
-          color: ${theme.colors.text.default};
+          color: ${theme.tokens.text.default};
         `}
   gap: ${({ theme }) => theme.spacing.medium};
 `
