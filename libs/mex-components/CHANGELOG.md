@@ -1,5 +1,11 @@
 # @workduck-io/mex-components
 
+## 0.0.23
+
+### Patch Changes
+
+- 9e66d76: Style fleet
+
 ## 0.0.22
 
 ### Patch Changes
