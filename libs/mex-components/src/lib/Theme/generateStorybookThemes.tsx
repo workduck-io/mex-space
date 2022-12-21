@@ -8,11 +8,13 @@ export const storybookThemes = defaultThemes
       {
         id: t.id,
         name: t.name + ' dark',
+        mode: 'dark',
         data: t.data['dark']
       },
       {
         id: t.id,
         name: t.name + ' light',
+        mode: 'light',
         data: t.data['light']
       }
     ]
@@ -22,7 +24,7 @@ export const storybookThemes = defaultThemes
 export const providerFn = ({ theme, children }) => {
   // console.log({ theme })
   return (
-    <ManagedProvider legacySupport={false} globalInjection tokens={theme.data}>
+    <ManagedProvider mode={theme.mode} legacySupport={false} globalInjection tokens={theme.data}>
       <GlobalStyle />
       {children}
     </ManagedProvider>

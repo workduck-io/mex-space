@@ -21,16 +21,12 @@ Base.args = {
   icon,
   title: 'Button',
   size: 24,
-  transparent: false,
-  highlight: false,
   disabled: false
 }
 
 export const AllButtons: ComponentStory<typeof IconButton> = () => (
   <Rows>
     <IconButton title="Hello" icon={icon} />
-    <IconButton title="Hello" icon={icon} highlight />
-    <IconButton title="Hello" icon={icon} transparent={false} />
     <IconButton title="Hello" icon={icon} size={64} />
   </Rows>
 )
