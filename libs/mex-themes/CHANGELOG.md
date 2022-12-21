@@ -1,5 +1,11 @@
 # @workduck-io/mex-themes
 
+## 0.0.9
+
+### Patch Changes
+
+- 4e9f23a: Fixes to build
+
 ## 0.0.8
 
 ### Patch Changes
