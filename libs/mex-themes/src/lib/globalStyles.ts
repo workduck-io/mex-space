@@ -1,3 +1,4 @@
+import { transparentize } from 'polished'
 import { css } from 'styled-components'
 
 import {
@@ -11,7 +12,8 @@ import {
   Menu,
   MenuItem,
   MexTheme,
-  SelectableButtonStyle
+  SelectableButtonStyle,
+  ThemeMode
 } from './types/theme'
 import { LayoutTokens, ThemeTokens } from './types/tokens'
 import { GLOBAL_STYLE_ID } from './defaults'
@@ -38,6 +40,7 @@ interface GeneratorOptions {
 
 export const getGlobalStylesAndTheme = (
   tokens: ThemeTokens<string>,
+  mode: ThemeMode,
   options?: GeneratorOptions
 ): { theme: MexTheme; cssVarMap: Record<CssVariable, string> } => {
   const app = {
@@ -62,11 +65,11 @@ export const getGlobalStylesAndTheme = (
     textColor: tokens.text.default,
     iconColor: tokens.text.default,
     hover: {
-      surface: tokens.surfaces.s[level + 2],
+      surface: mode === 'dark' ? tokens.surfaces.s[level + 2] : transparentize(0.9, tokens.colors.primary.default),
       textColor: tokens.colors.primary.default
     },
     active: {
-      surface: tokens.surfaces.s[level + 3],
+      surface: mode === 'dark' ? tokens.surfaces.s[level + 3] : transparentize(0.8, tokens.colors.primary.default),
       textColor: tokens.colors.primary.active
     },
     disabled: {
@@ -74,7 +77,11 @@ export const getGlobalStylesAndTheme = (
       textColor: tokens.text.disabled
     },
     selected: {
-      surface: usePrimary ? tokens.colors.primary.default : tokens.surfaces.s[level + 3],
+      surface: usePrimary
+        ? tokens.colors.primary.default
+        : mode === 'dark'
+        ? tokens.surfaces.s[level + 3]
+        : transparentize(0.8, tokens.colors.primary.default),
       textColor: usePrimary ? tokens.colors.primary.text : tokens.text.heading
     }
   })
@@ -334,9 +341,9 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[2],
+            surface: mode === 'dark' ? tokens.surfaces.s[2] : transparentize(0.75, tokens.text.fade),
             selected: {
-              surface: tokens.surfaces.s[2]
+              surface: mode === 'dark' ? tokens.surfaces.s[3] : transparentize(0.85, tokens.text.fade)
             }
           },
           icon: {
@@ -842,8 +849,8 @@ interface GlobalStyleOptions extends GeneratorOptions {
   wrapperStyles?: boolean
 }
 
-export const generateGlobalStyles = (tokens: ThemeTokens<string>, options?: GlobalStyleOptions) => {
-  const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens, options)
+export const generateGlobalStyles = (tokens: ThemeTokens<string>, mode: ThemeMode, options?: GlobalStyleOptions) => {
+  const { theme, cssVarMap } = getGlobalStylesAndTheme(tokens, mode, options)
   const varStr = Object.entries(cssVarMap)
     .map(([key, value]) => {
       return `${key}: ${value};`

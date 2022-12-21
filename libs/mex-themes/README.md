@@ -30,7 +30,7 @@ function ThemeSwitcher() {
       </p>
       {themes.map((theme) =>
         (['light', 'dark'] as ThemeMode[]).map((mode) => (
-          <ManagedProvider theme={theme.data[mode]}>
+          <ManagedProvider theme={theme.data[mode]} mode={mode}>
             <MyWrapper key={theme.id}>
               <h1>
                 {theme.id} {mode}
