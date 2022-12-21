@@ -22,12 +22,14 @@ export const InfoboxButton = styled.div`
 
 export const InfoboxTip = styled.div`
   font-size: 0.9rem;
+  color: ${({ theme }) => theme.tokens.text.fade};
   h1 {
     color: ${({ theme }) => theme.tokens.text.accent};
     margin: ${({ theme }) => theme.spacing.small} 0;
     font-size: 1rem;
   }
   p {
+    color: ${({ theme }) => theme.tokens.text.fade};
     font-size: 0.9rem;
     margin: ${({ theme }) => theme.spacing.small} 0;
   }

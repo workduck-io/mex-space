@@ -73,9 +73,13 @@ export const Provider = ({
     return themeTokens
   }, [pref, availableThemes])
 
-  const { theme: currentTheme, style: globalStyle } = generateGlobalStyles(tokens?.data[pref.mode] ?? mexThemeNew, {
-    antiLegacy: !legacySupport
-  })
+  const { theme: currentTheme, style: globalStyle } = generateGlobalStyles(
+    tokens?.data[pref.mode] ?? mexThemeNew,
+    pref.mode,
+    {
+      antiLegacy: !legacySupport
+    }
+  )
 
   useEffect(() => {
     // console.log('global styles')
@@ -123,6 +127,12 @@ interface ManagedProviderProps {
   tokens: ThemeTokens<string>
 
   /**
+   * Mode to display for this provider
+   * @default dark
+   */
+  mode: ThemeMode
+
+  /**
    * If false, the legacy theme will be set to antiLegacy
    * to facilitate removal of the legacy theme
    */
@@ -143,6 +153,7 @@ const DIv = styled.div<{ styl: FlattenSimpleInterpolation }>`
 
 export const ManagedProvider = ({
   tokens,
+  mode = 'dark',
   children,
   legacySupport = true,
   globalInjection = false
@@ -153,7 +164,7 @@ export const ManagedProvider = ({
     wrapperStyle: WrapperStyle
   } = useMemo(
     () =>
-      generateGlobalStyles(tokens, {
+      generateGlobalStyles(tokens, mode, {
         wrapperStyles: !globalInjection,
         antiLegacy: !legacySupport
       }),

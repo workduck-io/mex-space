@@ -25,7 +25,7 @@ const buttonStyles = (shadowStyle: ShadowStyle, large: boolean) => css`
   line-height: 1.15;
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius.small};
-  font-size: ${({ theme }) => (large ? '1.5rem' : theme.app.text.size)};
+  font-size: ${({ theme }) => (large ? '1.2rem' : theme.app.text.size)};
   width: max-content;
   gap: ${({ theme }) => theme.spacing.tiny};
 
