@@ -334,9 +334,9 @@ export const getGlobalStylesAndTheme = (
         // wrapper: {},
         item: {
           wrapper: {
-            surface: tokens.surfaces.s[3],
+            surface: tokens.surfaces.s[2],
             selected: {
-              surface: tokens.surfaces.s[4]
+              surface: tokens.surfaces.s[2]
             }
           },
           icon: {
@@ -345,10 +345,10 @@ export const getGlobalStylesAndTheme = (
               iconColor: tokens.colors.primary.hover
             },
             active: {
-              iconColor: tokens.colors.primary.default
+              iconColor: tokens.text.heading
             },
             selected: {
-              iconColor: tokens.colors.primary.default
+              iconColor: tokens.text.heading
             }
           }
         }
