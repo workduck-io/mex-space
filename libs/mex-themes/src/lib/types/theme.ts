@@ -120,7 +120,7 @@ export interface ShortcutStyle<T> {
 
 type TooltipStyle<T> = Card<T> & TextColor<T>
 
-interface InputStyle<T> extends RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor'> {
+interface InputStyle<T> extends RequiredBaseElementStyle<T, 'surface' | 'textColor' | 'iconColor' | 'border'> {
   hover: RequiredBaseElementStyle<T, 'surface' | 'iconColor'>
   active: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'border'>
   disabled: RequiredBaseElementStyle<T, 'surface' | 'iconColor' | 'textColor'>

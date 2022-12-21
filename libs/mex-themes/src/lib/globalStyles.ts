@@ -270,10 +270,13 @@ export const getGlobalStylesAndTheme = (
     ...card(level + 1),
     ...defaultText,
     iconColor: tokens.colors.fade,
-    border: '1px solid transparent',
+    border: `1px solid ${
+      mode === 'dark' ? tokens.surfaces.s[level + 2] : transparentize(0.5, tokens.surfaces.separator)
+    }`,
     hover: {
       surface: tokens.surfaces.s[level + 2],
-      iconColor: tokens.colors.primary.hover
+      iconColor: tokens.colors.primary.hover,
+      border: `1px solid ${mode === 'dark' ? tokens.colors.primary.hover : tokens.colors.primary.default}`
     },
     active: {
       surface: tokens.surfaces.s[level + 3],
@@ -347,7 +350,7 @@ export const getGlobalStylesAndTheme = (
           wrapper: {
             surface: mode === 'dark' ? tokens.surfaces.s[2] : transparentize(0.75, tokens.text.fade),
             selected: {
-              surface: mode === 'dark' ? tokens.surfaces.s[3] : transparentize(0.85, tokens.text.fade)
+              surface: tokens.surfaces.s[3]
             }
           },
           icon: {
