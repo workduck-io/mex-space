@@ -66,15 +66,18 @@ export const getGlobalStylesAndTheme = (
     iconColor: tokens.text.default,
     hover: {
       surface: mode === 'dark' ? tokens.surfaces.s[level + 2] : transparentize(0.9, tokens.colors.primary.default),
-      textColor: tokens.colors.primary.default
+      textColor: tokens.colors.primary.default,
+      iconColor: tokens.colors.primary.default
     },
     active: {
       surface: mode === 'dark' ? tokens.surfaces.s[level + 3] : transparentize(0.8, tokens.colors.primary.default),
-      textColor: tokens.colors.primary.active
+      textColor: tokens.colors.primary.active,
+      iconColor: tokens.colors.primary.active
     },
     disabled: {
       surface: 'transparent',
-      textColor: tokens.text.disabled
+      textColor: tokens.text.disabled,
+      iconColor: tokens.text.disabled
     },
     selected: {
       surface: usePrimary
@@ -82,7 +85,8 @@ export const getGlobalStylesAndTheme = (
         : mode === 'dark'
         ? tokens.surfaces.s[level + 3]
         : transparentize(0.8, tokens.colors.primary.default),
-      textColor: usePrimary ? tokens.colors.primary.text : tokens.text.heading
+      textColor: usePrimary ? tokens.colors.primary.text : tokens.text.heading,
+      iconColor: usePrimary ? tokens.colors.primary.text : tokens.text.heading
     }
   })
 
@@ -549,7 +553,7 @@ export const getGlobalStylesAndTheme = (
         }
       },
       combobox: {
-        ...menu(0, false),
+        ...menu(1, false),
         groupLabel: {
           textColor: tokens.text.default,
           iconColor: tokens.text.default
