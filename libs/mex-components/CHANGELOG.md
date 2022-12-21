@@ -1,5 +1,13 @@
 # @workduck-io/mex-components
 
+## 0.0.25
+
+### Patch Changes
+
+- 4e9f23a: Fixes to build
+- Updated dependencies [4e9f23a]
+  - @workduck-io/mex-themes@0.0.9
+
 ## 0.0.24
 
 ### Patch Changes
