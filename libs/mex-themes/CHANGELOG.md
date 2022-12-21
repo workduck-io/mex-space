@@ -1,5 +1,11 @@
 # @workduck-io/mex-themes
 
+## 0.0.8
+
+### Patch Changes
+
+- ecae308: Fixes to space switcher and infobox styles
+
 ## 0.0.7
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @workduck-io/mex-components
 
+## 0.0.24
+
+### Patch Changes
+
+- ecae308: Fixes to space switcher and infobox styles
+- Updated dependencies [ecae308]
+  - @workduck-io/mex-themes@0.0.8
+
 ## 0.0.23
 
 ### Patch Changes
