@@ -1,5 +1,11 @@
 # Changelog - threads.js
 
+## 0.1.5
+
+### Patch Changes
+
+- 4140e48: Additional check to run on Chrome for Android and Safari on iOS
+
 ## 0.1.4
 
 ### Patch Changes
