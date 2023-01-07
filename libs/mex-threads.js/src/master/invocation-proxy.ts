@@ -26,8 +26,10 @@ type WorkerType = SharedWorker | TWorker
 
 type EventListenerType = 'message' | 'unhandledrejection'
 
+const sharedWorkerExists = typeof SharedWorker !== 'undefined'
+
 const addEventListener = (worker: WorkerType, listener: EventListener, type: EventListenerType = 'message') => {
-  if (worker instanceof SharedWorker) {
+  if (sharedWorkerExists && worker instanceof SharedWorker) {
     type === 'message' ? (worker.port.onmessage = listener) : (worker.onerror = listener)
   } else {
     worker.addEventListener(type, listener)
@@ -40,7 +42,9 @@ const isJobStartMessage = (data: any): data is WorkerJobStartMessage => data && 
 
 function createObservableForJob<ResultType>(worker: WorkerType, jobUID: number): Observable<ResultType> {
   return new Observable((observer) => {
-    const porter = worker instanceof SharedWorker ? worker.port : worker
+    const porter = (sharedWorkerExists && worker instanceof SharedWorker ? worker.port : worker) as
+      | TWorker
+      | MessagePort
     let asyncType: 'observable' | 'promise' | undefined
 
     const messageHandler = ((event: MessageEvent) => {
@@ -77,7 +81,7 @@ function createObservableForJob<ResultType>(worker: WorkerType, jobUID: number):
 
     addEventListener(worker, messageHandler, 'message')
 
-    if (worker instanceof SharedWorker) {
+    if (sharedWorkerExists && worker instanceof SharedWorker) {
       worker.port.start()
     }
 
@@ -123,7 +127,9 @@ export function createProxyFunction<Args extends any[], ReturnType>(worker: Work
       method,
       args
     }
-    const porter = worker instanceof SharedWorker ? worker.port : worker
+    const porter = (sharedWorkerExists && worker instanceof SharedWorker ? worker.port : worker) as
+      | TWorker
+      | MessagePort
 
     try {
       porter.postMessage(runMessage)
@@ -136,7 +142,7 @@ export function createProxyFunction<Args extends any[], ReturnType>(worker: Work
 }
 
 export function sendTerminationMessageToSharedWorker(worker: WorkerType) {
-  if (worker instanceof SharedWorker) {
+  if (sharedWorkerExists && worker instanceof SharedWorker) {
     mog('[MASTER] Terminating Shared Worker')
     const terminateMessage = {
       type: MasterMessageType.terminate

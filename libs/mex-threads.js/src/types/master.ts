@@ -79,7 +79,7 @@ export interface ThreadsWorkerOptions extends WorkerOptions {
 
 /** Worker implementation. Only web worker for now. */
 export declare class WorkerImplementation extends EventTarget implements Worker {
-  constructor(path: string, options?: ThreadsWorkerOptions)
+  constructor(path: string | URL, options?: ThreadsWorkerOptions)
   public postMessage(value: any): void
   public terminate(): void
 }
@@ -87,7 +87,7 @@ export declare class WorkerImplementation extends EventTarget implements Worker 
 /** Class to spawn workers from source string. */
 
 export interface ImplementationExport {
-  shared: typeof SharedWorker
+  shared: typeof SharedWorker | typeof WorkerImplementation
   default: typeof WorkerImplementation
 }
 
