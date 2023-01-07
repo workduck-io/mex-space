@@ -45,7 +45,7 @@ function selectWorkerImplementation(): ImplementationExport {
 
   return {
     default: WebWorker,
-    shared: SharedWorker
+    shared: typeof SharedWorker === 'undefined' ? WebWorker : SharedWorker
   }
 }
 

@@ -87,7 +87,7 @@ export declare class WorkerImplementation extends EventTarget implements Worker 
 /** Class to spawn workers from source string. */
 
 export interface ImplementationExport {
-  shared: typeof SharedWorker
+  shared: typeof SharedWorker | typeof WorkerImplementation
   default: typeof WorkerImplementation
 }
 

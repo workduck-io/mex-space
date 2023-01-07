@@ -23,8 +23,10 @@ type WorkerType = SharedWorker | TWorker
 
 type EventListenerType = 'message' | 'unhandledrejection'
 
+const sharedWorkerExists = typeof SharedWorker !== 'undefined'
+
 const addEventListener = (worker: WorkerType, listener: EventListener, type: EventListenerType = 'message') => {
-  if (worker instanceof SharedWorker) {
+  if (sharedWorkerExists && worker instanceof SharedWorker) {
     worker.port.addEventListener(type, listener)
     worker.port.start()
   } else {
@@ -51,7 +53,7 @@ async function withTimeout<T>(promise: Promise<T>, timeoutInMs: number, errorMes
 }
 
 function receiveInitMessage(worker: WorkerType): Promise<WorkerInitMessage> {
-  const porter = worker instanceof SharedWorker ? worker.port : worker
+  const porter = sharedWorkerExists && worker instanceof SharedWorker ? worker.port : worker
   return new Promise((resolve, reject) => {
     const messageHandler = ((event: MessageEvent) => {
       mog('[MASTER] Message from worker before finishing initialization', { data: event.data })
@@ -68,7 +70,7 @@ function receiveInitMessage(worker: WorkerType): Promise<WorkerInitMessage> {
 }
 
 function createEventObservable(worker: WorkerType, workerTermination: Promise<any>): Observable<WorkerEvent> {
-  const porter = worker instanceof SharedWorker ? worker.port : worker
+  const porter = sharedWorkerExists && worker instanceof SharedWorker ? worker.port : worker
   return new Observable<WorkerEvent>((observer) => {
     const messageHandler = ((messageEvent: MessageEvent) => {
       const workerEvent: WorkerMessageEvent<any> = {
@@ -89,7 +91,7 @@ function createEventObservable(worker: WorkerType, workerTermination: Promise<an
     addEventListener(worker, messageHandler, 'message')
     addEventListener(worker, rejectionHandler, 'unhandledrejection')
 
-    if (worker instanceof SharedWorker) {
+    if (sharedWorkerExists && worker instanceof SharedWorker) {
       worker.port.start()
     }
 
@@ -121,7 +123,7 @@ function createSharedWorkerTerminator(worker: SharedWorker): {
 } {
   const [termination, resolver] = createPromiseWithResolver<void>()
 
-  console.log('Setting terminator for shared worker: ', { termination, resolver })
+  mog('Setting terminator for shared worker: ', { termination, resolver })
   const terminate = async () => {
     sendTerminationMessageToSharedWorker(worker)
     worker.port.close()
@@ -164,7 +166,7 @@ export async function spawn<Exposed extends WorkerFunction | WorkerModule<any> =
 ): Promise<ExposedToThreadType<Exposed>> {
   mog('[MASTER] Initializing New Thread')
 
-  if (worker instanceof SharedWorker) worker.port.start()
+  if (sharedWorkerExists && worker instanceof SharedWorker) worker.port.start()
 
   const timeout = options && options.timeout ? options.timeout : initMessageTimeout
   const initMessage = await withTimeout(
@@ -175,7 +177,9 @@ export async function spawn<Exposed extends WorkerFunction | WorkerModule<any> =
   const exposed = initMessage.exposed
 
   const { termination, terminate } =
-    worker instanceof SharedWorker ? createSharedWorkerTerminator(worker) : createTerminator(worker)
+    sharedWorkerExists && worker instanceof SharedWorker
+      ? createSharedWorkerTerminator(worker)
+      : createTerminator(worker as TWorker)
   const events = createEventObservable(worker, termination)
 
   if (exposed.type === 'function') {
