@@ -79,7 +79,7 @@ export interface ThreadsWorkerOptions extends WorkerOptions {
 
 /** Worker implementation. Only web worker for now. */
 export declare class WorkerImplementation extends EventTarget implements Worker {
-  constructor(path: string, options?: ThreadsWorkerOptions)
+  constructor(path: string | URL, options?: ThreadsWorkerOptions)
   public postMessage(value: any): void
   public terminate(): void
 }
