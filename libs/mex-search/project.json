@@ -1,0 +1,44 @@
+{
+  "root": "libs/mex-search",
+  "sourceRoot": "libs/mex-search/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mex-search",
+        "main": "libs/mex-search/src/index.ts",
+        "tsConfig": "libs/mex-search/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mex-search/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["vitest"],
+        "parallel": false,
+        "cwd": "libs/mex-search"
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "rm -rf dist",
+          "nx run mex-search:build",
+          "cp .npmrc dist/libs/mex-search",
+          "cd dist/libs/mex-search && npm publish"
+        ],
+        "parallel": false
+      }
+    }
+  },
+  "tags": []
+}
