@@ -24,9 +24,12 @@
     "affected:build": "nx affected:build",
     "affected:dep-graph": "nx affected:dep-graph",
     "affected:libs": "nx affected:libs",
-    "affected:lint": "nx affected:lint"
+    "affected:lint": "nx affected:lint",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "patch-package": "^6.5.1",
+    "postinstall-postinstall": "^2.1.0",
     "@iconify/icons-fluent": "^1.2.6",
     "@udecode/plate": "10.2.2",
     "@udecode/plate-excalidraw": "^8.3.0",

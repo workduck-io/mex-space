@@ -1,8 +1,0 @@
-{
-  "directory": ["./src"],
-  "delete": true,
-  "location": "all",
-  "exclude": ".d.ts$",
-  "noSemicolon": true,
-  "verbose": false
-}

@@ -13,7 +13,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node"]
+    "types": ["node"],
+    "strictPropertyInitialization": false
   },
   "files": [],
   "include": [],

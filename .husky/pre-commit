@@ -3,11 +3,6 @@
 
 npx lint-staged
 
-cd libs/mex-search
-yarn barrelsby -c barrelsby.config.json
-
-cd -
-
 cd libs/mex-utils
 yarn barrelsby -c barrelsby.config.json
 
