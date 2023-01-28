@@ -12,7 +12,13 @@ import {
   ELEMENT_TAG,
   ELEMENT_TODO_LI
 } from '@workduck-io/mex-utils/src/constants'
-import { BlockType, NodeEditorContent, NodeMetadata, Reminder, SearchRepExtra } from '@workduck-io/mex-utils/src/types'
+import type {
+  BlockType,
+  NodeEditorContent,
+  NodeMetadata,
+  Reminder,
+  SearchRepExtra
+} from '@workduck-io/mex-utils/src/types'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
 import { GNode } from '../types/graph'
@@ -24,10 +30,10 @@ import { EntityParserFn, GenericEntitySearchData, NoteParserFn } from './types'
 type entityParserMapFn = (entityType: string) => { fn: EntityParserFn; entityType: Entities }
 
 class EntityParser {
-  _ID: string
-  _extra: SearchRepExtra | undefined
-  _noteMetadata: NodeMetadata | undefined
-  _systemTags: DEFAULT_SYSTEM_TAGS[] | undefined
+  private _ID: string
+  private _extra: SearchRepExtra | undefined
+  private _noteMetadata: NodeMetadata | undefined
+  private _systemTags: DEFAULT_SYSTEM_TAGS[] | undefined
 
   noteParser: NoteParserFn = (id: string, contents: NodeEditorContent, title = '', options) => {
     this._ID = id
@@ -55,48 +61,37 @@ class EntityParser {
     ]
 
     contents.forEach((topLevelBlock: BlockType) => {
-      const blockType = topLevelBlock.type
-      const { fn: parserFunction } = this._entityParserMap(blockType)
-      const { entities: childEntities, graphNodes: childGNodes } = parserFunction(topLevelBlock, topLevelBlock.id)
-
-      graphNodes?.push({
+      const { entities: childEntities, graphNodes: childGNodes } = this._parseBlock(topLevelBlock)
+      graphNodes.push({
         id: topLevelBlock.id,
         metadata: { type: Entities.CONTENT_BLOCK, parentID: this._ID }
       })
 
-      if (childEntities) entities.push(...childEntities)
-      if (childGNodes) graphNodes.push(...childGNodes)
+      if (childEntities.length > 0) entities.push(...childEntities)
+      if (childGNodes.length > 0) graphNodes.push(...childGNodes)
     })
 
-    return { entities: entities, graphNodes: graphNodes }
+    return { entities, graphNodes }
   }
 
   paragraphLikeParser: EntityParserFn = (block: Required<BlockType>, topLevelBlockID?: string) => {
-    const { id: blockID, type: blockType } = block
+    const { type: blockType } = block
     const { entityType } = this._entityParserMap(blockType)
 
     const gNodes: GNode[] = []
-    let blockText = block?.text ? `${block.text} ` : ''
+    let blockText = block?.text ?? ''
 
     if (entityType !== Entities.CONTENT_BLOCK) {
-      const { fn: parserFunction } = this._entityParserMap(blockType)
-      const { entities: e, graphNodes: AE } = parserFunction(block, topLevelBlockID)
-      return { entities: e, graphNodes: AE }
+      return this._parseBlock(block, topLevelBlockID)
     }
 
     const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
 
     if (block.children && block.children.length > 0) {
       block.children.forEach((childBlock) => {
-        const childBlockType = block.type
+        const { graphNodes, entities } = this._parseBlock(childBlock, topLevelBlockID)
 
-        const { fn: parserFunction } = this._entityParserMap(childBlockType)
-        const { graphNodes: childAssociatedEntities, entities: childEntities } = parserFunction(
-          childBlock,
-          topLevelBlockID
-        )
-
-        childEntities?.forEach((e) => {
+        entities?.forEach((e) => {
           if (e.entity === Entities.CONTENT_BLOCK) {
             blockText = `${blockText} ${e.text}`
           } else {
@@ -104,14 +99,14 @@ class EntityParser {
           }
         })
 
-        if (childAssociatedEntities) gNodes.push(...childAssociatedEntities)
+        if (graphNodes.length > 0) gNodes.push(...graphNodes)
       })
     }
 
     if (blockText !== '') {
       parsedEntities.push({
         entity: Entities.CONTENT_BLOCK,
-        id: blockID,
+        id: block.id,
         text: blockText.trim(),
         tags: this._getFlexsearchTags([Entities.CONTENT_BLOCK])
       })
@@ -132,7 +127,7 @@ class EntityParser {
       id: `USER_${block.value}`,
       metadata: { type: Entities.MENTION, parentID: parentBlockID, ...(alias && { alias: alias }) }
     }
-    return { graphNodes: [gNode] }
+    return { graphNodes: [gNode], entities: [] }
   }
 
   // Similar to mentions, tags don't have children and we care only about tag value (ID, value for now)
@@ -141,7 +136,7 @@ class EntityParser {
       id: `TAG_${block.value}`,
       metadata: { type: Entities.TAG, parentID: parentBlockID, value: block.value }
     }
-    return { graphNodes: [gNode] }
+    return { graphNodes: [gNode], entities: [] }
   }
 
   // ILink Values are passed via the extra parameter and nodeIDs are replaced in blockText with paths
@@ -167,7 +162,7 @@ class EntityParser {
       }
     }
 
-    return {}
+    return { entities: [], graphNodes: [] }
   }
 
   // Links and Media Embeds - Replace in block text with URL
@@ -212,10 +207,11 @@ class EntityParser {
             text: text.join(' '),
             tags: this._getFlexsearchTags([Entities.EXCALIDRAW])
           }
-        ]
+        ],
+        graphNodes: []
       }
     }
-    return {}
+    return { entities: [], graphNodes: [] }
   }
 
   taskParser: EntityParserFn = (block: BlockType, topLevelBlockID?: string) => {
@@ -223,29 +219,21 @@ class EntityParser {
     const { entityType } = this._entityParserMap(blockType)
 
     const associatedEntities: GNode[] = []
-    let blockText = block?.text ? `${block.text} ` : ''
+    let blockText = block?.text ?? ''
 
     // console.log(`Action Item Block: ${JSON.stringify(block)} | EntityType: ${entityType}`)
 
     if (entityType !== Entities.TASK) {
-      const { fn: parserFunction } = this._entityParserMap(blockType)
-      const { entities: e, graphNodes: AE } = parserFunction(block, topLevelBlockID)
-      return { entities: e, graphNodes: AE }
+      return this._parseBlock(block, topLevelBlockID)
     }
 
     const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
 
     if (block.children && block.children.length > 0) {
       block.children.forEach((childBlock) => {
-        const childBlockType = block.type
+        const { graphNodes, entities } = this._parseBlock(childBlock, topLevelBlockID)
 
-        const { fn: parserFunction } = this._entityParserMap(childBlockType)
-        const { graphNodes: childAssociatedEntities, entities: childEntities } = parserFunction(
-          childBlock,
-          topLevelBlockID
-        )
-
-        childEntities?.forEach((e) => {
+        entities?.forEach((e) => {
           if (e.entity === Entities.CONTENT_BLOCK) {
             blockText = `${blockText} ${e.text}`
           } else {
@@ -253,7 +241,7 @@ class EntityParser {
           }
         })
 
-        if (childAssociatedEntities) associatedEntities.push(...childAssociatedEntities)
+        if (graphNodes.length > 0) associatedEntities.push(...graphNodes)
       })
     }
 
@@ -286,7 +274,8 @@ class EntityParser {
           data: reminder,
           tags: this._getFlexsearchTags([Entities.REMINDER])
         }
-      ]
+      ],
+      graphNodes: []
     }
   }
 
@@ -300,7 +289,8 @@ class EntityParser {
           data: block,
           tags: this._getFlexsearchTags([Entities.ACTION])
         }
-      ]
+      ],
+      graphNodes: []
     }
   }
 
@@ -314,11 +304,20 @@ class EntityParser {
           text: blockText.trim(),
           tags: this._getFlexsearchTags([Entities.IMAGE])
         }
-      ]
+      ],
+      graphNodes: []
     }
   }
 
-  _entityParserMap: entityParserMapFn = (entityType = ELEMENT_PARAGRAPH) => {
+  private _parseBlock = (block: BlockType, parentBlockId?: string) => {
+    const blockType = block.type
+    const { fn: parserFunction } = this._entityParserMap(blockType)
+
+    const { entities, graphNodes } = parserFunction(block, parentBlockId ?? block.id)
+    return { entities, graphNodes }
+  }
+
+  private _entityParserMap: entityParserMapFn = (entityType = ELEMENT_PARAGRAPH) => {
     switch (entityType) {
       case ELEMENT_EXCALIDRAW:
         return { fn: this.excalidrawParser, entityType: Entities.EXCALIDRAW }

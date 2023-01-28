@@ -1,4 +1,5 @@
-import createGraph, { type Graph } from 'ngraph.graph'
+import type { Graph } from 'ngraph.graph'
+import createGraph from 'ngraph.graph'
 import toDot from 'ngraph.todot'
 
 import { ILink } from '@workduck-io/mex-utils/src'
@@ -15,13 +16,41 @@ class GraphX {
 
   addNode = (node: GNode) => {
     this._graph.addNode(node.id, node.metadata)
-    if (node.metadata.parentID) {
+    if (node?.metadata?.parentID) {
       this._graph.addLink(node.id, node.metadata.parentID)
     }
   }
 
+  removeNode = (nodeId: string) => {
+    this._graph.removeNode(nodeId)
+  }
+
   addLink = (from: string, to: string, data?: any) => {
     this._graph.addLink(from, to, data)
+  }
+
+  removeLink = (from: string, to: string) => {
+    //@ts-ignore
+    this._graph.removeLink(from, to)
+  }
+
+  getRelatedNodes = (nodeId: string, condition = (linkData: any) => true) => {
+    const results: GNode[] = []
+    this._graph.getLinks(nodeId)?.forEach((link) => {
+      if (condition(link.data)) {
+        const connectedNode = this._graph.getNode(link.toId)
+        if (connectedNode) results.push({ id: connectedNode.id as string, metadata: connectedNode.data })
+      }
+    })
+    return results
+  }
+
+  deleteRelatedNodes = (nodeId: string, condition = (linkData: any) => true) => {
+    this._graph.getLinks(nodeId)?.forEach((link) => {
+      if (condition(link.data)) {
+        this._graph.removeNode(link.toId)
+      }
+    })
   }
 
   exportToDot = () => {

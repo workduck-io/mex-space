@@ -17,8 +17,8 @@ export interface GenericEntitySearchData {
 }
 
 export type ParserFuncResult = {
-  entities?: Array<PartialBy<GenericEntitySearchData, 'id'>>
-  graphNodes?: GNode[]
+  entities: Array<PartialBy<GenericEntitySearchData, 'id'>>
+  graphNodes: GNode[]
 }
 
 export type EntityParserFn = (block: any, parentBlockID?: string) => ParserFuncResult
