@@ -1,5 +1,11 @@
 # Changelog - threads.js
 
+## 0.1.6
+
+### Patch Changes
+
+- e677668: Remove extra console.log
+
 ## 0.1.5
 
 ### Patch Changes
