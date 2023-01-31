@@ -123,7 +123,6 @@ function createSharedWorkerTerminator(worker: SharedWorker): {
 } {
   const [termination, resolver] = createPromiseWithResolver<void>()
 
-  mog('Setting terminator for shared worker: ', { termination, resolver })
   const terminate = async () => {
     sendTerminationMessageToSharedWorker(worker)
     worker.port.close()
