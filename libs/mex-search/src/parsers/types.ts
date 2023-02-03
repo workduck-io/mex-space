@@ -1,7 +1,7 @@
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src/types'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
-import { GNode } from '../types/graph'
+import { GLink, GNode } from '../types/graph'
 import { PartialBy } from '../types/utils'
 import { Entities } from '../utils'
 
@@ -19,6 +19,7 @@ export interface GenericEntitySearchData {
 export type ParserFuncResult = {
   entities: Array<PartialBy<GenericEntitySearchData, 'id'>>
   graphNodes: GNode[]
+  graphLinks: GLink[]
 }
 
 export type EntityParserFn = (block: any, parentBlockID?: string) => ParserFuncResult
@@ -32,4 +33,4 @@ export type NoteParserFn = (
     metadata?: NodeMetadata
     systemTags?: DEFAULT_SYSTEM_TAGS[]
   }
-) => { entities: Array<PartialBy<GenericEntitySearchData, 'id'>>; graphNodes: GNode[] }
+) => { entities: Array<PartialBy<GenericEntitySearchData, 'id'>>; graphNodes: GNode[]; graphLinks: GLink[] }

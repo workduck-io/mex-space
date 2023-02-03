@@ -1,7 +1,6 @@
-import { writeFileSync } from 'fs'
-
 import GraphX from './src/graphX'
 import EntityParser from './src/parsers'
+import SearchX from './src/searchX'
 
 const content = [
   {
@@ -985,6 +984,293 @@ const content = [
   }
 ]
 
+const newContent = [
+  {
+    type: 'h2',
+    id: 'TEMP_rALJ8',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1674916956180,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1674916956180,
+      elementMetadata: {
+        type: 'highlightV1',
+        id: 'HIGHLIGHT_Pwe8kMEfkgnnraXpX9CJX'
+      }
+    },
+    align: 'left',
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_3rbLL',
+        metadata: {},
+        bold: true,
+        text: 'The 5 questions every great story answers'
+      }
+    ]
+  },
+  {
+    type: 'p',
+    id: 'TEMP_fcD7H',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1675427919233,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1674916956180,
+      elementMetadata: {
+        type: 'highlightV1',
+        id: 'HIGHLIGHT_Pwe8kMEfkgnnraXpX9CJX'
+      }
+    },
+    align: 'left',
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_xbiDb',
+        metadata: {},
+        text: ' “Remember, the essence of '
+      },
+      {
+        type: 'a',
+        url: 'https://workduck.io/',
+        id: 'TEMP_WEB4f',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_idNan',
+            metadata: {},
+            text: 'storytelling'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_U3tJD',
+        metadata: {},
+        text: ' demands that we place our main characters on a path. A quest with something at stake, with something to do, to achieve, to learn, and to change.” — Larry Brook'
+      }
+    ]
+  },
+  {
+    type: 'p',
+    id: 'TEMP_QHYMd',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1675427919198,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1675427919198,
+      elementMetadata: {
+        type: 'highlightV1',
+        id: 'HIGHLIGHT_Pwe8kMEfkgnnraXpX9CJX'
+      }
+    },
+    align: 'left',
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_mhhHV',
+        metadata: {},
+        text: ''
+      }
+    ]
+  },
+  {
+    type: 'ul',
+    id: 'TEMP_GwGhF',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1675427919198,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1675427919198
+    },
+    children: [
+      {
+        type: 'li',
+        id: 'TEMP_TjJLU',
+        metadata: {},
+        children: [
+          {
+            type: 'lic',
+            id: 'TEMP_G3CeV',
+            metadata: {},
+            children: [
+              {
+                type: 'p',
+                id: 'TEMP_ATQUf',
+                metadata: {},
+                text: 'I am god'
+              }
+            ]
+          },
+          {
+            type: 'ul',
+            id: 'TEMP_G7Hqb',
+            metadata: {},
+            children: [
+              {
+                type: 'li',
+                id: 'TEMP_6rQPk',
+                metadata: {},
+                children: [
+                  {
+                    type: 'lic',
+                    id: 'TEMP_LfAAg',
+                    metadata: {},
+                    children: [
+                      {
+                        type: 'p',
+                        id: 'TEMP_ATQUf',
+                        metadata: {},
+                        text: 'or so he thought'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'li',
+                id: 'TEMP_8qkDe',
+                metadata: {},
+                children: [
+                  {
+                    type: 'lic',
+                    id: 'TEMP_eCPBi',
+                    metadata: {},
+                    children: [
+                      {
+                        type: 'p',
+                        id: 'TEMP_ATQUf',
+                        metadata: {},
+                        text: 'What is this bullshit '
+                      },
+                      {
+                        type: 'tag',
+                        id: 'TEMP_wMwiz',
+                        metadata: {},
+                        value: 'wowtag',
+                        children: [
+                          {
+                            type: 'p',
+                            id: 'TEMP_hgcqe',
+                            metadata: {},
+                            text: ''
+                          }
+                        ]
+                      },
+                      {
+                        type: 'p',
+                        id: 'TEMP_NVbXA',
+                        metadata: {},
+                        text: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        type: 'li',
+        id: 'TEMP_LfQUb',
+        metadata: {},
+        children: [
+          {
+            type: 'lic',
+            id: 'TEMP_gdtTC',
+            metadata: {},
+            children: [
+              {
+                type: 'p',
+                id: 'TEMP_ATQUf',
+                metadata: {},
+                text: 'I am neother good nor bad '
+              },
+              {
+                type: 'tag',
+                id: 'TEMP_7hzth',
+                metadata: {},
+                value: 'hashtag',
+                children: [
+                  {
+                    type: 'p',
+                    id: 'TEMP_zbdmX',
+                    metadata: {},
+                    text: ''
+                  }
+                ]
+              },
+              {
+                type: 'p',
+                id: 'TEMP_nzpNt',
+                metadata: {},
+                text: ''
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'p',
+    id: 'TEMP_nTBxA',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1675427919198,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1675427919198
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_ATQUf',
+        metadata: {},
+        text: ''
+      }
+    ]
+  },
+  {
+    type: 'p',
+    id: 'TEMP_tWnWT',
+    metadata: {
+      lastEditedBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      updatedAt: 1675427919198,
+      createdBy: 'fd243065-e641-4471-9e0a-3a510acbdfc1',
+      createdAt: 1675427919198
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_kdbED',
+        metadata: {},
+        text: 'My mother left me when I was 6 '
+      },
+      {
+        type: 'tag',
+        id: 'TEMP_YGYdk',
+        metadata: {},
+        value: 'code',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_GWg8E',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_NADYz',
+        metadata: {},
+        text: ''
+      }
+    ]
+  }
+]
+
 const extra = {
   ilink: {
     keyToIndex: 'value',
@@ -1052,18 +1338,22 @@ const extra = {
   }
 }
 const noteID = 'NODE_jjtnMNJwLJ6bMaBMLApM4'
+const noteID2 = 'NODE_89DimrxF7h6HmmDGxDM9h'
 const title = 'Sample Note'
+const title2 = 'Sample Note2'
 
 export const generateEntities = () => {
   const parser = new EntityParser()
   const parsed = parser.noteParser(noteID, content, title, { extra: extra })
-
-  writeFileSync('./parsed.json', JSON.stringify(parsed))
+  const parsed2 = parser.noteParser(noteID2, newContent, title2, { extra: extra })
 
   const graphX = new GraphX()
-  graphX.addEntities(parsed.graphNodes)
+  graphX.addEntities([...parsed.graphNodes, ...parsed2.graphNodes])
+  graphX.addLinks([...parsed2.graphLinks, ...parsed.graphLinks])
+  // writeFileSync('./graph.dot', graphX.exportToDot())
+  const searchIdx = new SearchX()
+  searchIdx.initializeSearch([...parsed.entities, ...parsed2.entities])
+  console.log(searchIdx.search('god'))
 
-  return parser.noteParser(noteID, content, title, { extra: extra })
+  return 'Hello'
 }
-
-generateEntities()

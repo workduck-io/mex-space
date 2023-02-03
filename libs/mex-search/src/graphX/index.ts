@@ -4,7 +4,7 @@ import toDot from 'ngraph.todot'
 
 import { ILink } from '@workduck-io/mex-utils/src'
 
-import { GNode, GNodeMetadata } from '../types/graph'
+import { GLink, GNode, GNodeMetadata } from '../types/graph'
 import { Entities } from '../utils'
 
 class GraphX {
@@ -16,9 +16,6 @@ class GraphX {
 
   addNode = (node: GNode) => {
     this._graph.addNode(node.id, node.metadata)
-    if (node?.metadata?.parentID) {
-      this._graph.addLink(node.id, node.metadata.parentID)
-    }
   }
 
   removeNode = (nodeId: string) => {
@@ -59,6 +56,10 @@ class GraphX {
 
   addEntities = (graphNodes: GNode[]) => {
     graphNodes.forEach((gNode) => this.addNode(gNode))
+  }
+
+  addLinks = (graphLinks: GLink[]) => {
+    graphLinks.forEach((gLink) => this.addLink(gLink.from, gLink.to, gLink.metadata))
   }
 
   initializeHierarchy = (ilinks: ILink[]) => {

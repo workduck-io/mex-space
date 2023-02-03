@@ -1,4 +1,4 @@
-import { Document, IndexOptionsForDocumentSearch } from 'flexsearch'
+import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
@@ -19,10 +19,10 @@ type UpdateDocFn = (
 
 class SearchX {
   _graphX: GraphX
-  _index: Document<GenericEntitySearchData, string[]>
+  _index: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
 
   constructor(
-    flexSearchOptions: IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
+    flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
       document: {
         id: 'id',
         index: ['title', 'text'],
@@ -32,13 +32,20 @@ class SearchX {
       tokenize: 'full'
     }
   ) {
-    this._index = new Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    this._index = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
     this._graphX = new GraphX()
   }
 
   initializeSearch = (initList) => {
-    
+    initList.forEach((item) => this._index.add(item))
   }
+
+  search = (text: string) => {
+    return this._index.search(text, {
+      enrich: true
+    })
+  }
+
   addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
     // const parsedBlocks = parseNode(nodeId, contents, title, extra)
     // const existingNodeBlocks = nodeBlockMapping[nodeId] ?? []

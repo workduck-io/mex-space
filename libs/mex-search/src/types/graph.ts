@@ -14,4 +14,10 @@ export interface GNode {
   metadata: GNodeMetadata
 }
 
+export interface GLink {
+  to: string
+  from: string
+  metadata: GLinkMetadata
+}
+
 export type GLinkMetadata = any
