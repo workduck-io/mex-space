@@ -9,6 +9,6 @@
     "sourceMap": false,
     "types": ["node"]
   },
-  "include": ["**/*.ts", "src/utils.test.js"],
+  "include": ["src/**/*.ts"],
   "exclude": ["**/*.spec.ts"]
 }

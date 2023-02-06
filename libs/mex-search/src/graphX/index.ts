@@ -4,8 +4,9 @@ import toDot from 'ngraph.todot'
 
 import { ILink } from '@workduck-io/mex-utils/src'
 
-import { GLink, GNode, GNodeMetadata } from '../types/graph'
 import { Entities } from '../utils'
+
+import { GLink, GNode, GNodeMetadata } from './types'
 
 class GraphX {
   _graph: Graph<GNodeMetadata, any>

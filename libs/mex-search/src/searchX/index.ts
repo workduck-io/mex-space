@@ -1,24 +1,13 @@
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
-import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
+import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 
-import { GenericEntitySearchData, ParserFuncResult } from './parsers/types'
-import { FilterQuery, SearchQuery } from './types/query'
-import { DEFAULT_SYSTEM_TAGS } from './constants'
-import GraphX from './graphX'
-import EntityParser from './parsers'
-import { intersectMultiple, unionMultiple } from './utils'
+import GraphX from '../graphX'
+import EntityParser from '../parsers'
+import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
+import { intersectMultiple, unionMultiple } from '../utils'
 
-type UpdateDocFn = (
-  id: string,
-  contents: NodeEditorContent,
-  title: string,
-  options?: {
-    extra?: SearchRepExtra
-    metadata?: NodeMetadata
-    systemTags?: DEFAULT_SYSTEM_TAGS[]
-  }
-) => void
+import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
 
 class SearchX {
   _graphX: GraphX

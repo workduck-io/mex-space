@@ -1,7 +1,7 @@
-import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src/types'
+import type { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
-import { GLink, GNode } from '../types/graph'
+import { GLink, GNode } from '../graphX/types'
 import { PartialBy } from '../types/utils'
 import { Entities } from '../utils'
 
