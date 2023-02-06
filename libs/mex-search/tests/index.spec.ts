@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { helloWorld } from '../src'
+import { generateEntities } from '../entities'
 
-test('Hello World function returns', () => {
-  expect<string>(helloWorld()).toEqual('Hello World from mex-search!')
+test('Entities function run', () => {
+  expect<string>(generateEntities()).toEqual('Hello')
 })

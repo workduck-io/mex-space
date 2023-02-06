@@ -1,6 +1,7 @@
 import GraphX from './src/graphX'
 import EntityParser from './src/parsers'
 import SearchX from './src/searchX'
+import { Entities } from './src/utils'
 
 const content = [
   {
@@ -611,7 +612,7 @@ const content = [
         type: 'mention',
         id: 'TEMP_hbEmn',
         metadata: {},
-        value: 'cfcf50de-d37e-41f2-b650-829d540f2d26',
+        value: 'cfcf50de-d37e-41f2-b650-829d540f2d2',
         children: [{ type: 'p', id: 'TEMP_WWdd3', metadata: {}, text: '' }]
       },
       { type: 'p', id: 'TEMP_gBKQe', metadata: {}, text: "since they're standard editor elements" }
@@ -1352,8 +1353,22 @@ export const generateEntities = () => {
   graphX.addLinks([...parsed2.graphLinks, ...parsed.graphLinks])
   // writeFileSync('./graph.dot', graphX.exportToDot())
   const searchIdx = new SearchX()
-  searchIdx.initializeSearch([...parsed.entities, ...parsed2.entities])
-  console.log(searchIdx.search('god'))
+  searchIdx.initializeSearch(parsed)
+  searchIdx.initializeSearch(parsed2)
+  console.log(
+    JSON.stringify(
+      searchIdx.search(
+        { text: 'thi', entityTypes: [Entities.CONTENT_BLOCK, Entities.TASK] },
+        {
+          query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
+          mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
+          operator: 'or'
+        }
+      ),
+      null,
+      2
+    )
+  )
 
   return 'Hello'
 }

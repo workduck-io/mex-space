@@ -31,23 +31,29 @@ class GraphX {
     this._graph.removeLink(from, to)
   }
 
-  getRelatedNodes = (nodeId: string, condition = (linkData: any) => true) => {
+  getRelatedNodes = (nodeId: string, condition = (node: any) => true) => {
     const results: GNode[] = []
-    this._graph.getLinks(nodeId)?.forEach((link) => {
-      if (condition(link.data)) {
-        const connectedNode = this._graph.getNode(link.toId)
-        if (connectedNode) results.push({ id: connectedNode.id as string, metadata: connectedNode.data })
-      }
-    })
+    this._graph.forEachLinkedNode(
+      nodeId,
+      (node) => {
+        if (condition(node.data)) {
+          results.push({ id: node.id as string, metadata: node.data })
+        }
+      },
+      false
+    )
     return results
   }
 
   deleteRelatedNodes = (nodeId: string, condition = (linkData: any) => true) => {
+    const deletedNodes: string[] = []
     this._graph.getLinks(nodeId)?.forEach((link) => {
       if (condition(link.data)) {
+        deletedNodes.push(link.toId.toString())
         this._graph.removeNode(link.toId)
       }
     })
+    return deletedNodes
   }
 
   exportToDot = () => {
@@ -66,6 +72,27 @@ class GraphX {
     ilinks.forEach((ilink) =>
       this.addNode({ id: ilink.nodeid, metadata: { type: Entities.NOTE, parentID: ilink.parentNodeId } })
     )
+  }
+
+  findChildGraph(item, maxLevel = 100000) {
+    function findChildrenRec(graph, item, level, maxLevel) {
+      if (!item || level > maxLevel) return []
+      const children: any[] = []
+      graph.forEachLinkedNode(
+        item,
+        function (linkedNode) {
+          if (linkedNode.data.type === 'CHILD') children.push(linkedNode.id)
+        },
+        true // enumerate only outbound links
+      )
+      if (children.length > 0) {
+        level++
+
+        return [...children, ...children.map((child) => findChildrenRec(graph, child, level, maxLevel)).flat()]
+      }
+      return []
+    }
+    return findChildrenRec(this._graph, item, 1, maxLevel)
   }
 }
 
