@@ -1,5 +1,3 @@
-import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
-
 import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 
 import GraphX from '../graphX'
@@ -8,13 +6,17 @@ import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
 import { intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Flexsearch = require('flexsearch')
 
 class SearchX {
   _graphX: GraphX
-  _index: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
+  //@ts-ignore
+  _index: Flexsearch.Document<GenericEntitySearchData, string[]>
 
   constructor(
-    flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
+    //@ts-ignore
+    flexSearchOptions: Flexsearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
       document: {
         id: 'id',
         index: ['title', 'text'],
@@ -24,7 +26,8 @@ class SearchX {
       tokenize: 'full'
     }
   ) {
-    this._index = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    //@ts-ignore
+    this._index = new Flexsearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
     this._graphX = new GraphX()
   }
 
@@ -66,7 +69,7 @@ class SearchX {
         tag: [...(searchOptions.entityTypes ?? []), ...(filtered ?? [])],
         bool: 'or'
       })[0]
-      .result.filter((item) => {
+      ?.result.filter((item) => {
         if (filtered) return filtered.includes(item.id)
         return true
       })
@@ -77,7 +80,8 @@ class SearchX {
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const deletedBlocks = this._graphX.deleteRelatedNodes(id)
     deletedBlocks.forEach((id) => this._index.remove(id))
-    this._index.add(parsedBlocks.entities)
+    parsedBlocks.entities.forEach((item) => this._index.add(item))
+
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }

@@ -84,6 +84,7 @@ export type BlockType = {
   type: string
   text?: string
   blockMeta?: BlockMetaDataType
+  metadata?: any
   value?: string
   url?: string
   caption?: Array<{ text: string }>

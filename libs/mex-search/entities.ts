@@ -1354,16 +1354,16 @@ export const generateEntities = () => {
   // writeFileSync('./graph.dot', graphX.exportToDot())
   const searchIdx = new SearchX()
   searchIdx.initializeSearch(parsed)
-  searchIdx.initializeSearch(parsed2)
+  searchIdx.addOrUpdateDocument(noteID2, newContent, title2, { extra: extra })
   console.log(
     JSON.stringify(
       searchIdx.search(
-        { text: 'thi', entityTypes: [Entities.CONTENT_BLOCK, Entities.TASK] },
-        {
-          query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
-          mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
-          operator: 'or'
-        }
+        { text: 'remember', entityTypes: [Entities.CONTENT_BLOCK] }
+        // {
+        //   query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
+        //   mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
+        //   operator: 'or'
+        // }
       ),
       null,
       2

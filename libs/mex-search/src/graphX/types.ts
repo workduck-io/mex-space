@@ -7,6 +7,7 @@ export interface GNodeMetadata {
   value?: string
   alias?: string
   origin?: string
+  properties?: any
 }
 
 export interface GNode {

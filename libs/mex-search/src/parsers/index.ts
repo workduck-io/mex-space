@@ -46,7 +46,8 @@ class EntityParser {
         id: id,
         metadata: {
           type: Entities.NOTE,
-          title: title
+          title: title,
+          properties: this._noteMetadata
         }
       }
     ]
@@ -70,7 +71,7 @@ class EntityParser {
       } = this._parseBlock(topLevelBlock)
       graphNodes.push({
         id: topLevelBlock.id,
-        metadata: { type: Entities.CONTENT_BLOCK }
+        metadata: { ...topLevelBlock, type: Entities.CONTENT_BLOCK }
       })
 
       graphLinks.push({
@@ -122,6 +123,7 @@ class EntityParser {
       parsedEntities.push({
         entity: Entities.CONTENT_BLOCK,
         id: block.id,
+        data: block.metadata,
         text: blockText.trim(),
         tags: this._getFlexsearchTags([Entities.CONTENT_BLOCK])
       })
@@ -140,7 +142,7 @@ class EntityParser {
 
     const gNode: GNode = {
       id: `USER_${block.value}`,
-      metadata: { type: Entities.MENTION, ...(alias && { alias: alias }) }
+      metadata: { ...block, type: Entities.MENTION }
     }
     return {
       graphNodes: [gNode],
@@ -162,7 +164,7 @@ class EntityParser {
   tagParser: EntityParserFn = (block: BlockType, parentBlockID?: string) => {
     const gNode: GNode = {
       id: `TAG_${block.value}`,
-      metadata: { type: Entities.TAG, value: block.value }
+      metadata: { ...block, type: Entities.TAG }
     }
 
     return {
@@ -192,13 +194,14 @@ class EntityParser {
           {
             entity: Entities.CONTENT_BLOCK,
             text: blockText,
+            data: block.metadata,
             tags: this._getFlexsearchTags([Entities.LINK])
           }
         ],
         graphNodes: [
           {
             id: block.value as string,
-            metadata: { type: Entities.ILINK }
+            metadata: { ...block, type: Entities.ILINK }
           }
         ],
         graphLinks: [
@@ -222,7 +225,7 @@ class EntityParser {
 
     const gNode: GNode = {
       id: url,
-      metadata: { type: Entities.LINK, origin: new URL(url).origin }
+      metadata: { ...block, type: Entities.LINK, origin: new URL(url).origin }
     }
 
     const gLink: GLink = {
@@ -239,6 +242,7 @@ class EntityParser {
         {
           entity: Entities.CONTENT_BLOCK,
           text: blockText,
+          data: block.metadata,
           tags: this._getFlexsearchTags([Entities.LINK])
         }
       ],
@@ -264,6 +268,7 @@ class EntityParser {
         entities: [
           {
             text: text.join(' '),
+            data: block.metadata,
             tags: this._getFlexsearchTags([Entities.EXCALIDRAW])
           }
         ],
@@ -312,12 +317,13 @@ class EntityParser {
         entity: Entities.TASK,
         id: blockID,
         text: blockText.trim(),
+        data: block.metadata,
         tags: this._getFlexsearchTags([Entities.TASK])
       })
 
       const taskGNode: GNode = {
         id: blockID,
-        metadata: { type: Entities.TASK }
+        metadata: { ...block, type: Entities.TASK }
       }
 
       const taskGLink: GLink = {
@@ -356,7 +362,7 @@ class EntityParser {
         {
           entity: Entities.ACTION,
           text: blockText.trim(),
-          data: block,
+          data: block.metadata,
           tags: this._getFlexsearchTags([Entities.ACTION])
         }
       ],
@@ -372,6 +378,7 @@ class EntityParser {
         {
           entity: Entities.CONTENT_BLOCK,
           id: block.id,
+          data: block.metadata,
           text: blockText.trim(),
           tags: this._getFlexsearchTags([Entities.IMAGE])
         }
