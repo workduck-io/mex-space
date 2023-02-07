@@ -1,3 +1,5 @@
+import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
+
 import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 
 import GraphX from '../graphX'
@@ -6,18 +8,13 @@ import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
 import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Document, IndexOptionsForDocumentSearch } = require('flexsearch')
 
 class SearchX {
   _graphX: GraphX
-  //@ts-ignore
-  _index: Document<GenericEntitySearchData, string[]>
+  _index: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
 
   constructor(
-    //@ts-ignore
-    // eslint-disable-next-line
-    flexSearchOptions: IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
+    flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
       document: {
         id: 'id',
         index: ['title', 'text'],
@@ -27,8 +24,7 @@ class SearchX {
       tokenize: 'full'
     }
   ) {
-    //@ts-ignore
-    this._index = new Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    this._index = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
     this._graphX = new GraphX()
   }
 
