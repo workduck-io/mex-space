@@ -3,20 +3,21 @@ import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 import GraphX from '../graphX'
 import EntityParser from '../parsers'
 import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
-import { intersectMultiple, unionMultiple } from '../utils'
+import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Flexsearch = require('flexsearch')
+const { Document, IndexOptionsForDocumentSearch } = require('flexsearch')
 
 class SearchX {
   _graphX: GraphX
   //@ts-ignore
-  _index: Flexsearch.Document<GenericEntitySearchData, string[]>
+  _index: Document<GenericEntitySearchData, string[]>
 
   constructor(
     //@ts-ignore
-    flexSearchOptions: Flexsearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
+    // eslint-disable-next-line
+    flexSearchOptions: IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
       document: {
         id: 'id',
         index: ['title', 'text'],
@@ -27,7 +28,7 @@ class SearchX {
     }
   ) {
     //@ts-ignore
-    this._index = new Flexsearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    this._index = new Document<GenericEntitySearchData, string[]>(flexSearchOptions)
     this._graphX = new GraphX()
   }
 
@@ -84,6 +85,13 @@ class SearchX {
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
+  }
+
+  #deleteDocument: UpdateDocFn = (id: string) => {
+    const deletedBlocks = this._graphX.deleteRelatedNodes(id)
+    deletedBlocks.forEach((id) =>
+      this._index.remove(id, (linkData) => linkData.metadata.type === Entities.CONTENT_BLOCK)
+    )
   }
 }
 
