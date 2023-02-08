@@ -43,7 +43,7 @@ class EntityParser {
 
     const graphNodes: GNode[] = [
       {
-        id: id,
+        id,
         metadata: {
           type: Entities.NOTE,
           title: title,
@@ -56,7 +56,7 @@ class EntityParser {
 
     const entities: Array<PartialBy<GenericEntitySearchData, 'id'>> = [
       {
-        id: id,
+        id,
         title: title,
         data: options?.metadata,
         tags: options?.systemTags ?? []
@@ -77,7 +77,7 @@ class EntityParser {
       graphLinks.push({
         from: this._ID,
         to: topLevelBlock.id,
-        metadata: { type: Entities.CONTENT_BLOCK }
+        metadata: { type: 'CHILD' }
       })
 
       if (childEntities.length > 0) entities.push(...childEntities)

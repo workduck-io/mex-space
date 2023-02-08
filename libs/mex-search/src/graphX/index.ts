@@ -2,10 +2,6 @@ import type { Graph } from 'ngraph.graph'
 import createGraph from 'ngraph.graph'
 import toDot from 'ngraph.todot'
 
-import { ILink } from '@workduck-io/mex-utils/src'
-
-import { Entities } from '../utils'
-
 import { GLink, GNode, GNodeMetadata } from './types'
 
 class GraphX {
@@ -19,12 +15,20 @@ class GraphX {
     this._graph.addNode(node.id, node.metadata)
   }
 
+  getNode = (nodeId: string) => {
+    return this._graph.getNode(nodeId)
+  }
+
   removeNode = (nodeId: string) => {
     this._graph.removeNode(nodeId)
   }
 
   addLink = (from: string, to: string, data?: any) => {
     this._graph.addLink(from, to, data)
+  }
+
+  getLink = (fromId: string, toId: string) => {
+    return this._graph.getLink(fromId, toId)
   }
 
   removeLink = (from: string, to: string) => {
@@ -46,12 +50,12 @@ class GraphX {
     return results
   }
 
-  deleteRelatedNodes = (nodeId: string, condition = (linkData: any) => true) => {
+  deleteRelatedNodes = (nodeId: string, condition = (link: any) => true) => {
     const deletedNodes: string[] = []
     this._graph.getLinks(nodeId)?.forEach((link) => {
-      if (condition(link.data)) {
+      if (condition(link)) {
+        this._graph.removeNode(link.toId.toString())
         deletedNodes.push(link.toId.toString())
-        this._graph.removeNode(link.toId)
       }
     })
     return deletedNodes
@@ -69,31 +73,27 @@ class GraphX {
     graphLinks.forEach((gLink) => this.addLink(gLink.from, gLink.to, gLink.metadata))
   }
 
-  initializeHierarchy = (ilinks: ILink[]) => {
-    ilinks.forEach((ilink) =>
-      this.addNode({ id: ilink.nodeid, metadata: { type: Entities.NOTE, parentID: ilink.parentNodeId } })
-    )
-  }
+  findChildGraph(item: string, level = 1, maxLevel = 10000) {
+    if (!item || level > maxLevel) return []
+    const children: any[] = []
 
-  findChildGraph(item, maxLevel = 100000) {
-    function findChildrenRec(graph, item, level, maxLevel) {
-      if (!item || level > maxLevel) return []
-      const children: any[] = []
-      graph.forEachLinkedNode(
-        item,
-        function (linkedNode) {
-          if (linkedNode.data.type === 'CHILD') children.push(linkedNode.id)
-        },
-        true // enumerate only outbound links
-      )
-      if (children.length > 0) {
-        level++
-
-        return [...children, ...children.map((child) => findChildrenRec(graph, child, level, maxLevel)).flat()]
+    this._graph.getLinks(item)?.forEach((link) => {
+      if (link.data.type === 'CHILD' && link.toId !== item) {
+        children.push(link.toId)
       }
-      return []
+    })
+    if (children.length > 0) {
+      level++
+      return [
+        ...children,
+        ...children
+          .map((child) => {
+            return this.findChildGraph(child, level, maxLevel)
+          })
+          .flat()
+      ]
     }
-    return findChildrenRec(this._graph, item, 1, maxLevel)
+    return []
   }
 }
 

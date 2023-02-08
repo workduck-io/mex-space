@@ -5,7 +5,7 @@ import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 import GraphX from '../graphX'
 import EntityParser from '../parsers'
 import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
-import { Entities, intersectMultiple, unionMultiple } from '../utils'
+import { intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
 
@@ -41,13 +41,15 @@ class SearchX {
       results.push(this.filter(query, []).flat())
     }
     if (tag) {
-      tag.forEach((t) => results.push(this._graphX.getRelatedNodes(t).map((n) => n.id)))
+      tag.forEach((t) => results.push(this._graphX.getRelatedNodes(t).map((n) => `TAG_${n.id}`)))
     }
     if (mention) {
-      mention.forEach((m) => results.push(this._graphX.getRelatedNodes(m).map((m) => m.id)))
+      mention.forEach((m) => results.push(this._graphX.getRelatedNodes(m).map((m) => `USER_${m.id}`)))
     }
     if (heirarchy) {
-      heirarchy.forEach((h) => results.push(this._graphX.findChildGraph(h).map((h) => h.id)))
+      heirarchy.forEach((h) => {
+        results.push(this._graphX.findChildGraph(h))
+      })
     }
     if (operator === 'or') return unionMultiple(...results)
 
@@ -83,11 +85,32 @@ class SearchX {
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
 
-  #deleteDocument: UpdateDocFn = (id: string) => {
-    const deletedBlocks = this._graphX.deleteRelatedNodes(id)
-    deletedBlocks.forEach((id) =>
-      this._index.remove(id, (linkData) => linkData.metadata.type === Entities.CONTENT_BLOCK)
-    )
+  appendToDoc: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
+    const parser = new EntityParser()
+    if (!this._graphX.getNode(id)) return
+    const parsedBlocks = parser.noteParser(id, contents, title, options)
+    parsedBlocks.entities.forEach((item) => this._index.add(item))
+
+    this._graphX.addEntities(parsedBlocks.graphNodes)
+    this._graphX.addLinks(parsedBlocks.graphLinks)
+  }
+
+  moveBlocks = (fromId: string, toId: string, blockIds: string[]) => {
+    blockIds.forEach((blockId) => this._graphX.removeLink(fromId, blockId))
+    blockIds.forEach((blockId) => this._graphX.addLink(toId, blockId, { type: 'CHILD' }))
+    blockIds.forEach((blockId) => {
+      const { tags, ...rest } = this._index.get(blockId)
+      this._index.update(blockId, { ...rest, tags: tags.filter((t: string) => t !== fromId).concat(toId) })
+    })
+  }
+
+  deleteDocument = (id: string) => {
+    const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => {
+      return link.data?.type === 'CHILD'
+    })
+    console.log(deletedBlocks);
+    
+    deletedBlocks.forEach((id) => this._index.remove(id))
   }
 }
 
