@@ -10,6 +10,7 @@ export type SearchTags = Array<string>
 export interface GenericEntitySearchData {
   entity?: Entities
   id: string
+  parent?: string
   text?: string
   title?: string
   data?: any

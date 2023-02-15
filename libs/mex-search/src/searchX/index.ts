@@ -9,7 +9,7 @@ import { intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
 
-class SearchX {
+export class SearchX {
   _graphX: GraphX
   _index: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
 
@@ -18,7 +18,7 @@ class SearchX {
       document: {
         id: 'id',
         index: ['title', 'text'],
-        store: ['text', 'data', 'tags'],
+        store: ['text', 'data', 'entity', 'parent'],
         tag: 'tags'
       },
       tokenize: 'full'
@@ -40,17 +40,21 @@ class SearchX {
     if (query) {
       results.push(this.filter(query, []).flat())
     }
+
     if (tag) {
       tag.forEach((t) => results.push(this._graphX.getRelatedNodes(t).map((n) => `TAG_${n.id}`)))
     }
+
     if (mention) {
       mention.forEach((m) => results.push(this._graphX.getRelatedNodes(m).map((m) => `USER_${m.id}`)))
     }
+
     if (heirarchy) {
       heirarchy.forEach((h) => {
         results.push(this._graphX.findChildGraph(h))
       })
     }
+
     if (operator === 'or') return unionMultiple(...results)
 
     return intersectMultiple(...results)
@@ -61,11 +65,13 @@ class SearchX {
     if (filterOptions) {
       filtered = this.filter(filterOptions)
     }
+    const tag = [...(searchOptions.entityTypes ?? []), ...(filtered ?? [])]
+
     return this._index
       .search(searchOptions.text, {
         enrich: true,
         index: 'text',
-        tag: [...(searchOptions.entityTypes ?? []), ...(filtered ?? [])],
+        tag,
         bool: 'or'
       })[0]
       ?.result.filter((item) => {
@@ -108,8 +114,8 @@ class SearchX {
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => {
       return link.data?.type === 'CHILD'
     })
-    console.log(deletedBlocks);
-    
+    console.log(deletedBlocks)
+
     deletedBlocks.forEach((id) => this._index.remove(id))
   }
 }

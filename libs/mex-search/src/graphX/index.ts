@@ -4,7 +4,7 @@ import toDot from 'ngraph.todot'
 
 import { GLink, GNode, GNodeMetadata } from './types'
 
-class GraphX {
+export class GraphX {
   _graph: Graph<GNodeMetadata, any>
 
   constructor() {

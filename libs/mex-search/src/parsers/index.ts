@@ -58,6 +58,7 @@ class EntityParser {
       {
         id,
         title: title,
+        entity: Entities.NOTE,
         data: options?.metadata,
         tags: options?.systemTags ?? []
       }
@@ -123,6 +124,7 @@ class EntityParser {
       parsedEntities.push({
         entity: Entities.CONTENT_BLOCK,
         id: block.id,
+        parent: this._ID,
         data: block.metadata,
         text: blockText.trim(),
         tags: this._getFlexsearchTags([Entities.CONTENT_BLOCK])
@@ -194,6 +196,7 @@ class EntityParser {
           {
             entity: Entities.CONTENT_BLOCK,
             text: blockText,
+            parent: this._ID,
             data: block.metadata,
             tags: this._getFlexsearchTags([Entities.LINK])
           }
@@ -242,6 +245,7 @@ class EntityParser {
         {
           entity: Entities.CONTENT_BLOCK,
           text: blockText,
+          parent: this._ID,
           data: block.metadata,
           tags: this._getFlexsearchTags([Entities.LINK])
         }
@@ -268,7 +272,9 @@ class EntityParser {
         entities: [
           {
             text: text.join(' '),
+            entity: Entities.EXCALIDRAW,
             data: block.metadata,
+            parent: this._ID,
             tags: this._getFlexsearchTags([Entities.EXCALIDRAW])
           }
         ],
@@ -316,6 +322,7 @@ class EntityParser {
       parsedEntities.push({
         entity: Entities.TASK,
         id: blockID,
+        parent: this._ID,
         text: blockText.trim(),
         data: block.metadata,
         tags: this._getFlexsearchTags([Entities.TASK])
@@ -347,6 +354,8 @@ class EntityParser {
           text: reminder.description,
           title: reminder.title,
           data: reminder,
+          parent: this._ID,
+          entity: Entities.REMINDER,
           tags: this._getFlexsearchTags([Entities.REMINDER])
         }
       ],
@@ -362,6 +371,7 @@ class EntityParser {
         {
           entity: Entities.ACTION,
           text: blockText.trim(),
+          parent: this._ID,
           data: block.metadata,
           tags: this._getFlexsearchTags([Entities.ACTION])
         }
@@ -373,11 +383,13 @@ class EntityParser {
 
   imageParser: EntityParserFn = (block: BlockType) => {
     const blockText = block.caption && block.caption.length > 0 ? block.caption[0].text : ''
+
     return {
       entities: [
         {
-          entity: Entities.CONTENT_BLOCK,
+          entity: Entities.IMAGE,
           id: block.id,
+          parent: this._ID,
           data: block.metadata,
           text: blockText.trim(),
           tags: this._getFlexsearchTags([Entities.IMAGE])
