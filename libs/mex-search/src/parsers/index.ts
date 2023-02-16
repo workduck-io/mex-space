@@ -236,7 +236,7 @@ class EntityParser {
       from: parentBlockID!,
       to: url,
       metadata: {
-        type: Entities.LINK
+        type: 'CHILD'
       }
     }
 
@@ -336,7 +336,7 @@ class EntityParser {
       const taskGLink: GLink = {
         from: this._ID,
         to: blockID,
-        metadata: { type: Entities.TASK }
+        metadata: { type: 'CHILD' }
       }
       associatedEntities.push(taskGNode)
       associatedLinks.push(taskGLink)
