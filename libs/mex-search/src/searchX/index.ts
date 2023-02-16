@@ -5,7 +5,7 @@ import { NodeEditorContent } from '@workduck-io/mex-utils/src'
 import GraphX from '../graphX'
 import EntityParser from '../parsers'
 import { GenericEntitySearchData, ParserFuncResult } from '../parsers/types'
-import { intersectMultiple, unionMultiple } from '../utils'
+import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
 import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
 
@@ -18,7 +18,7 @@ export class SearchX {
       document: {
         id: 'id',
         index: ['title', 'text'],
-        store: ['text', 'data', 'entity', 'parent'],
+        store: ['text', 'data', 'entity', 'parent', 'tags'],
         tag: 'tags'
       },
       tokenize: 'full'
@@ -60,24 +60,28 @@ export class SearchX {
     return intersectMultiple(...results)
   }
 
-  search = (searchOptions: SearchQuery, filterOptions?: FilterQuery) => {
+  search = (searchOptions?: SearchQuery, filterOptions?: FilterQuery) => {
     let filtered
     if (filterOptions) {
       filtered = this.filter(filterOptions)
     }
-    const tag = [...(searchOptions.entityTypes ?? []), ...(filtered ?? [])]
+    const tag = [...(searchOptions?.entityTypes ?? Object.values(Entities)), ...(filtered ?? [])]
 
-    return this._index
-      .search(searchOptions.text, {
+    const preFilteredResults = this._index
+      .search(searchOptions?.text ?? '', {
         enrich: true,
         index: 'text',
         tag,
         bool: 'or'
-      })[0]
-      ?.result.filter((item) => {
-        if (filtered) return filtered.includes(item.id)
-        return true
       })
+      .reduce((acc, curr) => {
+        return [...acc, ...(curr?.result ?? [])]
+      }, [])
+
+    return preFilteredResults?.filter((item) => {
+      if (filtered) return filtered.includes(item.id)
+      return true
+    })
   }
 
   addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
@@ -114,7 +118,6 @@ export class SearchX {
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => {
       return link.data?.type === 'CHILD'
     })
-    console.log(deletedBlocks)
 
     deletedBlocks.forEach((id) => this._index.remove(id))
   }

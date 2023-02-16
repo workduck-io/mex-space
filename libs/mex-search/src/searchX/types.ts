@@ -23,6 +23,6 @@ export interface FilterQuery {
 }
 
 export interface SearchQuery {
-  text: string
+  text?: string
   entityTypes?: Entities[]
 }

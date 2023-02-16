@@ -1356,17 +1356,16 @@ export const generateEntities = () => {
   searchIdx.initializeSearch(parsed)
   searchIdx.addOrUpdateDocument(noteID2, newContent, title2, { extra: extra })
   searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
-  searchIdx.deleteDocument('NODE_jjtnMNJwLJ6bMaBMLApM4')
   console.log(
     JSON.stringify(
       searchIdx.search(
-        { text: 'remember', entityTypes: [Entities.CONTENT_BLOCK] },
-        {
-          heirarchy: ['NODE_jjtnMNJwLJ6bMaBMLApM4']
-          //   query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
-          //   mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
-          //   operator: 'or'
-        }
+        { text: '', entityTypes: [Entities.CONTENT_BLOCK, Entities.TASK] }
+        // {
+        //   heirarchy: ['NODE_jjtnMNJwLJ6bMaBMLApM4']
+        //   //   query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
+        //   //   mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
+        //   //   operator: 'or'
+        // }
       ),
       null,
       2
