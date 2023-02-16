@@ -13,7 +13,10 @@ export enum Entities {
   LINK = 'LINK',
   IMAGE = 'IMAGE',
   EXCALIDRAW = 'EXCALIDRAW',
-  ILINK = 'ILINK'
+  ILINK = 'ILINK',
+  NAMESPACE = 'NAMESPACE',
+  URLLINK = 'URLLINK',
+  HIGHLIGHT = 'HIGHLIGHT'
 }
 
 export const createIndexCompositeKey = (nodeID: string, blockID: string) => {
@@ -41,4 +44,8 @@ const union = (a, b) => {
   const s = new Set(b)
   a.forEach((x) => s.add(x))
   return [...s]
+}
+
+export const parentList = (path) => {
+  return path.split('.').slice(0, -1).join('.')
 }
