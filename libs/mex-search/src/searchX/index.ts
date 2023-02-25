@@ -1,13 +1,13 @@
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
-import { NodeEditorContent } from '@workduck-io/mex-utils/src'
+import { ILink, NodeEditorContent } from '@workduck-io/mex-utils'
 
 import GraphX from '../graphX'
 import EntityParser from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
-import { Entities, intersectMultiple, parentList, unionMultiple } from '../utils'
+import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
-import { FilterQuery, SearchQuery, UpdateDocFn } from './types'
+import { FilterQuery, Highlight, Link, SearchQuery, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
@@ -28,56 +28,61 @@ export class SearchX {
     this._graphX = new GraphX()
   }
 
-  initializeSearch = (ilinks, highlights, links) => {
+  initializeSearch = (
+    ilinks: ILink[],
+    highlights: Highlight[],
+    links: Link[],
+    contents: { [nodeid: string]: NodeEditorContent }
+  ) => {
     this.initializeHeirarchy(ilinks)
-    this.initializeHighlights(highlights)
     this.initializeLinks(links)
+    this.initializeHighlights(highlights)
+    this.initializeContent(contents)
   }
 
-  initializeLinks = (links: any[]) => {
+  initializeLinks = (links: Link[]) => {
     links.forEach((link) => {
-      this._graphX.addNode({ id: link.id, metadata: { type: Entities.URLLINK, ...link } })
+      this._graphX.addNode({ id: link.url, metadata: { type: Entities.URLLINK, ...link } })
 
       this._index.add({
-        id: link.id,
+        id: link.url,
         data: link,
         entity: Entities.URLLINK,
-        content: link.url,
+        title: link.title,
+        text: link?.alias ?? '' + ' ' + link?.description,
         tag: [Entities.URLLINK]
       })
     })
   }
 
-  initializeHighlights = (highlights: any[]) => {
+  initializeHighlights = (highlights: Highlight[]) => {
     highlights.forEach((highlight) => {
-      this._graphX.addNode({ id: highlight.id, metadata: { type: Entities.HIGHLIGHT, ...highlight } })
-      this._graphX.addLink(highlight.url, highlight.id, { type: Entities.HIGHLIGHT })
+      this._graphX.addNode({ id: highlight.entityId, metadata: { type: Entities.HIGHLIGHT, ...highlight } })
+      this._graphX.addLink(highlight.properties.sourceUrl, highlight.entityId, { type: Entities.HIGHLIGHT })
       this._index.add({
-        id: highlight.id,
+        id: highlight.entityId,
         data: highlight,
         entity: Entities.HIGHLIGHT,
-        content: highlight.text,
+        text: highlight.properties.saveableRange.text,
         tag: [Entities.HIGHLIGHT]
       })
     })
   }
 
-  initializeHeirarchy = (ilinks: any[]) => {
+  initializeHeirarchy = (ilinks: ILink[]) => {
     ;[...new Set(ilinks.map((il) => il.namespace))].forEach((namespace) => {
       this._graphX.addNode({ id: namespace, metadata: { type: Entities.NAMESPACE } })
       this._index.add({
         id: namespace,
         data: { namespace },
         entity: Entities.NAMESPACE,
-        content: namespace,
+        text: namespace,
         tag: [Entities.NAMESPACE]
       })
     })
 
     ilinks.forEach((ilink, i) => {
-      const parentId =
-        ilinks.find((il) => il.path === parentList(ilink.path) && ilink.namespace === il.namespace)?.nodeid ??
-        ilink.namespace
+      const parentId = ilink.parentNodeId ?? ilink.namespace
       this._graphX.addNode({
         id: ilink.nodeid,
         metadata: {
@@ -87,13 +92,19 @@ export class SearchX {
       })
       this._index.add({
         id: ilink.nodeid,
-        content: ilink.path.split('.').splice(-1)[0],
+        text: ilink.path.split('.').splice(-1)[0],
         parent: parentId,
         entity: Entities.NOTE,
         tag: parentId ? [ilink.namespace, parentId] : [ilink.namespace]
       })
 
       this._graphX.addLink(parentId, ilink.nodeid, { type: 'CHILD' })
+    })
+  }
+
+  initializeContent = (contents: { [nodeid: string]: NodeEditorContent }) => {
+    Object.entries(contents).forEach(([k, v]) => {
+      this.addOrUpdateDocument(k, v, '')
     })
   }
 

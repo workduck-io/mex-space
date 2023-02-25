@@ -1,6 +1,13 @@
 import { ElementHighlightMetadata } from './highlight'
 import { AccessLevel } from './mentions'
 
+export const iconTypes = ['URL', 'ICON', 'EMOJI', 'MEX'] as const
+// M stands for Multi/Mex/Many (yet to decide)
+export interface MIcon {
+  type: typeof iconTypes[number]
+  value: string
+}
+
 export interface ILink {
   /** Unique Identifier */
   nodeid: string
@@ -9,10 +16,13 @@ export interface ILink {
    * Uses separator for heirarchy */
   path: string
 
+  namespace: string
+
   /** Iconify Icon string */
-  icon?: string
+  icon?: MIcon
 
   createdAt?: number
+  updatedAt?: number
 
   parentNodeId?: string
 }
