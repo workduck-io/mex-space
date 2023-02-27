@@ -29,7 +29,7 @@ import { EntityParserFn, GenericEntitySearchData, NoteParserFn } from './types'
 
 type entityParserMapFn = (entityType: string) => { fn: EntityParserFn; entityType: Entities }
 
-class EntityParser {
+export class EntityParser {
   private _ID: string
   private _extra: SearchRepExtra | undefined
   private _noteMetadata: NodeMetadata | undefined
@@ -443,5 +443,3 @@ class EntityParser {
     return [...(this._systemTags ?? []), ...(extraTags ?? []), this._ID]
   }
 }
-
-export default EntityParser

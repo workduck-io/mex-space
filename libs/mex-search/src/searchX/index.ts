@@ -2,8 +2,8 @@ import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
 import { ILink, NodeEditorContent } from '@workduck-io/mex-utils'
 
-import GraphX from '../graphX'
-import EntityParser from '../parsers'
+import { GraphX } from '../graphX'
+import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
 import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
@@ -111,6 +111,7 @@ export class SearchX {
   filter = (options?: FilterQuery, results: any[] = []) => {
     if (!options) return []
     const { query, operator, tag, heirarchy, mention } = options
+
     if (query) {
       results.push(this.filter(query, []).flat())
     }
@@ -196,5 +197,3 @@ export class SearchX {
     deletedBlocks.forEach((id) => this._index.remove(id))
   }
 }
-
-export default SearchX

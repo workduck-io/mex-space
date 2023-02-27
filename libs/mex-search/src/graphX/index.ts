@@ -96,5 +96,3 @@ export class GraphX {
     return []
   }
 }
-
-export default GraphX
