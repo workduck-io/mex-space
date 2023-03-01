@@ -14,14 +14,23 @@ export type UpdateDocFn = (
   }
 ) => void
 
-export type QueryType = 'tag' | 'mention' | 'heirarchy' | 'query' | 'text'
-export interface QueryUnit {
+export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text'
+export type NestedQueryType = 'query'
+export interface ISimpleQueryUnit {
   nextOperator?: 'and' | 'or'
-  type: QueryType
-  value?: string
+  type: SimpleQueryType
+  value: string
   entities?: Entities[]
-  query?: ISearchQuery
 }
+
+export interface IQueryUnit {
+  nextOperator?: 'and' | 'or'
+  type: NestedQueryType
+  query: ISearchQuery
+  entities?: Entities[]
+}
+
+export type QueryUnit = ISimpleQueryUnit | IQueryUnit
 
 export type ISearchQuery = QueryUnit[]
 

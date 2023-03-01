@@ -115,11 +115,11 @@ export class SearchX {
     }
     switch (opt.type) {
       case 'tag':
-        return this._graphX.getRelatedNodes(opt.value!, condition).map((n) => n.id)
+        return this._graphX.getRelatedNodes(opt.value, condition).map((n) => n.id)
       case 'mention':
-        return this._graphX.getRelatedNodes(opt.value!, condition).map((n) => n.id)
+        return this._graphX.getRelatedNodes(opt.value, condition).map((n) => n.id)
       case 'heirarchy':
-        return this._graphX.findChildGraph(opt.value!, condition)
+        return this._graphX.findChildGraph(opt.value, condition)
       case 'text':
         return this._index
           .search(opt.value ?? '', {
@@ -131,18 +131,20 @@ export class SearchX {
             return [...acc, ...(curr?.result ?? [])]
           }, [])
       case 'query':
-        return this.search(opt.query!, false)
+        return this.search(opt.query, false)
       default:
         return []
     }
   }
 
   search = (options: ISearchQuery, expand = true) => {
-    let result: any[]
+    let result: any[] = []
+    let firstPass = true
     let prevOperator = 'and'
     options.forEach((qu) => {
-      if (!result) {
+      if (firstPass) {
         result = this.eval(qu)
+        firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
         result = join(result, this.eval(qu))
@@ -152,7 +154,6 @@ export class SearchX {
 
     if (expand) return result.map((item) => this._index.get(item))
     return result
-    //
   }
 
   addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
