@@ -109,13 +109,17 @@ export class SearchX {
   }
 
   eval(opt: QueryUnit) {
+    const condition = (node) => {
+      if (opt.entities) return opt.entities.includes(node.type)
+      return true
+    }
     switch (opt.type) {
       case 'tag':
-        return this._graphX.getRelatedNodes(opt.value!).map((n) => n.id)
+        return this._graphX.getRelatedNodes(opt.value!, condition).map((n) => n.id)
       case 'mention':
-        return this._graphX.getRelatedNodes(opt.value!).map((n) => n.id)
+        return this._graphX.getRelatedNodes(opt.value!, condition).map((n) => n.id)
       case 'heirarchy':
-        return this._graphX.findChildGraph(opt.value!)
+        return this._graphX.findChildGraph(opt.value!, condition)
       case 'text':
         return this._index
           .search(opt.value ?? '', {

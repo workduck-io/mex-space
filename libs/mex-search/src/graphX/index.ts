@@ -73,22 +73,28 @@ export class GraphX {
     graphLinks.forEach((gLink) => this.addLink(gLink.from, gLink.to, gLink.metadata))
   }
 
-  findChildGraph(item: string, level = 1, maxLevel = 10000) {
+  findChildGraph(item: string, condition = (node) => true, level = 1, maxLevel = 10000) {
     if (!item || level > maxLevel) return []
     const children: any[] = []
 
-    this._graph.getLinks(item)?.forEach((link) => {
-      if (link.data.type === 'CHILD' && link.toId !== item) {
-        children.push(link.toId)
-      }
-    })
+    this._graph.forEachLinkedNode(
+      item,
+      (node, link) => {
+        
+
+        if (link.data.type === 'CHILD' && link.toId !== item) {
+          if (condition(node.data)) children.push(link.toId)
+        }
+      },
+      false
+    )
     if (children.length > 0) {
       level++
       return [
         ...children,
         ...children
           .map((child) => {
-            return this.findChildGraph(child, level, maxLevel)
+            return this.findChildGraph(child, condition, level, maxLevel)
           })
           .flat()
       ]

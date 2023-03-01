@@ -1,6 +1,7 @@
 import { GraphX } from './src/graphX'
 import { EntityParser } from './src/parsers'
 import { SearchX } from './src/searchX'
+import { Entities } from './src/utils'
 // import { Entities } from './src/utils'
 
 const content = [
@@ -1359,29 +1360,38 @@ export const generateEntities = () => {
   console.log(
     searchIdx.search([
       {
-        type: 'query',
-        query: [
-          {
-            type: 'tag',
-            value: 'TAG_code',
-            nextOperator: 'or'
-          },
-          {
-            type: 'tag',
-            value: 'TAG_wowtag'
-          }
-        ],
-        nextOperator: 'or'
-      },
-      {
-        type: 'mention',
-        value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
-        nextOperator: 'or'
-      },
-      {
-        type: 'text',
-        value: 'we'
+        type: 'heirarchy',
+        value: 'NODE_jjtnMNJwLJ6bMaBMLApM4',
+        entities: [Entities.TASK]
       }
+      // {
+      //   type: 'query',
+      //   query: [
+      //     {
+      //       type: 'tag',
+      //       value: 'TAG_code',
+      //       entities: [Entities.TASK],
+      //       nextOperator: 'or'
+      //     },
+      //     {
+      //       type: 'tag',
+      //       value: 'TAG_wowtag',
+      //       entities: [Entities.TASK]
+      //     }
+      //   ],
+      //   nextOperator: 'or'
+      // },
+      // {
+      //   type: 'mention',
+      //   value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
+      //   entities: [Entities.TASK],
+      //   nextOperator: 'or'
+      // },
+      // {
+      //   type: 'text',
+      //   value: 'we',
+      //   entities: [Entities.TASK]
+      // }
     ])
   )
   // console.log(

@@ -14,7 +14,7 @@ export type UpdateDocFn = (
   }
 ) => void
 
-export type QueryType = 'tag' | 'mention' | 'heirarchy' | 'query' | 'text' | 'entity'
+export type QueryType = 'tag' | 'mention' | 'heirarchy' | 'query' | 'text'
 export interface QueryUnit {
   nextOperator?: 'and' | 'or'
   type: QueryType
