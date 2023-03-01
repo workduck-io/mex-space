@@ -14,18 +14,60 @@ export type UpdateDocFn = (
   }
 ) => void
 
-export interface FilterQuery {
-  query?: FilterQuery
-  operator?: 'and' | 'or'
-  tag?: string[]
-  mention?: string[]
-  heirarchy?: string[]
+export type QueryType = 'tag' | 'mention' | 'heirarchy' | 'query' | 'text' | 'entity'
+export interface QueryUnit {
+  nextOperator?: 'and' | 'or'
+  type: QueryType
+  value?: string
+  entities?: Entities[]
+  query?: ISearchQuery
 }
 
-export interface SearchQuery {
-  text?: string
-  entityTypes?: Entities[]
-}
+export type ISearchQuery = QueryUnit[]
+
+export const a: ISearchQuery = [
+  {
+    type: 'tag',
+    value: 'something',
+    entities: [Entities.TASK, Entities.CONTENT_BLOCK],
+    nextOperator: 'and'
+  },
+  {
+    type: 'query',
+    query: [
+      {
+        type: 'mention',
+        value: 'me',
+        nextOperator: 'or'
+      },
+      {
+        type: 'mention',
+        value: 'you',
+        nextOperator: 'and'
+      },
+      {
+        type: 'mention',
+        value: 'else'
+      }
+    ],
+    nextOperator: 'and'
+  },
+  {
+    type: 'heirarchy',
+    value: 'NS_123',
+    nextOperator: 'or'
+  },
+  {
+    type: 'text',
+    value: 'something',
+    entities: [Entities.CONTENT_BLOCK]
+  },
+  {
+    type: 'heirarchy',
+    value: 'NS_123',
+    nextOperator: 'or'
+  }
+]
 
 export interface HighlightMetaBlock {
   parentTagName: string

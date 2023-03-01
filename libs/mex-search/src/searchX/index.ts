@@ -7,7 +7,7 @@ import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
 import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
-import { FilterQuery, Highlight, Link, SearchQuery, UpdateDocFn } from './types'
+import { Highlight, ISearchQuery, Link, QueryUnit, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
@@ -108,55 +108,47 @@ export class SearchX {
     })
   }
 
-  filter = (options?: FilterQuery, results: any[] = []) => {
-    if (!options) return []
-    const { query, operator, tag, heirarchy, mention } = options
-
-    if (query) {
-      results.push(this.filter(query, []).flat())
+  eval(opt: QueryUnit) {
+    switch (opt.type) {
+      case 'tag':
+        return this._graphX.getRelatedNodes(opt.value!).map((n) => n.id)
+      case 'mention':
+        return this._graphX.getRelatedNodes(opt.value!).map((n) => n.id)
+      case 'heirarchy':
+        return this._graphX.findChildGraph(opt.value!)
+      case 'text':
+        return this._index
+          .search(opt.value ?? '', {
+            index: 'text',
+            tag: opt.entities ?? Object.values(Entities),
+            bool: 'or'
+          })
+          .reduce((acc, curr) => {
+            return [...acc, ...(curr?.result ?? [])]
+          }, [])
+      case 'query':
+        return this.search(opt.query!, false)
+      default:
+        return []
     }
-
-    if (tag) {
-      tag.forEach((t) => results.push(this._graphX.getRelatedNodes(t).map((n) => `TAG_${n.id}`)))
-    }
-
-    if (mention) {
-      mention.forEach((m) => results.push(this._graphX.getRelatedNodes(m).map((m) => `USER_${m.id}`)))
-    }
-
-    if (heirarchy) {
-      heirarchy.forEach((h) => {
-        results.push(this._graphX.findChildGraph(h))
-      })
-    }
-
-    if (operator === 'or') return unionMultiple(...results)
-
-    return intersectMultiple(...results)
   }
 
-  search = (searchOptions?: SearchQuery, filterOptions?: FilterQuery) => {
-    let filtered
-    if (filterOptions) {
-      filtered = this.filter(filterOptions)
-    }
-    const tag = [...(searchOptions?.entityTypes ?? Object.values(Entities)), ...(filtered ?? [])]
-
-    const preFilteredResults = this._index
-      .search(searchOptions?.text ?? '', {
-        enrich: true,
-        index: 'text',
-        tag,
-        bool: 'or'
-      })
-      .reduce((acc, curr) => {
-        return [...acc, ...(curr?.result ?? [])]
-      }, [])
-
-    return preFilteredResults?.filter((item) => {
-      if (filtered) return filtered.includes(item.id)
-      return true
+  search = (options: ISearchQuery, expand = true) => {
+    let result: any[]
+    let prevOperator = 'and'
+    options.forEach((qu) => {
+      if (!result) {
+        result = this.eval(qu)
+      } else {
+        const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
+        result = join(result, this.eval(qu))
+      }
+      prevOperator = qu.nextOperator ?? 'and'
     })
+
+    if (expand) return result.map((item) => this._index.get(item))
+    return result
+    //
   }
 
   addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
