@@ -18,7 +18,7 @@ export class SearchX {
       document: {
         id: 'id',
         index: ['title', 'text'],
-        store: ['text', 'data', 'entity', 'parent', 'tags'],
+        store: ['text', 'data', 'entity', 'parent', 'tags', 'id'],
         tag: 'tags'
       },
       tokenize: 'full'
