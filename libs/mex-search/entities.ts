@@ -1360,9 +1360,14 @@ export const generateEntities = () => {
   console.log(
     searchIdx.search([
       {
-        type: 'heirarchy',
-        value: 'NODE_jjtnMNJwLJ6bMaBMLApM4',
-        entities: [Entities.TASK]
+        type: 'query',
+        query: [
+          {
+            type: 'heirarchy',
+            value: 'NODE_jjtnMNJwLJ6bMaBMLApM4'
+          }
+        ],
+        entities: [Entities.CONTENT_BLOCK]
       }
       // {
       //   type: 'query',

@@ -108,9 +108,10 @@ export class SearchX {
     })
   }
 
-  eval(opt: QueryUnit) {
+  eval(opt: QueryUnit, entities?: Entities[]) {
     const condition = (node) => {
       if (opt.entities) return opt.entities.includes(node.type)
+      else if (entities) return entities.includes(node.type)
       return true
     }
     switch (opt.type) {
@@ -131,23 +132,23 @@ export class SearchX {
             return [...acc, ...(curr?.result ?? [])]
           }, [])
       case 'query':
-        return this.search(opt.query, false)
+        return this.search(opt.query, false, opt.entities)
       default:
         return []
     }
   }
 
-  search = (options: ISearchQuery, expand = true) => {
+  search = (options: ISearchQuery, expand = true, entities?: Entities[]) => {
     let result: any[] = []
     let firstPass = true
     let prevOperator = 'and'
     options.forEach((qu) => {
       if (firstPass) {
-        result = this.eval(qu)
+        result = this.eval(qu, entities)
         firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
-        result = join(result, this.eval(qu))
+        result = join(result, this.eval(qu, entities))
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
