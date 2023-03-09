@@ -80,14 +80,16 @@ export class GraphX {
     this._graph.forEachLinkedNode(
       item,
       (node, link) => {
-        
-
-        if (link.data.type === 'CHILD' && link.toId !== item) {
-          if (condition(node.data)) children.push(link.toId)
+        if (link.data.type === 'CHILD_LINK' && link.toId !== item) children.push(link.toId)
+        else if (link.data.type === 'CHILD' && link.toId !== item) {
+          if (condition(node.data)) {
+            children.push(link.toId)
+          }
         }
       },
       false
     )
+
     if (children.length > 0) {
       level++
       return [

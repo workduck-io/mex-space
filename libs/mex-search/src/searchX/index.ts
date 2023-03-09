@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
 import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
@@ -5,9 +7,9 @@ import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
-import { Entities, intersectMultiple, unionMultiple } from '../utils'
+import { Entities, getNodeParent, intersectMultiple, unionMultiple } from '../utils'
 
-import { Highlight, ISearchQuery, Link, QueryUnit, Reminder, UpdateDocFn } from './types'
+import { Highlight, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
@@ -56,7 +58,7 @@ export class SearchX {
       entity: Entities.URLLINK,
       title: link.title,
       text: link?.alias ?? '' + ' ' + link?.description,
-      tag: [Entities.URLLINK]
+      tags: [Entities.URLLINK]
     })
   }
 
@@ -73,8 +75,9 @@ export class SearchX {
       id: highlight.entityId,
       data: highlight,
       entity: Entities.HIGHLIGHT,
+      parent: highlight.properties.sourceUrl,
       text: highlight.properties.saveableRange.text,
-      tag: [Entities.HIGHLIGHT]
+      tags: [Entities.HIGHLIGHT]
     })
   }
 
@@ -93,29 +96,31 @@ export class SearchX {
       entity: Entities.REMINDER,
       text: reminder.description,
       title: reminder.title,
-      tag: [Entities.REMINDER]
+      tags: [Entities.REMINDER]
     })
   }
 
   initializeHeirarchy = (ilinks: ILink[]) => {
-    ;[...new Set(ilinks.map((il) => il.namespace))].forEach((namespace) => {
+    const namespaces = [...new Set(ilinks.map((il) => il.namespace))]
+    namespaces.forEach((namespace) => {
       this._graphX.addNode({ id: namespace, metadata: { type: Entities.NAMESPACE } })
+
       this._index.add({
         id: namespace,
         data: { namespace },
         entity: Entities.NAMESPACE,
         text: namespace,
-        tag: [Entities.NAMESPACE]
+        tags: [Entities.NAMESPACE]
       })
     })
 
     ilinks.forEach((ilink) => {
-      this.updateIlink(ilink)
+      const parentNodeId = getNodeParent(ilink, ilinks)
+      this.updateIlink({ ...ilink, parentNodeId })
     })
   }
 
   updateIlink = (ilink: ILink) => {
-    const parentId = ilink.parentNodeId ?? ilink.namespace
     this._graphX.addNode({
       id: ilink.nodeid,
       metadata: {
@@ -126,12 +131,12 @@ export class SearchX {
     this._index.add({
       id: ilink.nodeid,
       text: ilink.path.split('.').splice(-1)[0],
-      parent: parentId,
+      parent: ilink.parentNodeId,
       entity: Entities.NOTE,
-      tag: parentId ? [ilink.namespace, parentId] : [ilink.namespace]
+      tags: [ilink.namespace, ilink.parentNodeId]
     })
 
-    this._graphX.addLink(parentId, ilink.nodeid, { type: 'CHILD' })
+    this._graphX.addLink(ilink.parentNodeId, ilink.nodeid, { type: 'CHILD_LINK' })
   }
 
   initializeContent = (initData: InitData) => {
@@ -170,8 +175,8 @@ export class SearchX {
     }
   }
 
-  search = (options: ISearchQuery, expand = true, entities?: Entities[]) => {
-    let result: any[] = []
+  search = (options: ISearchQuery, expand = true, entities?: Entities[]): Array<SearchResult> => {
+    let result = []
     let firstPass = true
     let prevOperator = 'and'
     options.forEach((qu) => {
@@ -185,7 +190,7 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand) return result.map((item) => this._index.get(item))
+    if (expand) return result.map((item) => this._index.get(item)).filter((item) => item?.data)
     return result
   }
 

@@ -1,3 +1,5 @@
+import { ILink } from '@workduck-io/mex-utils'
+
 import { KEY_DELIMITER } from './constants'
 
 export enum Entities {
@@ -48,4 +50,12 @@ const union = (a, b) => {
 
 export const parentList = (path) => {
   return path.split('.').slice(0, -1).join('.')
+}
+
+export const getNodeParent = (iLink: ILink, iLinks: ILink[]) => {
+  const parentPath = parentList(iLink.path)
+  if (!parentPath) return iLink.namespace
+
+  const parent = iLinks.find((n) => n.path === parentPath && iLink.namespace === n.namespace)
+  return parent?.nodeid
 }

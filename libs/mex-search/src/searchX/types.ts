@@ -78,6 +78,15 @@ export const a: ISearchQuery = [
   }
 ]
 
+export interface SearchResult {
+  id: string
+  data: { [key: string]: any }
+  entity: Entities
+  tags: string[]
+  text: string
+  parent?: string
+}
+
 export interface HighlightMetaBlock {
   parentTagName: string
   parentIndex: number

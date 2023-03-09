@@ -1,7 +1,7 @@
-import { GraphX } from './src/graphX'
-import { EntityParser } from './src/parsers'
+import { ILink } from '@workduck-io/mex-utils'
+
 import { SearchX } from './src/searchX'
-import { Entities } from './src/utils'
+import { Entities } from './src'
 // import { Entities } from './src/utils'
 
 const content = [
@@ -1339,24 +1339,307 @@ const extra = {
     }
   }
 }
-const noteID = 'NODE_jjtnMNJwLJ6bMaBMLApM4'
-const noteID2 = 'NODE_89DimrxF7h6HmmDGxDM9h'
+const noteID = 'NODE_ENLNwH3AecWtPfdtxbdbz'
+const noteID2 = 'NODE_7VixWHC7wKFcVRFiAJDhX'
 const title = 'Sample Note'
 const title2 = 'Sample Note2'
 
-export const generateEntities = () => {
-  const parser = new EntityParser()
-  const parsed = parser.noteParser(noteID, content, title, { extra: extra })
-  const parsed2 = parser.noteParser(noteID2, newContent, title2, { extra: extra })
+const iLinks: ILink[] = [
+  {
+    nodeid: 'NODE_xUQJtGthbLCXkrqGDTTJX',
+    path: 'This Note Is Visible',
+    namespace: 'NAMESPACE_cNPFTPwyNeMKVNFrm34tH',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_pxdXdgzeeB8dmEMKFm9B8',
+    path: 'Untitled',
+    namespace: 'NAMESPACE_cNPFTPwyNeMKVNFrm34tH',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_qGyEkhjByN7PmriUHQAXd',
+    path: 'Untitled-1',
+    namespace: 'NAMESPACE_cNPFTPwyNeMKVNFrm34tH',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_EwtGbxrqBxJiigAeFxwBG',
+    path: 'Untitled-2',
+    namespace: 'NAMESPACE_cNPFTPwyNeMKVNFrm34tH',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_JJNckK8U6pJmqcJQdLVdB',
+    path: 'Slack Notes',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_dKrFYi33pD8U3wDjAwkMA',
+    path: 'Slack Notes.Fri Feb 03 2023',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_44mx73kLLhhA9RBHrNqMC',
+    path: 'Nice note is here',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_8HVWMc9mR3Xhc7DHXgyr7',
+    path: 'hello',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_DDbieynHPPk3wcHcbqN8V',
+    path: 'NROE',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_twhC6Hz74x3jegzf6PVKU',
+    path: 'NROE.Create New Note',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_jqQpJhx6GppHAh6ChWATM',
+    path: 'Slack Notes.Thu Feb 02 2023',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_VGwVtY8n6n7LEDGt9iCq8',
+    path: 'Slack Notes.Thu Feb 02 2023.Untitled',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_N9yVRtjd74jLVrjDxhUeT',
+    path: 'Slack Notes.Thu Feb 02 2023.Untitled.Untitled',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_ANX9K9aV8ggpGBg9xDmYP',
+    path: 'Slack Notes.Thu Feb 02 2023.Untitled.Untitled.Untitled',
+    namespace: 'NAMESPACE_riWifgdbKFT76F3bFmCEK',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_zJQaDimUiifDTDJd4mCKD',
+    path: 'Frontend - Full Time',
+    namespace: 'NAMESPACE_drjtMmkCbxxnnaMJyE6Vp',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_gj6qfpBP3LNBF9YdmwGkm',
+    path: 'Store - handlers',
+    namespace: 'NAMESPACE_drjtMmkCbxxnnaMJyE6Vp',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_wnNwqTAgTNPe7jKQz4WEU',
+    path: 'design',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_CAmgVi7fJeTHeD8jKkxiV',
+    path: 'doc',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_8dchhzMAQgXV8geHRnbXk',
+    path: 'Links',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_XNyGfAyLifFdhbEx4FwQ3',
+    path: 'Meeting',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_UQ9irg3DmXkyhfmpzfaEn',
+    path: 'Onboarding',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_JDdxNz4TFAkpgkbL4YFNk',
+    path: 'Drafts',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_fP7RpK6G6NWzLqUhtfeUM',
+    path: 'Drafts.Note Icons',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_ENLNwH3AecWtPfdtxbdbz',
+    path: 'Daily Tasks',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_7VixWHC7wKFcVRFiAJDhX',
+    path: 'Daily Tasks.Tasks',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_9FffcVxBNYnTjgDNrWUme',
+    path: 'Drafts.Feb 20, 2023, 8:14:08 PM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_wfcqY8JG3EULNRcbGUCwN',
+    path: 'Drafts.Feb 20, 2023, 8:14:40 PM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_J7C9xyrwEp693if7aLD99',
+    path: 'Drafts.Feb 20, 2023, 10:00:03 PM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_F8UaTJiTVe3KhYPMtnRAX',
+    path: 'Drafts.Feb 22, 2023, 2:12:00 PM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_cNLRPa3TGPV9mQMkhbfxy',
+    path: 'Drafts.Feb 24, 2023, 1:14:08 AM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  },
+  {
+    nodeid: 'NODE_mp8dbbERinP6RcGkTtJXj',
+    path: 'Drafts.Feb 24, 2023, 1:34:29 AM',
+    namespace: 'NAMESPACE_BV47Cr3LVHMrREC8n6j48',
+    icon: {
+      type: 'ICON',
+      value: 'gg:file-document'
+    }
+  }
+]
 
-  const graphX = new GraphX()
-  graphX.addEntities([...parsed.graphNodes, ...parsed2.graphNodes])
-  graphX.addLinks([...parsed2.graphLinks, ...parsed.graphLinks])
-  // writeFileSync('./graph.dot', graphX.exportToDot())
+export const generateEntities = () => {
   const searchIdx = new SearchX()
+  searchIdx.initializeHeirarchy(iLinks)
+  // const parser = new EntityParser()
+  // const parsed = parser.noteParser(noteID, content, title, { extra: extra })
+  // const parsed2 = parser.noteParser(noteID2, newContent, title2, { extra: extra })
+
+  // const graphX = new GraphX()
+  // graphX.addEntities([...parsed.graphNodes, ...parsed2.graphNodes])
+  // graphX.addLinks([...parsed2.graphLinks, ...parsed.graphLinks])
+  // writeFileSync('./graph.dot', graphX.exportToDot())
   searchIdx.addOrUpdateDocument(noteID, content, title, { extra: extra })
   searchIdx.addOrUpdateDocument(noteID2, newContent, title2, { extra: extra })
-  searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
+  // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
   console.log(
     searchIdx.search([
       {
@@ -1364,7 +1647,7 @@ export const generateEntities = () => {
         query: [
           {
             type: 'heirarchy',
-            value: 'NODE_jjtnMNJwLJ6bMaBMLApM4'
+            value: 'NODE_ENLNwH3AecWtPfdtxbdbz'
           }
         ],
         entities: [Entities.CONTENT_BLOCK]
@@ -1399,6 +1682,7 @@ export const generateEntities = () => {
       // }
     ])
   )
+
   // console.log(
   //   searchIdx.newSearch([{
   //     type: 'text',
