@@ -1,13 +1,13 @@
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
-import { ILink, NodeEditorContent } from '@workduck-io/mex-utils'
+import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
 
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
 import { Entities, intersectMultiple, unionMultiple } from '../utils'
 
-import { Highlight, ISearchQuery, Link, QueryUnit, UpdateDocFn } from './types'
+import { Highlight, ISearchQuery, Link, QueryUnit, Reminder, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
@@ -32,40 +32,68 @@ export class SearchX {
     ilinks: ILink[],
     highlights: Highlight[],
     links: Link[],
-    contents: { [nodeid: string]: NodeEditorContent }
+    contents: InitData,
+    reminders: Reminder[]
   ) => {
     this.initializeHeirarchy(ilinks)
     this.initializeLinks(links)
     this.initializeHighlights(highlights)
     this.initializeContent(contents)
+    this.initializeReminders(reminders)
   }
 
   initializeLinks = (links: Link[]) => {
     links.forEach((link) => {
-      this._graphX.addNode({ id: link.url, metadata: { type: Entities.URLLINK, ...link } })
+      this.updateLink(link)
+    })
+  }
 
-      this._index.add({
-        id: link.url,
-        data: link,
-        entity: Entities.URLLINK,
-        title: link.title,
-        text: link?.alias ?? '' + ' ' + link?.description,
-        tag: [Entities.URLLINK]
-      })
+  updateLink = (link: Link) => {
+    this._graphX.addNode({ id: link.url, metadata: { type: Entities.URLLINK, ...link } })
+    this._index.add({
+      id: link.url,
+      data: link,
+      entity: Entities.URLLINK,
+      title: link.title,
+      text: link?.alias ?? '' + ' ' + link?.description,
+      tag: [Entities.URLLINK]
     })
   }
 
   initializeHighlights = (highlights: Highlight[]) => {
     highlights.forEach((highlight) => {
-      this._graphX.addNode({ id: highlight.entityId, metadata: { type: Entities.HIGHLIGHT, ...highlight } })
-      this._graphX.addLink(highlight.properties.sourceUrl, highlight.entityId, { type: Entities.HIGHLIGHT })
-      this._index.add({
-        id: highlight.entityId,
-        data: highlight,
-        entity: Entities.HIGHLIGHT,
-        text: highlight.properties.saveableRange.text,
-        tag: [Entities.HIGHLIGHT]
-      })
+      this.updateHighlight(highlight)
+    })
+  }
+
+  updateHighlight = (highlight: Highlight) => {
+    this._graphX.addNode({ id: highlight.entityId, metadata: { type: Entities.HIGHLIGHT, ...highlight } })
+    this._graphX.addLink(highlight.properties.sourceUrl, highlight.entityId, { type: Entities.HIGHLIGHT })
+    this._index.add({
+      id: highlight.entityId,
+      data: highlight,
+      entity: Entities.HIGHLIGHT,
+      text: highlight.properties.saveableRange.text,
+      tag: [Entities.HIGHLIGHT]
+    })
+  }
+
+  initializeReminders = (reminders: Reminder[]) => {
+    reminders.forEach((reminder) => {
+      this.updateReminder(reminder)
+    })
+  }
+
+  updateReminder = (reminder: Reminder) => {
+    this._graphX.addNode({ id: reminder.id, metadata: { type: Entities.REMINDER, ...reminder } })
+    if (reminder.nodeid) this._graphX.addLink(reminder.nodeid, reminder.id, { type: Entities.REMINDER })
+    this._index.add({
+      id: reminder.id,
+      data: reminder,
+      entity: Entities.REMINDER,
+      text: reminder.description,
+      title: reminder.title,
+      tag: [Entities.REMINDER]
     })
   }
 
@@ -81,30 +109,34 @@ export class SearchX {
       })
     })
 
-    ilinks.forEach((ilink, i) => {
-      const parentId = ilink.parentNodeId ?? ilink.namespace
-      this._graphX.addNode({
-        id: ilink.nodeid,
-        metadata: {
-          title: ilink.path.split('.').splice(-1)[0],
-          type: Entities.NOTE
-        }
-      })
-      this._index.add({
-        id: ilink.nodeid,
-        text: ilink.path.split('.').splice(-1)[0],
-        parent: parentId,
-        entity: Entities.NOTE,
-        tag: parentId ? [ilink.namespace, parentId] : [ilink.namespace]
-      })
-
-      this._graphX.addLink(parentId, ilink.nodeid, { type: 'CHILD' })
+    ilinks.forEach((ilink) => {
+      this.updateIlink(ilink)
     })
   }
 
-  initializeContent = (contents: { [nodeid: string]: NodeEditorContent }) => {
-    Object.entries(contents).forEach(([k, v]) => {
-      this.addOrUpdateDocument(k, v, '')
+  updateIlink = (ilink: ILink) => {
+    const parentId = ilink.parentNodeId ?? ilink.namespace
+    this._graphX.addNode({
+      id: ilink.nodeid,
+      metadata: {
+        title: ilink.path.split('.').splice(-1)[0],
+        type: Entities.NOTE
+      }
+    })
+    this._index.add({
+      id: ilink.nodeid,
+      text: ilink.path.split('.').splice(-1)[0],
+      parent: parentId,
+      entity: Entities.NOTE,
+      tag: parentId ? [ilink.namespace, parentId] : [ilink.namespace]
+    })
+
+    this._graphX.addLink(parentId, ilink.nodeid, { type: 'CHILD' })
+  }
+
+  initializeContent = (initData: InitData) => {
+    Object.entries(initData.contents).forEach(([k, v]) => {
+      this.addOrUpdateDocument(k, v.content, '', { metadata: v.metadata })
     })
   }
 
@@ -187,7 +219,7 @@ export class SearchX {
     })
   }
 
-  deleteDocument = (id: string) => {
+  deleteEntity = (id: string) => {
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => {
       return link.data?.type === 'CHILD'
     })

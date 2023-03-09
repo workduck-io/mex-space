@@ -58,7 +58,6 @@ export interface InitDataStoreType {
   ilinks: ILink[]
   linkCache: LinkCache
   tagsCache: TagsCache
-  bookmarks: string[]
   archive: ILink[]
   baseNodeId: string
 }
