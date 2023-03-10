@@ -52,8 +52,11 @@ export class SearchX {
 
   updateLink = (link: Link) => {
     this._graphX.addNode({ id: link.url, metadata: { type: Entities.URLLINK, ...link } })
+    link.tags?.forEach((tag) => {
+      this._graphX.addLink(tag, link.alias)
+    })
     this._index.add({
-      id: link.url,
+      id: link.alias,
       data: link,
       entity: Entities.URLLINK,
       title: link.title,
@@ -191,7 +194,7 @@ export class SearchX {
     })
 
     if (expand) return result.map((item) => this._index.get(item)).filter((item) => item?.data)
-    return result
+    return result.filter((item) => item)
   }
 
   addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
