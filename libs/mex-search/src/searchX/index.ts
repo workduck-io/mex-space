@@ -37,11 +37,15 @@ export class SearchX {
     contents: InitData,
     reminders: Reminder[]
   ) => {
-    this.initializeHeirarchy(ilinks)
-    this.initializeLinks(links)
-    this.initializeHighlights(highlights)
-    this.initializeContent(contents)
-    this.initializeReminders(reminders)
+    try {
+      this.initializeHeirarchy(ilinks)
+      this.initializeLinks(links)
+      this.initializeHighlights(highlights)
+      this.initializeContent(contents)
+      this.initializeReminders(reminders)
+    } catch (e) {
+      console.log('Error: ', e)
+    }
   }
 
   initializeLinks = (links: Link[]) => {
@@ -66,7 +70,7 @@ export class SearchX {
   }
 
   initializeHighlights = (highlights: Highlight[]) => {
-    highlights.forEach((highlight) => {
+    highlights?.forEach((highlight) => {
       this.updateHighlight(highlight)
     })
   }
@@ -85,9 +89,13 @@ export class SearchX {
   }
 
   initializeReminders = (reminders: Reminder[]) => {
-    reminders.forEach((reminder) => {
-      this.updateReminder(reminder)
-    })
+    try {
+      reminders?.forEach((reminder) => {
+        this.updateReminder(reminder)
+      })
+    } catch (err) {
+      console.log('Unable to Initialize Reminders: ', { err })
+    }
   }
 
   updateReminder = (reminder: Reminder) => {
@@ -117,7 +125,7 @@ export class SearchX {
       })
     })
 
-    ilinks.forEach((ilink) => {
+    ilinks?.forEach((ilink) => {
       const parentNodeId = getNodeParent(ilink, ilinks)
       this.updateIlink({ ...ilink, parentNodeId })
     })
@@ -156,9 +164,9 @@ export class SearchX {
     }
     switch (opt.type) {
       case 'tag':
-        return this._graphX.getRelatedNodes(opt.value, condition).map((n) => n.id)
+        return this._graphX.getRelatedNodes(`TAG_${opt.value}`, condition).map((n) => n.id)
       case 'mention':
-        return this._graphX.getRelatedNodes(opt.value, condition).map((n) => n.id)
+        return this._graphX.getRelatedNodes(`USER_${opt.value}`, condition).map((n) => n.id)
       case 'heirarchy':
         return this._graphX.findChildGraph(opt.value, condition)
       case 'text':
@@ -202,7 +210,9 @@ export class SearchX {
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => link.data.type == 'CHILD')
     deletedBlocks.forEach((id) => this._index.remove(id))
-    parsedBlocks.entities.forEach((item) => this._index.add(item))
+    parsedBlocks.entities.forEach((item) => {
+      this._index.add(item)
+    })
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)

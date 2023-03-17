@@ -1,5 +1,6 @@
 import { ElementHighlightMetadata } from './highlight'
 import { AccessLevel } from './mentions'
+import { PriorityType, TodoStatus } from './tasks'
 
 export const iconTypes = ['URL', 'ICON', 'EMOJI', 'MEX'] as const
 // M stands for Multi/Mex/Many (yet to decide)
@@ -95,6 +96,8 @@ export type BlockType = {
   blockMeta?: BlockMetaDataType
   metadata?: any
   value?: string
+  status?: TodoStatus
+  priority?: PriorityType
   url?: string
   caption?: Array<{ text: string }>
 }

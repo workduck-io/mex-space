@@ -12,13 +12,7 @@ import {
   ELEMENT_TAG,
   ELEMENT_TODO_LI
 } from '@workduck-io/mex-utils/src/constants'
-import type {
-  BlockType,
-  NodeEditorContent,
-  NodeMetadata,
-  Reminder,
-  SearchRepExtra
-} from '@workduck-io/mex-utils/src/types'
+import { BlockType, NodeEditorContent, NodeMetadata, Reminder, SearchRepExtra } from '@workduck-io/mex-utils/src/types'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
 import { GLink, GNode } from '../graphX/types'
@@ -324,7 +318,11 @@ export class EntityParser {
         id: blockID,
         parent: this._ID,
         text: blockText.trim(),
-        data: block.metadata,
+        data: {
+          ...(block.metadata ?? {}),
+          status: block.status,
+          priority: block.priority
+        },
         tags: this._getFlexsearchTags([Entities.TASK])
       })
 
@@ -390,7 +388,11 @@ export class EntityParser {
           entity: Entities.IMAGE,
           id: block.id,
           parent: this._ID,
-          data: block.metadata,
+          data: {
+            ...(block.metadata ?? {}),
+            caption: block.caption,
+            url: block.url
+          },
           text: blockText.trim(),
           tags: this._getFlexsearchTags([Entities.IMAGE])
         }
