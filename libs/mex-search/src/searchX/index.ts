@@ -60,7 +60,7 @@ export class SearchX {
       this._graphX.addLink(tag, link.alias)
     })
     this._index.add({
-      id: link.alias,
+      id: link.url,
       data: link,
       entity: Entities.URLLINK,
       title: link.title,
@@ -171,9 +171,10 @@ export class SearchX {
         return this._graphX.findChildGraph(opt.value, condition)
       case 'text':
         return this._index
-          .search(opt.value ?? '', {
+          .search({
+            query: opt.value?.split(' ') ?? '',
             index: 'text',
-            tag: opt.entities ?? Object.values(Entities),
+            tag: entities ?? opt.entities ?? Object.values(Entities),
             bool: 'or'
           })
           .reduce((acc, curr) => {

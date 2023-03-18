@@ -1645,9 +1645,14 @@ export const generateEntities = () => {
       {
         type: 'query',
         query: [
+          // {
+          //   type: 'heirarchy',
+          //   value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
+          //   nextOperator: 'and'
+          // },
           {
-            type: 'heirarchy',
-            value: 'NODE_ENLNwH3AecWtPfdtxbdbz'
+            type: 'text',
+            value: 'I am'
           }
         ],
         entities: [Entities.CONTENT_BLOCK]
