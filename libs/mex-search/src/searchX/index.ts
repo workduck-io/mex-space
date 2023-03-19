@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
 import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
@@ -7,13 +5,15 @@ import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
-import { Entities, getNodeParent, intersectMultiple, unionMultiple } from '../utils'
+import { Entities, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
 
 import { Highlight, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
-  _index: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
+  _indexMap: {
+    [key in Indexes]: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
+  }
 
   constructor(
     flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
@@ -26,7 +26,10 @@ export class SearchX {
       tokenize: 'full'
     }
   ) {
-    this._index = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    this._indexMap = {
+      [Indexes.MAIN]: new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions),
+      [Indexes.SNIPPET]: new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+    }
     this._graphX = new GraphX()
   }
 
@@ -35,6 +38,7 @@ export class SearchX {
     highlights: Highlight[],
     links: Link[],
     contents: InitData,
+    snippets: InitData,
     reminders: Reminder[]
   ) => {
     try {
@@ -42,6 +46,7 @@ export class SearchX {
       this.initializeLinks(links)
       this.initializeHighlights(highlights)
       this.initializeContent(contents)
+      this.initializeContent(snippets, Indexes.SNIPPET)
       this.initializeReminders(reminders)
     } catch (e) {
       console.log('Error: ', e)
@@ -57,9 +62,9 @@ export class SearchX {
   updateLink = (link: Link) => {
     this._graphX.addNode({ id: link.url, metadata: { type: Entities.URLLINK, ...link } })
     link.tags?.forEach((tag) => {
-      this._graphX.addLink(tag, link.alias)
+      this._graphX.addLink(tag, link.url)
     })
-    this._index.add({
+    this._indexMap[Indexes.MAIN].add({
       id: link.url,
       data: link,
       entity: Entities.URLLINK,
@@ -78,7 +83,7 @@ export class SearchX {
   updateHighlight = (highlight: Highlight) => {
     this._graphX.addNode({ id: highlight.entityId, metadata: { type: Entities.HIGHLIGHT, ...highlight } })
     this._graphX.addLink(highlight.properties.sourceUrl, highlight.entityId, { type: Entities.HIGHLIGHT })
-    this._index.add({
+    this._indexMap[Indexes.MAIN].add({
       id: highlight.entityId,
       data: highlight,
       entity: Entities.HIGHLIGHT,
@@ -101,7 +106,7 @@ export class SearchX {
   updateReminder = (reminder: Reminder) => {
     this._graphX.addNode({ id: reminder.id, metadata: { type: Entities.REMINDER, ...reminder } })
     if (reminder.nodeid) this._graphX.addLink(reminder.nodeid, reminder.id, { type: Entities.REMINDER })
-    this._index.add({
+    this._indexMap[Indexes.MAIN].add({
       id: reminder.id,
       data: reminder,
       entity: Entities.REMINDER,
@@ -116,7 +121,7 @@ export class SearchX {
     namespaces.forEach((namespace) => {
       this._graphX.addNode({ id: namespace, metadata: { type: Entities.NAMESPACE } })
 
-      this._index.add({
+      this._indexMap[Indexes.MAIN].add({
         id: namespace,
         data: { namespace },
         entity: Entities.NAMESPACE,
@@ -139,7 +144,7 @@ export class SearchX {
         type: Entities.NOTE
       }
     })
-    this._index.add({
+    this._indexMap[Indexes.MAIN].add({
       id: ilink.nodeid,
       text: ilink.path.split('.').splice(-1)[0],
       parent: ilink.parentNodeId,
@@ -147,16 +152,16 @@ export class SearchX {
       tags: [ilink.namespace, ilink.parentNodeId]
     })
 
-    this._graphX.addLink(ilink.parentNodeId, ilink.nodeid, { type: 'CHILD_LINK' })
+    if (ilink.parentNodeId) this._graphX.addLink(ilink.parentNodeId, ilink.nodeid, { type: 'CHILD_LINK' })
   }
 
-  initializeContent = (initData: InitData) => {
+  initializeContent = (initData: InitData, indexKey = Indexes.MAIN) => {
     Object.entries(initData.contents).forEach(([k, v]) => {
-      this.addOrUpdateDocument(k, v.content, '', { metadata: v.metadata })
+      this.addOrUpdateDocument(k, v.content, '', { metadata: v.metadata }, indexKey)
     })
   }
 
-  eval(opt: QueryUnit, entities?: Entities[]) {
+  eval(opt: QueryUnit, entities?: Entities[], indexKey = Indexes.MAIN) {
     const condition = (node) => {
       if (opt.entities) return opt.entities.includes(node.type)
       else if (entities) return entities.includes(node.type)
@@ -170,7 +175,7 @@ export class SearchX {
       case 'heirarchy':
         return this._graphX.findChildGraph(opt.value, condition)
       case 'text':
-        return this._index
+        return this._indexMap[indexKey]
           .search({
             query: opt.value?.split(' ') ?? '',
             index: 'text',
@@ -187,7 +192,12 @@ export class SearchX {
     }
   }
 
-  search = (options: ISearchQuery, expand = true, entities?: Entities[]): Array<SearchResult> => {
+  search = (
+    options: ISearchQuery,
+    expand = true,
+    entities?: Entities[],
+    indexKey = Indexes.MAIN
+  ): Array<SearchResult> => {
     let result = []
     let firstPass = true
     let prevOperator = 'and'
@@ -197,33 +207,47 @@ export class SearchX {
         firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
-        result = join(result, this.eval(qu, entities))
+        result = join(result, this.eval(qu, entities, indexKey))
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand) return result.map((item) => this._index.get(item)).filter((item) => item?.data)
+    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
     return result.filter((item) => item)
   }
 
-  addOrUpdateDocument: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
+  addOrUpdateDocument: UpdateDocFn = (
+    id: string,
+    contents: NodeEditorContent,
+    title = '',
+    options,
+    indexKey = Indexes.MAIN
+  ) => {
     const parser = new EntityParser()
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => link.data.type == 'CHILD')
-    deletedBlocks.forEach((id) => this._index.remove(id))
+    const index = this._indexMap[indexKey]
+    deletedBlocks.forEach((id) => index.remove(id))
     parsedBlocks.entities.forEach((item) => {
-      this._index.add(item)
+      index.add(item)
     })
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
 
-  appendToDoc: UpdateDocFn = (id: string, contents: NodeEditorContent, title = '', options) => {
+  appendToDoc: UpdateDocFn = (
+    id: string,
+    contents: NodeEditorContent,
+    title = '',
+    options,
+    indexKey = Indexes.MAIN
+  ) => {
     const parser = new EntityParser()
     if (!this._graphX.getNode(id)) return
     const parsedBlocks = parser.noteParser(id, contents, title, options)
-    parsedBlocks.entities.forEach((item) => this._index.add(item))
+    const index = this._indexMap[indexKey]
+    parsedBlocks.entities.forEach((item) => index.add(item))
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
@@ -233,16 +257,20 @@ export class SearchX {
     blockIds.forEach((blockId) => this._graphX.removeLink(fromId, blockId))
     blockIds.forEach((blockId) => this._graphX.addLink(toId, blockId, { type: 'CHILD' }))
     blockIds.forEach((blockId) => {
-      const { tags, ...rest } = this._index.get(blockId)
-      this._index.update(blockId, { ...rest, tags: tags.filter((t: string) => t !== fromId).concat(toId) })
+      const { tags, ...rest } = this._indexMap[Indexes.MAIN].get(blockId)
+      this._indexMap[Indexes.MAIN].update(blockId, {
+        ...rest,
+        tags: tags.filter((t: string) => t !== fromId).concat(toId)
+      })
     })
   }
 
-  deleteEntity = (id: string) => {
+  deleteEntity = (id: string, indexKey = Indexes.MAIN) => {
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => {
       return link.data?.type === 'CHILD'
     })
 
-    deletedBlocks.forEach((id) => this._index.remove(id))
+    const index = this._indexMap[indexKey]
+    deletedBlocks.forEach((id) => index.remove(id))
   }
 }

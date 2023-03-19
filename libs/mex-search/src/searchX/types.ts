@@ -1,7 +1,7 @@
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
-import { Entities } from '../utils'
+import { Entities, Indexes } from '../utils'
 
 export type UpdateDocFn = (
   id: string,
@@ -11,7 +11,8 @@ export type UpdateDocFn = (
     extra?: SearchRepExtra
     metadata?: NodeMetadata
     systemTags?: DEFAULT_SYSTEM_TAGS[]
-  }
+  },
+  indexKey?: Indexes
 ) => void
 
 export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text'

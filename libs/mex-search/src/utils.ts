@@ -21,6 +21,11 @@ export enum Entities {
   HIGHLIGHT = 'HIGHLIGHT'
 }
 
+export enum Indexes {
+  SNIPPET = 'SNIPPET',
+  MAIN = 'MAIN'
+}
+
 export const createIndexCompositeKey = (nodeID: string, blockID: string) => {
   return `${nodeID}${KEY_DELIMITER}${blockID}`
 }
