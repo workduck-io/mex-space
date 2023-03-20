@@ -23,7 +23,8 @@ export enum Entities {
 
 export enum Indexes {
   SNIPPET = 'SNIPPET',
-  MAIN = 'MAIN'
+  MAIN = 'MAIN',
+  ARCHIVE = 'ARCHIVE'
 }
 
 export const createIndexCompositeKey = (nodeID: string, blockID: string) => {

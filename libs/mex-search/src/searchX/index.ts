@@ -1,19 +1,17 @@
 import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
 
-import { ILink, InitData, NodeEditorContent } from '@workduck-io/mex-utils'
+import { ILink, InitData } from '@workduck-io/mex-utils'
 
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
 import { Entities, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
 
-import { Highlight, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
+import { Highlight, IndexMap, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
 
 export class SearchX {
   _graphX: GraphX
-  _indexMap: {
-    [key in Indexes]: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
-  }
+  _indexMap: IndexMap
 
   constructor(
     flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
@@ -26,21 +24,24 @@ export class SearchX {
       tokenize: 'full'
     }
   ) {
-    this._indexMap = {
-      [Indexes.MAIN]: new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions),
-      [Indexes.SNIPPET]: new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
-    }
+    this._indexMap = Object.values(Indexes).reduce((acc, index) => {
+      acc[index] = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+      return acc
+    }, {} as IndexMap)
+
     this._graphX = new GraphX()
   }
 
-  initializeSearch = (
-    ilinks: ILink[],
-    highlights: Highlight[],
-    links: Link[],
-    contents: InitData,
-    snippets: InitData,
+  initializeSearch = (fileData: {
+    ilinks: ILink[]
+    highlights: Highlight[]
+    links: Link[]
+    contents: InitData
+    snippets: InitData
     reminders: Reminder[]
-  ) => {
+  }) => {
+    const { ilinks, highlights, links, contents, snippets, reminders } = fileData
+
     try {
       this.initializeHeirarchy(ilinks)
       this.initializeLinks(links)
@@ -144,6 +145,7 @@ export class SearchX {
         type: Entities.NOTE
       }
     })
+
     this._indexMap[Indexes.MAIN].add({
       id: ilink.nodeid,
       text: ilink.path.split('.').splice(-1)[0],
@@ -156,17 +158,24 @@ export class SearchX {
   }
 
   initializeContent = (initData: InitData, indexKey = Indexes.MAIN) => {
-    Object.entries(initData.contents).forEach(([k, v]) => {
-      this.addOrUpdateDocument(k, v.content, '', { metadata: v.metadata }, indexKey)
+    Object.entries(initData.contents).forEach(([id, v]) => {
+      this.addOrUpdateDocument({
+        id,
+        contents: v.content,
+        options: { metadata: v.metadata },
+        indexKey
+      })
     })
   }
 
-  eval(opt: QueryUnit, entities?: Entities[], indexKey = Indexes.MAIN) {
+  eval(evalConfig: { opt: QueryUnit; entities?: Entities[]; indexKey?: Indexes }) {
+    const { opt, entities, indexKey = Indexes.MAIN } = evalConfig
     const condition = (node) => {
       if (opt.entities) return opt.entities.includes(node.type)
       else if (entities) return entities.includes(node.type)
       return true
     }
+
     switch (opt.type) {
       case 'tag':
         return this._graphX.getRelatedNodes(`TAG_${opt.value}`, condition).map((n) => n.id)
@@ -186,48 +195,46 @@ export class SearchX {
             return [...acc, ...(curr?.result ?? [])]
           }, [])
       case 'query':
-        return this.search(opt.query, false, opt.entities)
+        return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })
       default:
         return []
     }
   }
 
-  search = (
-    options: ISearchQuery,
-    expand = true,
-    entities?: Entities[],
-    indexKey = Indexes.MAIN
-  ): Array<SearchResult> => {
+  search = (searchConfig: {
+    options: ISearchQuery
+    expand?: boolean
+    entities?: Entities[]
+    indexKey?: Indexes
+  }): Array<SearchResult> => {
+    const { options, expand = true, entities, indexKey = Indexes.MAIN } = searchConfig
     let result = []
     let firstPass = true
     let prevOperator = 'and'
     options.forEach((qu) => {
       if (firstPass) {
-        result = this.eval(qu, entities)
+        result = this.eval({ opt: qu, entities })
         firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
-        result = join(result, this.eval(qu, entities, indexKey))
+        result = join(result, this.eval({ opt: qu, entities, indexKey }))
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
+    if (expand)
+      return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data && item?.text)
     return result.filter((item) => item)
   }
 
-  addOrUpdateDocument: UpdateDocFn = (
-    id: string,
-    contents: NodeEditorContent,
-    title = '',
-    options,
-    indexKey = Indexes.MAIN
-  ) => {
+  addOrUpdateDocument: UpdateDocFn = (doc) => {
+    const { id, contents, title = '', options, indexKey = Indexes.MAIN } = doc
+
     const parser = new EntityParser()
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => link.data.type == 'CHILD')
     const index = this._indexMap[indexKey]
-    deletedBlocks.forEach((id) => index.remove(id))
+    deletedBlocks?.forEach((id) => index.remove(id))
     parsedBlocks.entities.forEach((item) => {
       index.add(item)
     })
@@ -236,13 +243,9 @@ export class SearchX {
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
 
-  appendToDoc: UpdateDocFn = (
-    id: string,
-    contents: NodeEditorContent,
-    title = '',
-    options,
-    indexKey = Indexes.MAIN
-  ) => {
+  appendToDoc: UpdateDocFn = (doc) => {
+    const { id, contents, title = '', options, indexKey = Indexes.MAIN } = doc
+
     const parser = new EntityParser()
     if (!this._graphX.getNode(id)) return
     const parsedBlocks = parser.noteParser(id, contents, title, options)

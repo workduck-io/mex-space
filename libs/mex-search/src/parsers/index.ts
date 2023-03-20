@@ -89,7 +89,7 @@ export class EntityParser {
 
     const gNodes: GNode[] = []
     const gLinks: GLink[] = []
-    let blockText = block?.text ?? ''
+    let blockText = block?.text?.trim() ?? ''
 
     if (entityType !== Entities.CONTENT_BLOCK) {
       return this._parseBlock(block, topLevelBlockID)
@@ -218,7 +218,9 @@ export class EntityParser {
   urlParser: EntityParserFn = (block: BlockType, parentBlockID?: string) => {
     const url = block.url as string
     const blockText =
-      block.children && block.children.length > 0 && block.children[0].text !== '' ? block.children[0].text : url
+      block.children && block.children.length > 0 && block.children[0].text?.trim() !== ''
+        ? block.children[0].text
+        : url
 
     const gNode: GNode = {
       id: url,
@@ -285,7 +287,7 @@ export class EntityParser {
 
     const associatedEntities: GNode[] = []
     const associatedLinks: GLink[] = []
-    let blockText = block?.text ?? ''
+    let blockText = block?.text?.trim() ?? ''
 
     // console.log(`Action Item Block: ${JSON.stringify(block)} | EntityType: ${entityType}`)
 

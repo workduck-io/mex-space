@@ -1637,55 +1637,67 @@ export const generateEntities = () => {
   // graphX.addEntities([...parsed.graphNodes, ...parsed2.graphNodes])
   // graphX.addLinks([...parsed2.graphLinks, ...parsed.graphLinks])
   // writeFileSync('./graph.dot', graphX.exportToDot())
-  searchIdx.addOrUpdateDocument(noteID, content, title, { extra: extra })
-  searchIdx.addOrUpdateDocument(noteID2, newContent, title2, { extra: extra })
+  searchIdx.addOrUpdateDocument({
+    id: noteID,
+    contents: content,
+    title,
+    options: { extra: extra }
+  })
+  searchIdx.addOrUpdateDocument({
+    id: noteID2,
+    contents: newContent,
+    title: title2,
+    options: { extra: extra }
+  })
   // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
   console.log(
-    searchIdx.search([
-      {
-        type: 'query',
-        query: [
-          // {
-          //   type: 'heirarchy',
-          //   value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
-          //   nextOperator: 'and'
-          // },
-          {
-            type: 'text',
-            value: 'I am'
-          }
-        ],
-        entities: [Entities.CONTENT_BLOCK]
-      }
-      // {
-      //   type: 'query',
-      //   query: [
-      //     {
-      //       type: 'tag',
-      //       value: 'TAG_code',
-      //       entities: [Entities.TASK],
-      //       nextOperator: 'or'
-      //     },
-      //     {
-      //       type: 'tag',
-      //       value: 'TAG_wowtag',
-      //       entities: [Entities.TASK]
-      //     }
-      //   ],
-      //   nextOperator: 'or'
-      // },
-      // {
-      //   type: 'mention',
-      //   value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
-      //   entities: [Entities.TASK],
-      //   nextOperator: 'or'
-      // },
-      // {
-      //   type: 'text',
-      //   value: 'we',
-      //   entities: [Entities.TASK]
-      // }
-    ])
+    searchIdx.search({
+      options: [
+        {
+          type: 'query',
+          query: [
+            // {
+            //   type: 'heirarchy',
+            //   value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
+            //   nextOperator: 'and'
+            // },
+            {
+              type: 'text',
+              value: 'I am'
+            }
+          ],
+          entities: [Entities.CONTENT_BLOCK]
+        }
+        // {
+        //   type: 'query',
+        //   query: [
+        //     {
+        //       type: 'tag',
+        //       value: 'TAG_code',
+        //       entities: [Entities.TASK],
+        //       nextOperator: 'or'
+        //     },
+        //     {
+        //       type: 'tag',
+        //       value: 'TAG_wowtag',
+        //       entities: [Entities.TASK]
+        //     }
+        //   ],
+        //   nextOperator: 'or'
+        // },
+        // {
+        //   type: 'mention',
+        //   value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
+        //   entities: [Entities.TASK],
+        //   nextOperator: 'or'
+        // },
+        // {
+        //   type: 'text',
+        //   value: 'we',
+        //   entities: [Entities.TASK]
+        // }
+      ]
+    })
   )
 
   // console.log(

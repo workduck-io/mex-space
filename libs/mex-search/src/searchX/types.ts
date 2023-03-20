@@ -1,19 +1,29 @@
+import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
+
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
+import { GenericEntitySearchData } from '../parsers/types'
 import { Entities, Indexes } from '../utils'
 
-export type UpdateDocFn = (
-  id: string,
-  contents: NodeEditorContent,
-  title: string,
+export type IUpdateDoc = {
+  id: string
+  contents: NodeEditorContent
+  title?: string
   options?: {
     extra?: SearchRepExtra
     metadata?: NodeMetadata
+    tags?: string[]
     systemTags?: DEFAULT_SYSTEM_TAGS[]
-  },
+  }
   indexKey?: Indexes
-) => void
+}
+
+export type IndexMap = {
+  [key in Indexes]: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
+}
+
+export type UpdateDocFn = (doc: IUpdateDoc) => void
 
 export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text'
 export type NestedQueryType = 'query'
