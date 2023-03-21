@@ -213,7 +213,7 @@ export class SearchX {
     let prevOperator = 'and'
     options.forEach((qu) => {
       if (firstPass) {
-        result = this.eval({ opt: qu, entities })
+        result = this.eval({ opt: qu, entities, indexKey })
         firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
@@ -222,8 +222,7 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand)
-      return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data && item?.text)
+    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
     return result.filter((item) => item)
   }
 
