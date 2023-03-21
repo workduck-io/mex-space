@@ -12,7 +12,8 @@
   "dependencies": {
     "flexsearch": "^0.7.31",
     "ngraph.graph": "^20.0.1",
-    "ngraph.todot": "^4.0.0"
+    "ngraph.todot": "^4.0.0",
+    "@workduck-io/mex-utils": "^0.0.7"
   },
   "devDependencies": {
     "@types/flexsearch": "^0.7.3",
