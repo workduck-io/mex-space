@@ -1,0 +1,22 @@
+{
+  "name": "@workduck-io/mex-search",
+  "description": "Updated Search - Parsers, Entity Graph and Text Search",
+  "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/workduck-io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workduck-io/mex-space.git"
+  },
+  "dependencies": {
+    "flexsearch": "^0.7.31",
+    "ngraph.graph": "^20.0.1",
+    "ngraph.todot": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/flexsearch": "^0.7.3",
+    "@types/node": "^18.6.3",
+    "vitest": "^0.27.1"
+  }
+}

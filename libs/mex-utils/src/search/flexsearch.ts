@@ -1,6 +1,6 @@
 import { Document } from '@workduck-io/flexsearch'
 
-import { diskIndex,indexNames } from '../constants/search'
+import { diskIndex, indexNames } from '../constants/search'
 import { mog } from '../helpers'
 import { GenericSearchData, PersistentData } from '../types/search'
 

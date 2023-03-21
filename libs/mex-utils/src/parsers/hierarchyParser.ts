@@ -3,6 +3,7 @@ import { AllNamespaceHierarchyResponse, ParsedNamespaceHierarchy } from '../type
 
 export const hierarchyParser = (
   linkData: string[],
+  namespace: string,
   options?: { withParentNodeId: boolean; allowDuplicates?: boolean }
 ): ILink[] => {
   const ilinks: ILink[] = []
@@ -41,12 +42,12 @@ export const hierarchyParser = (
         }
       } else if (pathIdMapping[nodePath] && !options?.allowDuplicates) {
         // mog(`Found existing notePath: ${nodePath} with ${nodeID} at index: ${pathIdMapping[nodePath].index}`)
-        ilinks[pathIdMapping[nodePath].index] = { nodeid: nodeID, path: nodePath }
+        ilinks[pathIdMapping[nodePath].index] = { nodeid: nodeID, path: nodePath, namespace }
       } else {
         // mog(`Inserting: ${nodePath} with ${nodeID} at index: ${ilinks.length}`)
         idPathMapping[nodeID] = nodePath
         pathIdMapping[nodePath] = { nodeid: nodeID, index: ilinks.length }
-        const ilink: ILink = { nodeid: nodeID, path: nodePath }
+        const ilink: ILink = { nodeid: nodeID, path: nodePath, namespace }
         ilinks.push(options?.withParentNodeId ? { ...ilink, parentNodeId } : ilink)
       }
 
@@ -69,7 +70,7 @@ export const allNamespacesHierarchyParser: AllNamespaceHierarchyParserFn = (
 ) => {
   const parsedNSHierarchy: Record<string, ParsedNamespaceHierarchy> = {}
   Object.entries(allNamespacesResp.namespaceInfo).forEach(([namespaceID, namespaceValue]) => {
-    const nHierarchy = hierarchyParser(namespaceValue.nodeHierarchy, options)
+    const nHierarchy = hierarchyParser(namespaceValue.nodeHierarchy, namespaceID, options)
     parsedNSHierarchy[namespaceID] = { name: namespaceValue.name, nodeHierarchy: nHierarchy }
   })
 
@@ -80,5 +81,5 @@ export const namespaceHierarchyParser = (
   namespace: NamespaceInfo,
   options = { withParentNodeId: false, allowDuplicates: false }
 ) => {
-  return { ...namespace, nodeHierarchy: hierarchyParser(namespace.nodeHierarchy, options) }
+  return { ...namespace, nodeHierarchy: hierarchyParser(namespace.nodeHierarchy, namespace.id, options) }
 }

@@ -1,5 +1,13 @@
 import { ElementHighlightMetadata } from './highlight'
 import { AccessLevel } from './mentions'
+import { PriorityType, TodoStatus } from './tasks'
+
+export const iconTypes = ['URL', 'ICON', 'EMOJI', 'MEX'] as const
+// M stands for Multi/Mex/Many (yet to decide)
+export interface MIcon {
+  type: typeof iconTypes[number]
+  value: string
+}
 
 export interface ILink {
   /** Unique Identifier */
@@ -9,10 +17,13 @@ export interface ILink {
    * Uses separator for heirarchy */
   path: string
 
+  namespace: string
+
   /** Iconify Icon string */
-  icon?: string
+  icon?: MIcon
 
   createdAt?: number
+  updatedAt?: number
 
   parentNodeId?: string
 }
@@ -48,7 +59,6 @@ export interface InitDataStoreType {
   ilinks: ILink[]
   linkCache: LinkCache
   tagsCache: TagsCache
-  bookmarks: string[]
   archive: ILink[]
   baseNodeId: string
 }
@@ -84,6 +94,12 @@ export type BlockType = {
   type: string
   text?: string
   blockMeta?: BlockMetaDataType
+  metadata?: any
+  value?: string
+  status?: TodoStatus
+  priority?: PriorityType
+  url?: string
+  caption?: Array<{ text: string }>
 }
 
 export interface NamespaceInfo {

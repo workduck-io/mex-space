@@ -6,5 +6,6 @@ npx lint-staged
 cd libs/mex-utils
 yarn barrelsby -c barrelsby.config.json
 
+
 cd -
 git add libs/**/index.ts
