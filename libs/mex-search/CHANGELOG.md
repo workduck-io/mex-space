@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.2
+
+### Patch Changes
+
+- 12e168e: Graph based search added
+
 ## 0.0.6
 
 ### Patch Changes
