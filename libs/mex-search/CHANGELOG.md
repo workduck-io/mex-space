@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.4
+
+### Patch Changes
+
+- 7b7eb93: Remove flexsearch types
+
 ## 0.0.2
 
 ### Patch Changes
