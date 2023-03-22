@@ -1,7 +1,7 @@
 {
   "name": "@workduck-io/mex-search",
   "description": "Updated Search - Parsers, Entity Graph and Text Search",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io"
   },
