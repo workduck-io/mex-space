@@ -1,4 +1,4 @@
-import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
+import { Document, IndexOptionsForDocumentSearch } from 'flexsearch/dist/flexsearch.es5'
 
 import { ILink, InitData } from '@workduck-io/mex-utils'
 
@@ -14,7 +14,7 @@ export class SearchX {
   _indexMap: IndexMap
 
   constructor(
-    flexSearchOptions: FlexSearch.FlexSearch.IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
+    flexSearchOptions: IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
       document: {
         id: 'id',
         index: ['title', 'text'],
@@ -25,7 +25,7 @@ export class SearchX {
     }
   ) {
     this._indexMap = Object.values(Indexes).reduce((acc, index) => {
-      acc[index] = new FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>(flexSearchOptions)
+      acc[index] = new Document<GenericEntitySearchData, string[]>(flexSearchOptions)
       return acc
     }, {} as IndexMap)
 
@@ -151,7 +151,7 @@ export class SearchX {
       text: ilink.path.split('.').splice(-1)[0],
       parent: ilink.parentNodeId,
       entity: Entities.NOTE,
-      tags: [ilink.namespace, ilink.parentNodeId]
+      tags: [ilink.namespace, ilink.parentNodeId!]
     })
 
     if (ilink.parentNodeId) this._graphX.addLink(ilink.parentNodeId, ilink.nodeid, { type: 'CHILD_LINK' })
@@ -186,14 +186,15 @@ export class SearchX {
       case 'text':
         return this._indexMap[indexKey]
           .search({
-            query: opt.value?.split(' ') ?? '',
+            query: opt.value,
+            // ?.split(' ') ?? '',
             index: 'text',
             tag: entities ?? opt.entities ?? Object.values(Entities),
             bool: 'or'
           })
           .reduce((acc, curr) => {
             return [...acc, ...(curr?.result ?? [])]
-          }, [])
+          }, [] as any)
       case 'query':
         return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })
       default:
@@ -222,6 +223,7 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
+    // @ts-ignore
     if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
     return result.filter((item) => item)
   }
@@ -235,7 +237,7 @@ export class SearchX {
     const index = this._indexMap[indexKey]
     deletedBlocks?.forEach((id) => index.remove(id))
     parsedBlocks.entities.forEach((item) => {
-      index.add(item)
+      index.add(item as any)
     })
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
@@ -249,7 +251,7 @@ export class SearchX {
     if (!this._graphX.getNode(id)) return
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const index = this._indexMap[indexKey]
-    parsedBlocks.entities.forEach((item) => index.add(item))
+    parsedBlocks.entities.forEach((item) => index.add(item as any))
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
@@ -259,6 +261,7 @@ export class SearchX {
     blockIds.forEach((blockId) => this._graphX.removeLink(fromId, blockId))
     blockIds.forEach((blockId) => this._graphX.addLink(toId, blockId, { type: 'CHILD' }))
     blockIds.forEach((blockId) => {
+      // @ts-ignore
       const { tags, ...rest } = this._indexMap[Indexes.MAIN].get(blockId)
       this._indexMap[Indexes.MAIN].update(blockId, {
         ...rest,
