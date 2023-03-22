@@ -186,15 +186,14 @@ export class SearchX {
       case 'text':
         return this._indexMap[indexKey]
           .search({
-            query: opt.value,
-            // ?.split(' ') ?? '',
+            query: opt.value?.split(' ') ?? '',
             index: 'text',
             tag: entities ?? opt.entities ?? Object.values(Entities),
             bool: 'or'
           })
           .reduce((acc, curr) => {
             return [...acc, ...(curr?.result ?? [])]
-          }, [] as any)
+          }, [])
       case 'query':
         return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })
       default:
@@ -223,7 +222,6 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    // @ts-ignore
     if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
     return result.filter((item) => item)
   }
@@ -237,7 +235,7 @@ export class SearchX {
     const index = this._indexMap[indexKey]
     deletedBlocks?.forEach((id) => index.remove(id))
     parsedBlocks.entities.forEach((item) => {
-      index.add(item as any)
+      index.add(item)
     })
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
@@ -251,7 +249,7 @@ export class SearchX {
     if (!this._graphX.getNode(id)) return
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const index = this._indexMap[indexKey]
-    parsedBlocks.entities.forEach((item) => index.add(item as any))
+    parsedBlocks.entities.forEach((item) => index.add(item))
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
@@ -261,7 +259,6 @@ export class SearchX {
     blockIds.forEach((blockId) => this._graphX.removeLink(fromId, blockId))
     blockIds.forEach((blockId) => this._graphX.addLink(toId, blockId, { type: 'CHILD' }))
     blockIds.forEach((blockId) => {
-      // @ts-ignore
       const { tags, ...rest } = this._indexMap[Indexes.MAIN].get(blockId)
       this._indexMap[Indexes.MAIN].update(blockId, {
         ...rest,
