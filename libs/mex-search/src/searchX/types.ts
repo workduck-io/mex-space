@@ -1,4 +1,4 @@
-import FlexSearch from 'flexsearch/dist/flexsearch.es5.js'
+import { Document } from 'flexsearch'
 
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
@@ -20,7 +20,7 @@ export type IUpdateDoc = {
 }
 
 export type IndexMap = {
-  [key in Indexes]: FlexSearch.FlexSearch.Document<GenericEntitySearchData, string[]>
+  [key in Indexes]: Document<GenericEntitySearchData, string[]>
 }
 
 export type UpdateDocFn = (doc: IUpdateDoc) => void
