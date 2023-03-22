@@ -1,5 +1,4 @@
-import { Document, IndexOptionsForDocumentSearch } from 'flexsearch/dist/flexsearch.es5'
-
+import { Document, IndexOptionsForDocumentSearch } from '@workduck-io/flexsearch'
 import { ILink, InitData } from '@workduck-io/mex-utils'
 
 import { GraphX } from '../graphX'

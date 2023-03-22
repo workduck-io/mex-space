@@ -1,5 +1,4 @@
-import { Document } from 'flexsearch'
-
+import { Document } from '@workduck-io/flexsearch'
 import { NodeEditorContent, NodeMetadata, SearchRepExtra } from '@workduck-io/mex-utils/src'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
