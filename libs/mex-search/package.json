@@ -1,7 +1,7 @@
 {
   "name": "@workduck-io/mex-search",
   "description": "Updated Search - Parsers, Entity Graph and Text Search",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/workduck-io"
   },
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@workduck-io/flexsearch": "^0.7.31",
-    "@workduck-io/mex-utils": "^0.0.7",
+    "@workduck-io/mex-utils": "^0.0.8",
     "ngraph.graph": "^20.0.1",
     "ngraph.todot": "^4.0.0"
   },
