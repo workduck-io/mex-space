@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.8
+
+### Patch Changes
+
+- 1e91138: Fix failing tests; Remove patch-postinstall
+
 ## 0.0.7
 
 ### Patch Changes

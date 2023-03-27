@@ -1,5 +1,14 @@
 # @workduck-io/mex-utils
 
+## 0.0.7
+
+### Patch Changes
+
+- 2a31a23: Workduck-io flexsearch added
+- 1e91138: Fix failing tests; Remove patch-postinstall
+- Updated dependencies [1e91138]
+  - @workduck-io/mex-utils@0.0.8
+
 ## 0.0.4
 
 ### Patch Changes
