@@ -16,17 +16,21 @@ test('Hierarchy Parser - Valid Case', () => {
     'Mex#NODE_3qtx4AdKtW9TqVg6QtKjf#Entity Search#NODE_jKMqciMtxfQrmhAfxVhzy'
   ]
 
-  const parsedHierarchy = hierarchyParser(hierarchy)
+  const parsedHierarchy = hierarchyParser(hierarchy, 'NAMESPACE_Li83KJzGw6TgUmTi43LGt')
   expect(parsedHierarchy).toStrictEqual([
-    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
-    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
-    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
-    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti' },
-    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts' },
-    { nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8', path: 'Drafts.A war crime is a' },
-    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled' },
-    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex' },
-    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search' }
+    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    {
+      nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8',
+      path: 'Drafts.A war crime is a',
+      namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt'
+    },
+    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' }
   ])
 })
 
@@ -40,7 +44,7 @@ test('Hierarchy Parser - Fail Case', () => {
     'Mex#Entity Search#NODE_jKMqciMtxfQrmhAfxVhzy'
   ]
 
-  expect(() => hierarchyParser(fuckedUpHierarchy)).toThrowError('Invalid Linkdata Input')
+  expect(() => hierarchyParser(fuckedUpHierarchy, '')).toThrowError('Invalid Linkdata Input')
 })
 
 test('Single Namespace Hierarchy - Valid Case', () => {
@@ -63,18 +67,19 @@ test('Single Namespace Hierarchy - Valid Case', () => {
 
   const parsed = namespaceHierarchyParser(response)
   expect(parsed.nodeHierarchy).toStrictEqual([
-    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
-    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
-    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
-    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti' },
-    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts' },
+    { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
     {
       nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8',
-      path: 'Drafts.A war crime is a'
+      path: 'Drafts.A war crime is a',
+      namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt'
     },
-    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled' },
-    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex' },
-    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search' }
+    { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+    { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' }
   ])
   expect(parsed).toBeTruthy()
 })
@@ -127,48 +132,149 @@ test('Namespace Hierarchy Parser - Valid Case 1', () => {
     NAMESPACE_Li83KJzGw6TgUmTi43LGt: {
       name: 'Personal',
       nodeHierarchy: [
-        { nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck', path: 'Entities Testing' },
-        { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan' },
-        { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled' },
-        { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti' },
-        { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts' },
-        { nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8', path: 'Drafts.A war crime is a' },
-        { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled' },
-        { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex' },
-        { nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy', path: 'Mex.Entity Search' }
+        {
+          nodeid: 'NODE_r3wd6CP9rqDTypPqjzBck',
+          path: 'Entities Testing',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt'
+        },
+        { nodeid: 'NODE_FHPR9T7rAkixbGrUkFt7R', path: 'lassan', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        { nodeid: 'NODE_gpTpmCdDBJLMbtEwN38pr', path: 'lassan.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        { nodeid: 'NODE_K6b3TqJwfRT8VpeAMgtG6', path: 'Meeti', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        { nodeid: 'NODE_TtdLUWMJEPJGJRY6PzKcA', path: 'Drafts', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        {
+          nodeid: 'NODE_bjnqNrX6GUB6G9Nmbfrt8',
+          path: 'Drafts.A war crime is a',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt'
+        },
+        { nodeid: 'NODE_LgagK7tEFYNReNF3RiD9d', path: 'Drafts.Untitled', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        { nodeid: 'NODE_3qtx4AdKtW9TqVg6QtKjf', path: 'Mex', namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt' },
+        {
+          nodeid: 'NODE_jKMqciMtxfQrmhAfxVhzy',
+          path: 'Mex.Entity Search',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmTi43LGt'
+        }
       ]
     },
     NAMESPACE_Li83KJzGw6TgUmt8dfkd8: {
       name: 'Another Namespace',
       nodeHierarchy: [
-        { nodeid: 'NODE_6pejwQT4HxTFeQj7yt9CY', path: 'Drafts' },
-        { nodeid: 'NODE_afE9DUhQKmVBAPEPXxa7G', path: 'Drafts.Critical error 1' },
-        { nodeid: 'NODE_mAQxQVbnNRKVJKfYtzRdK', path: 'Drafts.Nice thing new' },
-        { nodeid: 'NODE_bkxPUpJ7fdFpQYMezggDN', path: 'Drafts.Nice thing new.This is it' },
-        { nodeid: 'NODE_KrYVbCFjrmTnUBGzE3H7C', path: 'Drafts.Nice thing new.Untitled' },
-        { nodeid: 'NODE_RDjiJXzj96zDPxwVVD6xm', path: 'Onboarding' },
-        { nodeid: 'NODE_ccVjThtMCXh7TUydMrVQA', path: 'Onboarding.The yes flag has been' },
+        { nodeid: 'NODE_6pejwQT4HxTFeQj7yt9CY', path: 'Drafts', namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8' },
+        {
+          nodeid: 'NODE_afE9DUhQKmVBAPEPXxa7G',
+          path: 'Drafts.Critical error 1',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_mAQxQVbnNRKVJKfYtzRdK',
+          path: 'Drafts.Nice thing new',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_bkxPUpJ7fdFpQYMezggDN',
+          path: 'Drafts.Nice thing new.This is it',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_KrYVbCFjrmTnUBGzE3H7C',
+          path: 'Drafts.Nice thing new.Untitled',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        { nodeid: 'NODE_RDjiJXzj96zDPxwVVD6xm', path: 'Onboarding', namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8' },
+        {
+          nodeid: 'NODE_ccVjThtMCXh7TUydMrVQA',
+          path: 'Onboarding.The yes flag has been',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
         {
           nodeid: 'NODE_V4fyYdz7FGAf9JptnmpET',
-          path: 'Onboarding.The yes flag has been.Untitled gaping kiss template'
+          path: 'Onboarding.The yes flag has been.Untitled gaping kiss template',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
         },
-        { nodeid: 'NODE_tggCDzJ3QjzjJmwTcz3B4', path: 'Onboarding.New Bug' },
-        { nodeid: 'NODE_idfnci9aMkrGgFkahRBEV', path: 'Onboarding.My first note' },
-        { nodeid: 'NODE_J88aVG9QLfPMxUQxPEzq6', path: 'Onboarding.My first note.PR Links' },
-        { nodeid: 'NODE_6HY8FcTrqmQGXk9EwaBhY', path: 'Onboarding.Something nice is happening' },
-        { nodeid: 'NODE_nKNhenAQwmE3KLkBBLE8P', path: 'Onboarding.Untitled' },
-        { nodeid: 'NODE_pBFe6mUE36CCr3DFJ9DX3', path: 'Onboarding.My first note.new' },
-        { nodeid: 'NODE_FermrDLWWPJLryyqAAxJq', path: 'Onboarding.Who is this' },
-        { nodeid: 'NODE_Y8zBYexzLzH7Rt6J6BxUw', path: 'Onboarding.Assigned to Feature associated Describe' },
-        { nodeid: 'NODE_9wX6QYRHFgJzzBeEXEJJm', path: 'Onboarding.Experiments are the key to' },
-        { nodeid: 'NODE_AzeL7ty37B66UKDxR4EQL', path: 'Onboarding.My first note.Henlo fren' },
-        { nodeid: 'NODE_XqBMNVpmL3YbWmNqVr47z', path: 'Onboarding.My first note.Who is the new thing' },
-        { nodeid: 'NODE_aH7tDPcQAPq7zXAh4WjER', path: 'Onboarding.My first note.Henlo' },
-        { nodeid: 'NODE_rGagCBd3QJnHqq7Txt7Uc', path: 'Onboarding.My first note.Can this please work' },
-        { nodeid: 'NODE_DzimLJ7H9WTi6rgcFMEaB', path: 'Onboarding.Om mangalam' },
-        { nodeid: 'NODE_e8zHGcTBHejB3EQND6jCW', path: 'Drafts.Untitled-1' },
-        { nodeid: 'NODE_C3V6WDpLrfdFbDPXrbBtm', path: 'Onboarding.My first note.Hello there boy' },
-        { nodeid: 'NODE_iFNqipU8A4MazYTKPKk4y', path: 'Onboarding.My first note.Uncaught Exception Error ENOENT no' }
+        {
+          nodeid: 'NODE_tggCDzJ3QjzjJmwTcz3B4',
+          path: 'Onboarding.New Bug',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_idfnci9aMkrGgFkahRBEV',
+          path: 'Onboarding.My first note',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_J88aVG9QLfPMxUQxPEzq6',
+          path: 'Onboarding.My first note.PR Links',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_6HY8FcTrqmQGXk9EwaBhY',
+          path: 'Onboarding.Something nice is happening',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_nKNhenAQwmE3KLkBBLE8P',
+          path: 'Onboarding.Untitled',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_pBFe6mUE36CCr3DFJ9DX3',
+          path: 'Onboarding.My first note.new',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_FermrDLWWPJLryyqAAxJq',
+          path: 'Onboarding.Who is this',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_Y8zBYexzLzH7Rt6J6BxUw',
+          path: 'Onboarding.Assigned to Feature associated Describe',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_9wX6QYRHFgJzzBeEXEJJm',
+          path: 'Onboarding.Experiments are the key to',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_AzeL7ty37B66UKDxR4EQL',
+          path: 'Onboarding.My first note.Henlo fren',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_XqBMNVpmL3YbWmNqVr47z',
+          path: 'Onboarding.My first note.Who is the new thing',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_aH7tDPcQAPq7zXAh4WjER',
+          path: 'Onboarding.My first note.Henlo',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_rGagCBd3QJnHqq7Txt7Uc',
+          path: 'Onboarding.My first note.Can this please work',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_DzimLJ7H9WTi6rgcFMEaB',
+          path: 'Onboarding.Om mangalam',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_e8zHGcTBHejB3EQND6jCW',
+          path: 'Drafts.Untitled-1',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_C3V6WDpLrfdFbDPXrbBtm',
+          path: 'Onboarding.My first note.Hello there boy',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        },
+        {
+          nodeid: 'NODE_iFNqipU8A4MazYTKPKk4y',
+          path: 'Onboarding.My first note.Uncaught Exception Error ENOENT no',
+          namespace: 'NAMESPACE_Li83KJzGw6TgUmt8dfkd8'
+        }
       ]
     }
   }
