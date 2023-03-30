@@ -1,5 +1,13 @@
 # @workduck-io/mex-utils
 
+## 0.0.8
+
+### Patch Changes
+
+- 72defd6: Revert to 0.7.22 of @workduck-io/flexsearch
+- Updated dependencies [72defd6]
+  - @workduck-io/mex-utils@0.0.9
+
 ## 0.0.7
 
 ### Patch Changes
