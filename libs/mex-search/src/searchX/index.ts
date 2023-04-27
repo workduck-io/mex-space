@@ -7,17 +7,7 @@ import { GenericEntitySearchData } from '../parsers/types'
 import { SemanticX } from '../semanticX'
 import { Entities, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
 
-import {
-  Highlight,
-  IndexMap,
-  ISearchQuery,
-  Link,
-  QueryUnit,
-  Reminder,
-  SearchResult,
-  UpdateDocFn,
-  UpdateDocFnPromise
-} from './types'
+import { Highlight, IndexMap, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFnPromise } from './types'
 
 export class SearchX {
   private _graphX: GraphX
@@ -241,8 +231,8 @@ export class SearchX {
     return result.filter((item) => item)
   }
 
-  async semanticSearch(content: string) {
-    const items = await this._semanticX.search(content)
+  async semanticSearch(content: string, n = 3) {
+    const items = await this._semanticX.search(content, n)
     console.log({ items })
 
     return items.map((item) => this._indexMap[Indexes.MAIN].get(item['id']))
@@ -270,7 +260,7 @@ export class SearchX {
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
 
-  appendToDoc: UpdateDocFn = async (doc) => {
+  appendToDoc: UpdateDocFnPromise = async (doc) => {
     const { id, contents, title = '', options, indexKey = Indexes.MAIN } = doc
 
     const parser = new EntityParser()
