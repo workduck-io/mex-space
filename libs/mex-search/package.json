@@ -10,8 +10,11 @@
     "url": "git+https://github.com/workduck-io/mex-space.git"
   },
   "dependencies": {
+    "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
+    "@tensorflow/tfjs": "^4.4.0",
     "@workduck-io/flexsearch": "0.7.22",
     "@workduck-io/mex-utils": "^0.0.9",
+    "compute-cosine-similarity": "^1.0.0",
     "ngraph.graph": "^20.0.1",
     "ngraph.todot": "^4.0.0"
   },

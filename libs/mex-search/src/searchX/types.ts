@@ -23,6 +23,7 @@ export type IndexMap = {
 }
 
 export type UpdateDocFn = (doc: IUpdateDoc) => void
+export type UpdateDocFnPromise = (doc: IUpdateDoc) => Promise<void>
 
 export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text'
 export type NestedQueryType = 'query'
