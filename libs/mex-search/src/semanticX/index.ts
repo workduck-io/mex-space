@@ -1,5 +1,6 @@
-import '@tensorflow/tfjs'
+import '@tensorflow/tfjs-backend-wasm'
 
+import * as tf from '@tensorflow/tfjs'
 import * as use from '@tensorflow-models/universal-sentence-encoder'
 import { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder'
 //@ts-ignore
@@ -13,6 +14,7 @@ export class SemanticX {
 
   async init() {
     this.documents = {}
+    await tf.setBackend('wasm')
     this.model = await use.load()
   }
 
@@ -32,25 +34,29 @@ export class SemanticX {
   }
 
   async search(content: string, n = 3, condition?: (data?: Record<string, any>) => boolean) {
-    const q = new Array<Record<string, any>>(n).fill({ id: '', score: 0 })
+    const q = new Array(n)
     let lowestScore = 0
-    let lowestScoreIndex = 0
+    let initialItemCount = 0
     const item = (await this.model.embed([content])).arraySync()[0]
-    Object.values(this.documents).forEach((e) => {
+    Object.values(this.documents).forEach((e, i) => {
       if (e.id && (!condition || condition(e.metadata))) {
         const simScore = sim(e.embedding, item)
         if (simScore < 0.4) return //minimum thershold for similarity
+        if (initialItemCount < n) {
+          q[initialItemCount++] = { id: e.id, score: simScore }
+          return
+        }
+        lowestScore = q.sort()[0].score
         if (lowestScore < simScore) {
-          q[lowestScoreIndex] = { id: e.id, score: simScore }
+          q[0] = { id: e.id, score: simScore }
           let newLowest = 1 //Highest possible cosine similarity value
           q.forEach((item, i) => {
             if (newLowest > item['score']) {
               newLowest = item['score']
-              lowestScoreIndex = i
             }
           })
           lowestScore = newLowest
-          console.log(q, lowestScore, lowestScoreIndex)
+          console.log(q, lowestScore)
         }
       }
     })
