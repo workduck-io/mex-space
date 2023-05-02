@@ -231,7 +231,7 @@ export class SearchX {
     return result.filter((item) => item)
   }
 
-  async semanticSearch(content: string, n = 3) {
+  async semanticSearch(content: string, n = 5) {
     const items = await this._semanticX.search(content, n)
     console.log({ items })
 

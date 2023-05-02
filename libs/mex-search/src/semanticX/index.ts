@@ -33,7 +33,7 @@ export class SemanticX {
     delete this.documents[id]
   }
 
-  async search(content: string, n = 3, condition?: (data?: Record<string, any>) => boolean) {
+  async search(content: string, n = 5, condition?: (data?: Record<string, any>) => boolean) {
     const q = new Array(n)
     let lowestScore = 0
     let initialItemCount = 0
@@ -41,7 +41,7 @@ export class SemanticX {
     Object.values(this.documents).forEach((e, i) => {
       if (e.id && (!condition || condition(e.metadata))) {
         const simScore = sim(e.embedding, item)
-        if (simScore < 0.4) return //minimum thershold for similarity
+        if (simScore < 0.25) return //minimum thershold for similarity
         if (initialItemCount < n) {
           q[initialItemCount++] = { id: e.id, score: simScore }
           return
@@ -56,7 +56,6 @@ export class SemanticX {
             }
           })
           lowestScore = newLowest
-          console.log(q, lowestScore)
         }
       }
     })

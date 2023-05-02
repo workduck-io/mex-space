@@ -1652,7 +1652,7 @@ export const generateEntities = async () => {
     title: title2,
     options: { extra: extra }
   })
-  console.log(await searchIdx.semanticSearch('what are the Characteristics of storytelling'))
+  console.log(await searchIdx.semanticSearch('How does normal numbering work?'))
 
   // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
   // console.log(
