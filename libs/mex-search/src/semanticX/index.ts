@@ -1,8 +1,7 @@
 import '@tensorflow/tfjs-backend-wasm'
 
-import * as tf from '@tensorflow/tfjs'
-import * as use from '@tensorflow-models/universal-sentence-encoder'
-import { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder'
+import { setBackend } from '@tensorflow/tfjs'
+import { load, UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder'
 //@ts-ignore
 import sim from 'compute-cosine-similarity'
 
@@ -14,8 +13,8 @@ export class SemanticX {
 
   async init() {
     this.documents = {}
-    await tf.setBackend('wasm')
-    this.model = await use.load()
+    await setBackend('wasm')
+    this.model = await load()
   }
 
   async addDocument(id: string, content: string, metadata?: Record<string, any>) {

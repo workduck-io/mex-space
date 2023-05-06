@@ -1,5 +1,3 @@
-import { log } from 'console'
-
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
@@ -1630,7 +1628,6 @@ const iLinks: ILink[] = [
 export const generateEntities = async () => {
   const searchIdx = new SearchX()
   await searchIdx.init()
-  log('Hello brother')
   searchIdx.initializeHeirarchy(iLinks)
   // const parser = new EntityParser()
   // const parsed = parser.noteParser(noteID, content, title, { extra: extra })
