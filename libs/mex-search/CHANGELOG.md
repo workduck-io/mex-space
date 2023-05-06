@@ -1,5 +1,11 @@
 # @workduck-io/mex-utils
 
+## 0.0.9
+
+### Patch Changes
+
+- c6879e9: Fix Move Blocks
+
 ## 0.0.8
 
 ### Patch Changes
