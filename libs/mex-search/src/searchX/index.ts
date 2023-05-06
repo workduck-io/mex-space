@@ -261,6 +261,7 @@ export class SearchX {
       const { tags, ...rest } = this._indexMap[Indexes.MAIN].get(blockId)
       this._indexMap[Indexes.MAIN].update(blockId, {
         ...rest,
+        parent: toId,
         tags: tags.filter((t: string) => t !== fromId).concat(toId)
       })
     })
