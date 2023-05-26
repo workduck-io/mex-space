@@ -4,13 +4,15 @@ import { ILink, InitData } from '@workduck-io/mex-utils'
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
+import { SemanticX } from '../semanticX'
 import { Entities, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
 
-import { Highlight, IndexMap, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
+import { Highlight, IndexMap, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFnPromise } from './types'
 
 export class SearchX {
-  _graphX: GraphX
-  _indexMap: IndexMap
+  private _graphX: GraphX
+  private _indexMap: IndexMap
+  private _semanticX: SemanticX
 
   constructor(
     flexSearchOptions: IndexOptionsForDocumentSearch<GenericEntitySearchData, string[]> = {
@@ -29,6 +31,10 @@ export class SearchX {
     }, {} as IndexMap)
 
     this._graphX = new GraphX()
+    this._semanticX = new SemanticX()
+  }
+  init = async () => {
+    await this._semanticX.init()
   }
 
   initializeSearch = (fileData: {
@@ -225,31 +231,48 @@ export class SearchX {
     return result.filter((item) => item)
   }
 
-  addOrUpdateDocument: UpdateDocFn = (doc) => {
+  async semanticSearch(content: string, n = 5) {
+    const items = await this._semanticX.search(content, n)
+    console.log({ items })
+
+    return items.map((item) => this._indexMap[Indexes.MAIN].get(item['id']))
+  }
+
+  addOrUpdateDocument: UpdateDocFnPromise = async (doc) => {
     const { id, contents, title = '', options, indexKey = Indexes.MAIN } = doc
 
     const parser = new EntityParser()
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const deletedBlocks = this._graphX.deleteRelatedNodes(id, (link) => link.data.type == 'CHILD')
     const index = this._indexMap[indexKey]
-    deletedBlocks?.forEach((id) => index.remove(id))
-    parsedBlocks.entities.forEach((item) => {
-      index.add(item)
+    deletedBlocks?.forEach((id) => {
+      index.remove(id)
+      this._semanticX.removeDoc(id)
     })
+    await Promise.all(
+      parsedBlocks.entities.map(async (item) => {
+        index.add(item)
+        return await this._semanticX.addDocument(item.id!, item.text!, item.data)
+      })
+    )
 
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
 
-  appendToDoc: UpdateDocFn = (doc) => {
+  appendToDoc: UpdateDocFnPromise = async (doc) => {
     const { id, contents, title = '', options, indexKey = Indexes.MAIN } = doc
 
     const parser = new EntityParser()
     if (!this._graphX.getNode(id)) return
     const parsedBlocks = parser.noteParser(id, contents, title, options)
     const index = this._indexMap[indexKey]
-    parsedBlocks.entities.forEach((item) => index.add(item))
-
+    await Promise.all(
+      parsedBlocks.entities.map(async (item) => {
+        index.add(item)
+        return await this._semanticX.addDocument(item.id!, item.text!, item.data)
+      })
+    )
     this._graphX.addEntities(parsedBlocks.graphNodes)
     this._graphX.addLinks(parsedBlocks.graphLinks)
   }
@@ -273,6 +296,9 @@ export class SearchX {
     })
 
     const index = this._indexMap[indexKey]
-    deletedBlocks.forEach((id) => index.remove(id))
+    deletedBlocks.forEach((id) => {
+      index.remove(id)
+      this._semanticX.removeDoc(id)
+    })
   }
 }
