@@ -4,6 +4,8 @@
 
 export { GraphX } from './graphX'
 export * from './graphX/types'
+export { EntityParser } from './parsers'
+export { deserializeContent } from './parsers/content'
 export { SearchX } from './searchX'
 export * from './searchX/types'
 export * from './utils'
