@@ -232,7 +232,7 @@ export class SearchX {
   }
 
   async semanticSearch(content: string, n = 5) {
-    const items = await this._semanticX.search(content, n)
+    const items = await this._semanticX.searchDoc(content, n)
     console.log({ items })
 
     return items.map((item) => this._indexMap[Indexes.MAIN].get(item['id']))

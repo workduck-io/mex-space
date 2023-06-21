@@ -1,30 +1,37 @@
 import '@tensorflow/tfjs-backend-wasm'
 
-import { setBackend } from '@tensorflow/tfjs'
+import * as tf from '@tensorflow/tfjs'
 import { load, UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder'
-//@ts-ignore
-import sim from 'compute-cosine-similarity'
+import * as Hora from 'horajs/pkg/horajs'
 
 import { VectorEmbedding } from './types'
 
 export class SemanticX {
   private documents: Record<string, VectorEmbedding>
   private model: UniversalSentenceEncoder
+  private dimension = 512
+  private bruteForceIndex: Hora.HNSWIndexUsize
+  private documentIndex = 0
 
   async init() {
     this.documents = {}
-    await setBackend('wasm')
-    this.model = await load()
+    await tf.setBackend('webgl').then(async (res) => {
+      if (res) this.model = await load()
+    })
+    await Hora.default()
+    Hora.init_env()
+    this.bruteForceIndex = Hora.HNSWIndexUsize.new(this.dimension, 1000000, 32, 64, 20, 16, false)
   }
 
   async addDocument(id: string, content: string, metadata?: Record<string, any>) {
     if (content) {
       const embedding = (await (await this.model.embed([content])).array())[0]
-      this.documents[id] = {
+      const idx = this.documentIndex++
+      this.documents[idx] = {
         id,
-        embedding,
         metadata
       }
+      this.bruteForceIndex.add(new Float32Array(embedding), idx)
     }
   }
 
@@ -32,32 +39,12 @@ export class SemanticX {
     delete this.documents[id]
   }
 
-  async search(content: string, n = 5, condition?: (data?: Record<string, any>) => boolean) {
-    const q = new Array(n)
-    let lowestScore = 0
-    let initialItemCount = 0
+  async searchDoc(content: string, n = 5, condition?: (data?: Record<string, any>) => boolean) {
+    this.bruteForceIndex.build('euclidean')
     const item = (await this.model.embed([content])).arraySync()[0]
-    Object.values(this.documents).forEach((e, i) => {
-      if (e.id && (!condition || condition(e.metadata))) {
-        const simScore = sim(e.embedding, item)
-        if (simScore < 0.25) return //minimum thershold for similarity
-        if (initialItemCount < n) {
-          q[initialItemCount++] = { id: e.id, score: simScore }
-          return
-        }
-        lowestScore = q.sort()[0].score
-        if (lowestScore < simScore) {
-          q[0] = { id: e.id, score: simScore }
-          let newLowest = 1 //Highest possible cosine similarity value
-          q.forEach((item, i) => {
-            if (newLowest > item['score']) {
-              newLowest = item['score']
-            }
-          })
-          lowestScore = newLowest
-        }
-      }
-    })
-    return q
+    const results = this.bruteForceIndex.search(new Float32Array(item), n)
+    const search: any[] = []
+    results.map((item) => search.push(this.documents[item]))
+    return search
   }
 }
