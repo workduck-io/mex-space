@@ -1625,7 +1625,7 @@ const iLinks: ILink[] = [
   }
 ]
 
-export const generateEntities = async () => {
+export const generateEntities = async (searchInput: string) => {
   const searchIdx = new SearchX()
   await searchIdx.init()
   searchIdx.initializeHeirarchy(iLinks)
@@ -1649,7 +1649,7 @@ export const generateEntities = async () => {
     title: title2,
     options: { extra: extra }
   })
-  console.log(await searchIdx.semanticSearch('How does normal numbering work?'))
+  return await searchIdx.semanticSearch(searchInput)
 
   // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
   // console.log(
@@ -1724,6 +1724,4 @@ export const generateEntities = async () => {
   //     2
   //   )
   // )
-
-  return 'Hello'
 }

@@ -1,5 +1,5 @@
 export interface VectorEmbedding {
   id: string
-  embedding: number[]
+  embedding?: number[]
   metadata?: Record<string, any>
 }
