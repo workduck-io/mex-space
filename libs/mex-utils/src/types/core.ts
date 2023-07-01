@@ -5,7 +5,7 @@ import { PriorityType, TodoStatus } from './tasks'
 export const iconTypes = ['URL', 'ICON', 'EMOJI', 'MEX'] as const
 // M stands for Multi/Mex/Many (yet to decide)
 export interface MIcon {
-  type: typeof iconTypes[number]
+  type: (typeof iconTypes)[number]
   value: string
 }
 
@@ -46,6 +46,38 @@ export interface NodeMetadata {
   updatedAt: number
 
   elementMetadata?: ElementHighlightMetadata
+}
+
+export interface Tag {
+  value: string
+}
+
+export interface SuperBlockContent {
+  type: string
+  id: string
+  metadata: {
+    updatedBy: string
+    updatedAt: number
+    createdBy: string
+    createdAt: number
+    title: string
+    properties: {
+      entity: {
+        active: string
+        values: Record<
+          string,
+          {
+            id?: string
+            parent?: string
+          }
+        >
+      }
+      title?: string
+      tags?: Tag[]
+      [key: string]: any
+    }
+  }
+  children: any[]
 }
 
 export type NodeEditorContent = any[]

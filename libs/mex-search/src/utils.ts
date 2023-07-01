@@ -4,6 +4,7 @@ import { KEY_DELIMITER } from './constants'
 
 export enum Entities {
   TAG = 'TAG',
+  SUPERBLOCK = 'SUPERBLOCK',
   MENTION = 'MENTION',
   TASK = 'TASK',
   REMINDER = 'REMINDER',

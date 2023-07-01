@@ -76,6 +76,7 @@ export class GraphX {
   findChildGraph(item: string, condition = (node) => true, level = 1, maxLevel = 10000) {
     if (!item || level > maxLevel) return []
     const children: any[] = []
+    const items: any[] = []
 
     this._graph.forEachLinkedNode(
       item,
@@ -83,7 +84,7 @@ export class GraphX {
         if (link.data.type === 'CHILD_LINK' && link.toId !== item) children.push(link.toId)
         else if (link.data.type === 'CHILD' && link.toId !== item) {
           if (condition(node.data)) {
-            children.push(link.toId)
+            items.push(link.toId)
           }
         }
       },
@@ -93,7 +94,7 @@ export class GraphX {
     if (children.length > 0) {
       level++
       return [
-        ...children,
+        ...items,
         ...children
           .map((child) => {
             return this.findChildGraph(child, condition, level, maxLevel)

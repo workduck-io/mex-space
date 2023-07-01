@@ -1,7 +1,6 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
-import { Entities } from './src'
 // import { Entities } from './src/utils'
 
 const content = [
@@ -1273,6 +1272,360 @@ const newContent = [
   }
 ]
 
+const superBlockContent = [
+  {
+    type: 'super-block-task',
+    id: 'TEMP_yTFjV',
+    metadata: {
+      updatedBy: '7b73e65a-3745-45fc-8cb0-fce6b54197bd',
+      updatedAt: 1688040194326,
+      createdBy: '7b73e65a-3745-45fc-8cb0-fce6b54197bd',
+      createdAt: 1687437822100,
+      properties: {
+        entity: {
+          active: 'super-block-task',
+          values: {
+            'super-block-task': {
+              id: 'TASK_12',
+              parent: 'TASK_1'
+            }
+          }
+        },
+        status: 'todo',
+        tags: [
+          {
+            value: 'meeting'
+          }
+        ],
+        assignee: '7b73e65a-3745-45fc-8cb0-fce6b54197bd',
+        priority: 'low'
+      }
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_Q9n9d',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_dGp9p',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'action_item',
+        id: 'TEMP_YUAMF',
+        status: 'completed',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_MFApB',
+            metadata: {},
+            text: 'Add Task component in Super Blocks'
+          }
+        ]
+      },
+      {
+        type: 'action_item',
+        id: 'TEMP_d9yYP',
+        status: 'pending',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_bjTdp',
+            metadata: {},
+            text: 'Checklist would be a separate element type instead of saving it inside Super Tasks.'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_f73gT',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_GMVx9',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_GAz9h',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_3gKL6',
+            metadata: {},
+            text: "I can even add more tasks here, but let's keep those separate."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'super-block-content',
+    id: 'TEMP_YM6Y4',
+    metadata: {
+      updatedBy: '7b73e65a-3745-45fc-8cb0-fce6b54197bd',
+      updatedAt: 1688041249795,
+      createdBy: '7b73e65a-3745-45fc-8cb0-fce6b54197bd',
+      createdAt: 1687862620219,
+      properties: {
+        tags: [
+          {
+            value: 'meeting'
+          },
+          {
+            value: 'quickcapture'
+          }
+        ]
+      }
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_HwH3R',
+
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_cFNNJ',
+            bold: true,
+            text: 'Dust '
+          },
+          {
+            type: 'p',
+            id: 'TEMP_t9bnx',
+            text: 'a new'
+          },
+          {
+            type: 'p',
+            id: 'TEMP_zz6Pf',
+            text: ' '
+          },
+          {
+            type: 'p',
+            id: 'TEMP_nrKJ7',
+            text: 'AI startup based in France that is working on improving team productivity by breaking down internal silos, surfacing important knowledge and providing tools to build custom internal apps. At its core, Dust is using large language models (LLMs) on internal company data to give new super powers to team members.'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_NYkhT',
+
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_xnWKE',
+            text: 'Co-founded by Gabriel Hubert and Stanislas Polu, the pair has known each other for more than a decade. Their first startup called Totems was acquired by Stripe in 2015. After that, they both spent a few years working for Stripe before parting ways.'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_jti3p',
+
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_AnpNA',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_HU8HG',
+
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_f7yVA',
+            metadata: {},
+            text: "Stanislas Polu joined OpenAI where he spent three years working on LLMs' reasoning capabilities while Gabriel Hubert became the head of product at"
+          },
+          {
+            type: 'p',
+            id: 'TEMP_tTrCT',
+            metadata: {},
+            text: ' '
+          },
+          {
+            type: 'a',
+            url: 'https://alan.com/',
+            id: 'TEMP_BzVCW',
+            children: [
+              {
+                type: 'p',
+                id: 'TEMP_dDhma',
+                metadata: {},
+                text: 'Alan'
+              }
+            ]
+          },
+          {
+            type: 'p',
+            id: 'TEMP_xfEKx',
+            metadata: {},
+            text: '. '
+          },
+          {
+            type: 'p',
+            id: 'TEMP_Pj6nk',
+            metadata: {},
+            text: "They teamed up once again to create Dust. Unlike many AI startups, Dust isn't focused on creating new large language models. Instead, the company wants to build applications on top of LLMs developed by OpenAI, Cohere, AI21, etc."
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_atJzY',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_dbLcW',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_6zRbA',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_EWi7m',
+            metadata: {},
+            text: 'The team first worked on a'
+          },
+          {
+            type: 'p',
+            id: 'TEMP_rcCdT',
+            metadata: {},
+            text: ' '
+          },
+          {
+            type: 'a',
+            url: 'https://github.com/dust-tt/dust',
+            id: 'TEMP_3YbqL',
+            children: [
+              {
+                type: 'p',
+                id: 'TEMP_tie77',
+                metadata: {},
+                text: 'platform'
+              }
+            ]
+          },
+          {
+            type: 'p',
+            id: 'TEMP_wtmMy',
+            metadata: {},
+            text: ' '
+          },
+          {
+            type: 'p',
+            id: 'TEMP_CTAxw',
+            metadata: {},
+            text: 'that can be used to design and deploy large language model apps. It has then focused its efforts on one use case in particular — centralizing and indexing internal data so that it can be used by LLMs.'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_xxAHj',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_QxdhG',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'h2',
+        id: 'TEMP_KcFR6',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_4Uz3d',
+            metadata: {},
+            text: 'From an internal ChatGPT to next-gen software'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_6fNXf',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_NGwY9',
+            metadata: {},
+            text: 'There are a handful of connectors that constantly fetch internal data from Notion, Slack, Github and Google Drive. This data is then indexed and can be used for semantic search queries. When a user wants to do something with a Dust-powered app, Dust will find the relevant internal data, use it as the context of an LLM and return an answer.'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_Fqp4P',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_cTWYH',
+            metadata: {},
+            text: "For example, let's say you just joined a company and you're working on a project that was started a while back. If your company fosters communication transparency, you will want to find information in existing internal data. But the internal knowledge base might not be up to date. Or it might be hard to find the reason why something is done this way as it's been discussed in an archived Slack channel."
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_FnCVP',
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_QcyFQ',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_mW3mY',
+
+        align: 'start',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_AX7Eh',
+            metadata: {},
+            text: "Dust isn't just a better internal search tool as it doesn't just return search results. It can find information across multiple data sources and format answers in a way that is much more useful to you. It can be used as a sort of internal ChatGPT, but it could also be used as the basis of new internal tools."
+          }
+        ]
+      }
+    ]
+  }
+]
 const extra = {
   ilink: {
     keyToIndex: 'value',
@@ -1626,6 +1979,10 @@ const iLinks: ILink[] = [
   }
 ]
 
+export const prettyPrint = (item) => {
+  console.log('RESULT', JSON.stringify(item, null, 2))
+}
+
 export const generateEntities = () => {
   const searchIdx = new SearchX()
   searchIdx.initializeHeirarchy(iLinks)
@@ -1639,34 +1996,34 @@ export const generateEntities = () => {
   // writeFileSync('./graph.dot', graphX.exportToDot())
   searchIdx.addOrUpdateDocument({
     id: noteID,
-    contents: content,
+    contents: superBlockContent,
     title,
     options: { extra: extra }
   })
-  searchIdx.addOrUpdateDocument({
-    id: noteID2,
-    contents: newContent,
-    title: title2,
-    options: { extra: extra }
-  })
+  // searchIdx.addOrUpdateDocument({
+  //   id: noteID2,
+  //   contents: newContent,
+  //   title: title2,
+  //   options: { extra: extra }
+  // })
   // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
-  console.log(
+  prettyPrint(
     searchIdx.search({
       options: [
         {
           type: 'query',
           query: [
-            // {
-            //   type: 'heirarchy',
-            //   value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
-            //   nextOperator: 'and'
-            // },
             {
-              type: 'text',
-              value: 'I am'
+              type: 'heirarchy',
+              value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
+              nextOperator: 'or'
             }
+            // {
+            //   type: 'text',
+            //   value: 'task'
+            // }
           ],
-          entities: [Entities.CONTENT_BLOCK]
+          entities: ['super-block-content']
         }
         // {
         //   type: 'query',

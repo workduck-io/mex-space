@@ -24,7 +24,7 @@ export type IndexMap = {
 
 export type UpdateDocFn = (doc: IUpdateDoc) => void
 
-export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text'
+export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text' | 'origin'
 export type NestedQueryType = 'query'
 export interface ISimpleQueryUnit {
   nextOperator?: 'and' | 'or'
@@ -37,7 +37,7 @@ export interface IQueryUnit {
   nextOperator?: 'and' | 'or'
   type: NestedQueryType
   query: ISearchQuery
-  entities?: Entities[]
+  entities?: string[]
 }
 
 export type QueryUnit = ISimpleQueryUnit | IQueryUnit

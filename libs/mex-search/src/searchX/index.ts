@@ -99,7 +99,7 @@ export class SearchX {
         this.updateReminder(reminder)
       })
     } catch (err) {
-      console.log('Unable to Initialize Reminders: ', { err })
+      console.error('Unable to Initialize Reminders: ', { err })
     }
   }
 
@@ -167,7 +167,7 @@ export class SearchX {
     })
   }
 
-  eval(evalConfig: { opt: QueryUnit; entities?: Entities[]; indexKey?: Indexes }) {
+  eval(evalConfig: { opt: QueryUnit; entities?: string[]; indexKey?: Indexes }) {
     const { opt, entities, indexKey = Indexes.MAIN } = evalConfig
     const condition = (node) => {
       if (opt.entities) return opt.entities.includes(node.type)
@@ -177,11 +177,41 @@ export class SearchX {
 
     switch (opt.type) {
       case 'tag':
-        return this._graphX.getRelatedNodes(`TAG_${opt.value}`, condition).map((n) => n.id)
+        return this._indexMap[indexKey]
+          .search({
+            query: '',
+            index: 'title',
+            tag: [`TAG_${opt.value}`, ...(entities ?? [])],
+            bool: 'and'
+          })
+          .reduce((acc, curr) => {
+            return [...acc, ...(curr?.result ?? [])]
+          }, [])
       case 'mention':
-        return this._graphX.getRelatedNodes(`USER_${opt.value}`, condition).map((n) => n.id)
+        return this._indexMap[indexKey]
+          .search({
+            query: '',
+            index: 'title',
+            tag: [`MENTION_${opt.value}`, ...(entities ?? [])],
+            bool: 'and'
+          })
+          .reduce((acc, curr) => {
+            return [...acc, ...(curr?.result ?? [])]
+          }, [])
       case 'heirarchy':
+        
         return this._graphX.findChildGraph(opt.value, condition)
+      case 'origin':
+        return this._indexMap[indexKey]
+          .search({
+            query: '',
+            index: 'title',
+            tag: [`ORIGIN_${opt.value}`, ...(entities ?? [])],
+            bool: 'and'
+          })
+          .reduce((acc, curr) => {
+            return [...acc, ...(curr?.result ?? [])]
+          }, [])
       case 'text':
         return this._indexMap[indexKey]
           .search({
@@ -203,7 +233,7 @@ export class SearchX {
   search = (searchConfig: {
     options: ISearchQuery
     expand?: boolean
-    entities?: Entities[]
+    entities?: string[]
     indexKey?: Indexes
   }): Array<SearchResult> => {
     const { options, expand = true, entities, indexKey = Indexes.MAIN } = searchConfig
@@ -221,7 +251,7 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.data)
+    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text)
     return result.filter((item) => item)
   }
 

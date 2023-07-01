@@ -1,7 +1,5 @@
-import { Entities } from '../utils'
-
 export interface GNodeMetadata {
-  type: Entities
+  type: string
   parentID?: string
   title?: string
   value?: string

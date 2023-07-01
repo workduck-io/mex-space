@@ -23,7 +23,7 @@ export type ParserFuncResult = {
   graphLinks: GLink[]
 }
 
-export type EntityParserFn = (block: any, parentBlockID?: string) => ParserFuncResult
+export type EntityParserFn = (block: any, parentBlockID: string) => ParserFuncResult
 
 export type NoteParserFn = (
   id: string,

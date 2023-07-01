@@ -12,7 +12,14 @@ import {
   ELEMENT_TAG,
   ELEMENT_TODO_LI
 } from '@workduck-io/mex-utils/src/constants'
-import { BlockType, NodeEditorContent, NodeMetadata, Reminder, SearchRepExtra } from '@workduck-io/mex-utils/src/types'
+import {
+  BlockType,
+  NodeEditorContent,
+  NodeMetadata,
+  Reminder,
+  SearchRepExtra,
+  SuperBlockContent
+} from '@workduck-io/mex-utils/src/types'
 
 import { DEFAULT_SYSTEM_TAGS } from '../constants'
 import { GLink, GNode } from '../graphX/types'
@@ -28,6 +35,75 @@ export class EntityParser {
   private _extra: SearchRepExtra | undefined
   private _noteMetadata: NodeMetadata | undefined
   private _systemTags: DEFAULT_SYSTEM_TAGS[] | undefined
+
+  superblockParser = (content: SuperBlockContent) => {
+    const { type, id, metadata, children } = content
+    const { properties, ...otherMetadata } = metadata
+    const { entity, title, tags, ...otherProperties } = properties
+    let blockText = ''
+    const graphNodes: GNode[] = [
+      {
+        id,
+        metadata: {
+          type,
+          title: title,
+          properties: { properties: otherProperties, metadata: otherMetadata }
+        }
+      }
+    ]
+    const graphLinks: GLink[] = []
+
+    tags?.forEach((tag) => {
+      graphNodes.push({
+        id: `TAG_${tag.value}`,
+        metadata: {
+          type: Entities.TAG
+        }
+      })
+      graphLinks.push({
+        to: `TAG_${tag.value}`,
+        from: id,
+        metadata: {
+          type: Entities.TAG
+        }
+      })
+    })
+
+    const entities: Array<PartialBy<GenericEntitySearchData, 'id'>> = []
+    const flexTags = [Entities.SUPERBLOCK, type, ...(tags?.map((t) => `TAG_${t.value}`) ?? [])]
+    children.forEach((topLevelBlock: BlockType) => {
+      const {
+        entities: childEntities,
+        graphNodes: childGNodes,
+        graphLinks: childGLinks
+      } = this._parseBlock(topLevelBlock, id)
+      childEntities?.forEach((e) => {
+        blockText = `${blockText} ${e.text}`
+        flexTags.push(...(e.tags ?? []))
+      })
+
+      if (graphNodes.length > 0) graphNodes.push(...childGNodes)
+      if (graphLinks.length > 0) graphLinks.push(...childGLinks)
+
+      // if (childEntities.length > 0) entities.push(...childEntities)
+      if (childGNodes.length > 0) graphNodes.push(...childGNodes)
+      if (childGLinks.length > 0) graphLinks.push(...childGLinks)
+    })
+    entities.push({
+      id,
+      title: title ?? Entities.SUPERBLOCK,
+      text: blockText,
+      entity: Entities.SUPERBLOCK,
+      parent: this._ID,
+      data: { metadata: otherMetadata, properties: otherProperties },
+      tags: [...new Set(flexTags)]
+    })
+    return {
+      entities,
+      graphNodes,
+      graphLinks
+    }
+  }
 
   noteParser: NoteParserFn = (id: string, contents: NodeEditorContent, title = '', options) => {
     this._ID = id
@@ -58,16 +134,12 @@ export class EntityParser {
       }
     ]
 
-    contents.forEach((topLevelBlock: BlockType) => {
+    contents.forEach((topLevelBlock: SuperBlockContent) => {
       const {
         entities: childEntities,
         graphNodes: childGNodes,
         graphLinks: childGLinks
-      } = this._parseBlock(topLevelBlock)
-      graphNodes.push({
-        id: topLevelBlock.id,
-        metadata: { ...topLevelBlock, type: Entities.CONTENT_BLOCK }
-      })
+      } = this.superblockParser(topLevelBlock)
 
       graphLinks.push({
         from: this._ID,
@@ -83,7 +155,7 @@ export class EntityParser {
     return { entities, graphNodes, graphLinks }
   }
 
-  paragraphLikeParser: EntityParserFn = (block: Required<BlockType>, topLevelBlockID?: string) => {
+  paragraphLikeParser: EntityParserFn = (block: Required<BlockType>, topLevelBlockID: string) => {
     const { type: blockType } = block
     const { entityType } = this._entityParserMap(blockType)
 
@@ -96,17 +168,14 @@ export class EntityParser {
     }
 
     const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
-
+    const flexTags: string[] = [Entities.CONTENT_BLOCK]
     if (block.children && block.children.length > 0) {
       block.children.forEach((childBlock) => {
         const { graphNodes, graphLinks, entities } = this._parseBlock(childBlock, topLevelBlockID)
 
         entities?.forEach((e) => {
-          if (e.entity === Entities.CONTENT_BLOCK) {
-            blockText = `${blockText} ${e.text}`
-          } else {
-            parsedEntities.push(e)
-          }
+          blockText = `${blockText} ${e.text}`
+          flexTags.push(...(e.tags ?? []))
         })
 
         if (graphNodes.length > 0) gNodes.push(...graphNodes)
@@ -118,10 +187,10 @@ export class EntityParser {
       parsedEntities.push({
         entity: Entities.CONTENT_BLOCK,
         id: block.id,
-        parent: this._ID,
+        parent: topLevelBlockID,
         data: block.metadata,
         text: blockText.trim(),
-        tags: this._getFlexsearchTags([Entities.CONTENT_BLOCK])
+        tags: [...new Set(this._getFlexsearchTags(flexTags))]
       })
     }
 
@@ -129,7 +198,7 @@ export class EntityParser {
   }
 
   // Mentions can't have children, we only care about associated entity, which is UserID
-  mentionParser: EntityParserFn = (block: BlockType, parentBlockID?: string) => {
+  mentionParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     let alias: any = undefined
     if (this._extra && this._extra[ELEMENT_MENTION]) {
       const blockKey = this._extra[ELEMENT_MENTION].keyToIndex
@@ -144,8 +213,7 @@ export class EntityParser {
       graphNodes: [gNode],
       graphLinks: [
         {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          from: parentBlockID!,
+          from: parentBlockID,
           to: gNode.id,
           metadata: {
             type: Entities.MENTION
@@ -157,7 +225,7 @@ export class EntityParser {
   }
 
   // Similar to mentions, tags don't have children and we care only about tag value (ID, value for now)
-  tagParser: EntityParserFn = (block: BlockType, parentBlockID?: string) => {
+  tagParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     const gNode: GNode = {
       id: `TAG_${block.value}`,
       metadata: { ...block, type: Entities.TAG }
@@ -167,8 +235,7 @@ export class EntityParser {
       graphNodes: [gNode],
       graphLinks: [
         {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          from: parentBlockID!,
+          from: parentBlockID,
           to: gNode.id,
           metadata: {
             type: Entities.TAG
@@ -180,7 +247,7 @@ export class EntityParser {
   }
 
   // ILink Values are passed via the extra parameter and nodeIDs are replaced in blockText with paths
-  ilinkParser: EntityParserFn = (block: BlockType) => {
+  ilinkParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     if (this._extra && this._extra[ELEMENT_ILINK]) {
       const blockKey = this._extra[ELEMENT_ILINK].keyToIndex
       const blockText = this._extra[ELEMENT_ILINK].replacements[block[blockKey]]
@@ -190,7 +257,7 @@ export class EntityParser {
           {
             entity: Entities.CONTENT_BLOCK,
             text: blockText,
-            parent: this._ID,
+            parent: parentBlockID,
             data: block.metadata,
             tags: this._getFlexsearchTags([Entities.LINK])
           }
@@ -215,21 +282,20 @@ export class EntityParser {
   }
 
   // Links and Media Embeds - Replace in block text with URL
-  urlParser: EntityParserFn = (block: BlockType, parentBlockID?: string) => {
+  urlParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     const url = block.url as string
     const blockText =
       block.children && block.children.length > 0 && block.children[0].text?.trim() !== ''
         ? block.children[0].text
         : url
-
+    const origin = new URL(url).origin
     const gNode: GNode = {
       id: url,
-      metadata: { ...block, type: Entities.LINK, origin: new URL(url).origin }
+      metadata: { ...block, type: Entities.LINK, origin }
     }
 
     const gLink: GLink = {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      from: parentBlockID!,
+      from: parentBlockID,
       to: url,
       metadata: {
         type: 'CHILD'
@@ -241,18 +307,27 @@ export class EntityParser {
         {
           entity: Entities.CONTENT_BLOCK,
           text: blockText,
-          parent: this._ID,
+          parent: parentBlockID,
           data: block.metadata,
-          tags: this._getFlexsearchTags([Entities.LINK])
+          tags: this._getFlexsearchTags([Entities.LINK, `ORIGIN_${origin}`])
         }
       ],
       graphNodes: [gNode],
-      graphLinks: [gLink]
+      graphLinks: [
+        gLink,
+        {
+          from: parentBlockID,
+          to: origin,
+          metadata: {
+            type: 'ORIGIN'
+          }
+        }
+      ]
     }
   }
 
   // Excalidraw Canvas - Parse the value to get text inside the canvas
-  excalidrawParser: EntityParserFn = (block: BlockType) => {
+  excalidrawParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     const rawValue = block.value
     if (rawValue) {
       const parsedExcalidrawElements = JSON.parse(rawValue).elements
@@ -270,18 +345,26 @@ export class EntityParser {
             text: text.join(' '),
             entity: Entities.EXCALIDRAW,
             data: block.metadata,
-            parent: this._ID,
+            parent: parentBlockID,
             tags: this._getFlexsearchTags([Entities.EXCALIDRAW])
           }
         ],
         graphNodes: [],
-        graphLinks: []
+        graphLinks: [
+          {
+            to: Entities.EXCALIDRAW,
+            from: parentBlockID,
+            metadata: {
+              type: Entities.EXCALIDRAW
+            }
+          }
+        ]
       }
     }
     return { entities: [], graphNodes: [], graphLinks: [] }
   }
 
-  taskParser: EntityParserFn = (block: BlockType, topLevelBlockID?: string) => {
+  taskParser: EntityParserFn = (block: BlockType, topLevelBlockID: string) => {
     const { id: blockID, type: blockType } = block
     const { entityType } = this._entityParserMap(blockType)
 
@@ -296,49 +379,39 @@ export class EntityParser {
     }
 
     const parsedEntities: PartialBy<GenericEntitySearchData, 'id'>[] = []
-
+    const flexTags: string[] = [Entities.TASK]
     if (block.children && block.children.length > 0) {
       block.children.forEach((childBlock) => {
         const { graphNodes, graphLinks, entities } = this._parseBlock(childBlock, topLevelBlockID)
 
         entities?.forEach((e) => {
-          if (e.entity === Entities.CONTENT_BLOCK) {
-            blockText = `${blockText} ${e.text}`
-          } else {
-            parsedEntities.push(e)
-          }
+          blockText = `${blockText} ${e.text}`
+          flexTags.push(...(e.tags ?? []))
         })
 
         if (graphNodes.length > 0) associatedEntities.push(...graphNodes)
         if (graphLinks.length > 0) associatedLinks.push(...graphLinks)
       })
     }
-
     if (blockText !== '') {
       parsedEntities.push({
         entity: Entities.TASK,
         id: blockID,
-        parent: this._ID,
+        parent: topLevelBlockID,
         text: blockText.trim(),
         data: {
           ...(block.metadata ?? {}),
           status: block.status,
           priority: block.priority
         },
-        tags: this._getFlexsearchTags([Entities.TASK])
+        tags: [...new Set(this._getFlexsearchTags(flexTags))]
       })
 
-      const taskGNode: GNode = {
-        id: blockID,
-        metadata: { ...block, type: Entities.TASK }
-      }
-
       const taskGLink: GLink = {
-        from: this._ID,
-        to: blockID,
-        metadata: { type: 'CHILD' }
+        from: topLevelBlockID,
+        to: 'TASK',
+        metadata: { type: 'TASK' }
       }
-      associatedEntities.push(taskGNode)
       associatedLinks.push(taskGLink)
     }
 
@@ -346,7 +419,7 @@ export class EntityParser {
   }
 
   // Reminders are not directly attached to note but are stored separately in the `reminders` object in `mex.json`
-  reminderParser: EntityParserFn = (reminder: Reminder) => {
+  reminderParser: EntityParserFn = (reminder: Reminder, parentBlockID: string) => {
     return {
       entities: [
         {
@@ -354,34 +427,50 @@ export class EntityParser {
           text: reminder.description,
           title: reminder.title,
           data: reminder,
-          parent: this._ID,
+          parent: parentBlockID,
           entity: Entities.REMINDER,
           tags: this._getFlexsearchTags([Entities.REMINDER])
         }
       ],
       graphNodes: [],
-      graphLinks: []
+      graphLinks: [
+        {
+          to: 'REMINDER',
+          from: parentBlockID,
+          metadata: {
+            tpye: Entities.REMINDER
+          }
+        }
+      ]
     }
   }
 
-  actionParser: EntityParserFn = (block: any) => {
+  actionParser: EntityParserFn = (block: any, parentBlockID: string) => {
     const blockText = camelCase(block.actionContext?.actionGroupId)
     return {
       entities: [
         {
           entity: Entities.ACTION,
           text: blockText.trim(),
-          parent: this._ID,
+          parent: parentBlockID,
           data: block.metadata,
           tags: this._getFlexsearchTags([Entities.ACTION])
         }
       ],
       graphNodes: [],
-      graphLinks: []
+      graphLinks: [
+        {
+          to: 'ACTION',
+          from: parentBlockID,
+          metadata: {
+            type: Entities.ACTION
+          }
+        }
+      ]
     }
   }
 
-  imageParser: EntityParserFn = (block: BlockType) => {
+  imageParser: EntityParserFn = (block: BlockType, parentBlockID) => {
     const blockText = block.caption && block.caption.length > 0 ? block.caption[0].text : ''
 
     return {
@@ -389,7 +478,7 @@ export class EntityParser {
         {
           entity: Entities.IMAGE,
           id: block.id,
-          parent: this._ID,
+          parent: parentBlockID,
           data: {
             ...(block.metadata ?? {}),
             caption: block.caption,
@@ -400,15 +489,23 @@ export class EntityParser {
         }
       ],
       graphNodes: [],
-      graphLinks: []
+      graphLinks: [
+        {
+          to: 'IMAGE',
+          from: parentBlockID,
+          metadata: {
+            type: Entities.IMAGE
+          }
+        }
+      ]
     }
   }
 
-  private _parseBlock = (block: BlockType, parentBlockId?: string) => {
+  private _parseBlock = (block: BlockType, parentBlockId: string) => {
     const blockType = block.type
     const { fn: parserFunction } = this._entityParserMap(blockType)
 
-    return parserFunction(block, parentBlockId ?? block.id)
+    return parserFunction(block, parentBlockId)
   }
 
   private _entityParserMap: entityParserMapFn = (entityType = ELEMENT_PARAGRAPH) => {
