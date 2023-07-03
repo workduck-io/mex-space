@@ -7,8 +7,10 @@ import { Entities } from '../utils'
 
 export type SearchTags = Array<string>
 
+export type SuperBlocksType<Str extends string> = `super-block-${Lowercase<Str>}`
+
 export interface GenericEntitySearchData {
-  entity?: Entities
+  entity?: SuperBlocksType<any> | Entities
   id: string
   parent?: string
   text?: string

@@ -177,40 +177,13 @@ export class SearchX {
 
     switch (opt.type) {
       case 'tag':
-        return this._indexMap[indexKey]
-          .search({
-            query: '',
-            index: 'title',
-            tag: [`TAG_${opt.value}`, ...(entities ?? [])],
-            bool: 'or'
-          })
-          .reduce((acc, curr) => {
-            return unionMultiple(acc, curr?.result ?? [])
-          }, [])
+        return this._graphX.getRelatedNodes(`TAG_${opt.value}`, condition).map((item) => item.id)
       case 'mention':
-        return this._indexMap[indexKey]
-          .search({
-            query: '',
-            index: 'title',
-            tag: [`MENTION_${opt.value}`, ...(entities ?? [])],
-            bool: 'and'
-          })
-          .reduce((acc, curr) => {
-            return unionMultiple(acc, curr?.result ?? [])
-          }, [])
+        return this._graphX.getRelatedNodes(`MENTION_${opt.value}`, condition).map((item) => item.id)
       case 'heirarchy':
         return this._graphX.findChildGraph(opt.value, condition)
       case 'origin':
-        return this._indexMap[indexKey]
-          .search({
-            query: '',
-            index: 'title',
-            tag: [`ORIGIN_${opt.value}`, ...(entities ?? [])],
-            bool: 'and'
-          })
-          .reduce((acc, curr) => {
-            return unionMultiple(acc, curr?.result ?? [])
-          }, [])
+        return this._graphX.getRelatedNodes(`ORIGIN_${opt.value}`, condition).map((item) => item.id)
       case 'text':
         return this._indexMap[indexKey]
           .search({
@@ -220,9 +193,7 @@ export class SearchX {
             bool: 'or'
           })
           .reduce((acc, curr) => {
-            console.log(curr)
-
-            return intersectMultiple(acc, curr?.result ?? [])
+            return unionMultiple(acc, curr?.result ?? [])
           }, [])
       case 'query':
         return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })

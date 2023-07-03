@@ -26,7 +26,7 @@ import { GLink, GNode } from '../graphX/types'
 import { PartialBy } from '../types/utils'
 import { Entities } from '../utils'
 
-import { EntityParserFn, GenericEntitySearchData, NoteParserFn } from './types'
+import { EntityParserFn, GenericEntitySearchData, NoteParserFn, SuperBlocksType } from './types'
 
 type entityParserMapFn = (entityType: string) => { fn: EntityParserFn; entityType: Entities }
 
@@ -37,8 +37,7 @@ export class EntityParser {
   private _systemTags: DEFAULT_SYSTEM_TAGS[] | undefined
 
   superblockParser = (content: SuperBlockContent) => {
-    const { type, id, metadata, children } = content
-    const { properties, ...otherMetadata } = metadata
+    const { type, id, metadata, properties, children } = content
     const { entity, title, tags, ...otherProperties } = properties
     let blockText = ''
     const graphNodes: GNode[] = [
@@ -47,7 +46,7 @@ export class EntityParser {
         metadata: {
           type,
           title: title,
-          properties: { properties: otherProperties, metadata: otherMetadata }
+          properties: { properties, metadata }
         }
       }
     ]
@@ -70,7 +69,7 @@ export class EntityParser {
     })
 
     const entities: Array<PartialBy<GenericEntitySearchData, 'id'>> = []
-    const flexTags = [Entities.SUPERBLOCK, type, ...(tags?.map((t) => `TAG_${t.value}`) ?? [])]
+    const flexTags = [type, ...(tags?.map((t) => `TAG_${t.value}`) ?? [])]
     children.forEach((topLevelBlock: BlockType) => {
       const {
         entities: childEntities,
@@ -93,9 +92,9 @@ export class EntityParser {
       id,
       title: title ?? Entities.SUPERBLOCK,
       text: blockText,
-      entity: Entities.SUPERBLOCK,
+      entity: type as SuperBlocksType<any>,
       parent: this._ID,
-      data: { metadata: otherMetadata, properties: otherProperties },
+      data: { metadata, properties },
       tags: [...new Set(flexTags)]
     })
     return {
@@ -220,12 +219,7 @@ export class EntityParser {
           }
         }
       ],
-      entities: [
-        {
-          id: `MENTION_${block.value}`,
-          text: alias
-        }
-      ]
+      entities: []
     }
   }
 
@@ -247,12 +241,7 @@ export class EntityParser {
           }
         }
       ],
-      entities: [
-        {
-          id: `TAG_${block.value}`,
-          text: block.value
-        }
-      ]
+      entities: []
     }
   }
 
@@ -319,7 +308,7 @@ export class EntityParser {
           text: blockText,
           parent: parentBlockID,
           data: block.metadata,
-          tags: this._getFlexsearchTags([Entities.LINK, `ORIGIN_${origin}`])
+          tags: this._getFlexsearchTags([Entities.LINK])
         }
       ],
       graphNodes: [gNode],
@@ -327,7 +316,7 @@ export class EntityParser {
         gLink,
         {
           from: parentBlockID,
-          to: origin,
+          to: `ORIGIN_${origin}`,
           metadata: {
             type: 'ORIGIN'
           }

@@ -55,27 +55,27 @@ export interface Tag {
 export interface SuperBlockContent {
   type: string
   id: string
+  properties: {
+    entity: {
+      active: string
+      values: Record<
+        string,
+        {
+          id?: string
+          parent?: string
+        }
+      >
+    }
+    title?: string
+    tags?: Tag[]
+    [key: string]: any
+  }
   metadata: {
     updatedBy: string
     updatedAt: number
     createdBy: string
     createdAt: number
     title: string
-    properties: {
-      entity: {
-        active: string
-        values: Record<
-          string,
-          {
-            id?: string
-            parent?: string
-          }
-        >
-      }
-      title?: string
-      tags?: Tag[]
-      [key: string]: any
-    }
   }
   children: any[]
 }
