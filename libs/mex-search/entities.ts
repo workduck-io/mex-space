@@ -2013,17 +2013,17 @@ export const generateEntities = () => {
         {
           type: 'query',
           query: [
-            {
-              type: 'heirarchy',
-              value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
-              nextOperator: 'or'
-            }
             // {
-            //   type: 'text',
-            //   value: 'task'
+            //   type: 'tag',
+            //   value: 'quickcapture',
+            //   nextOperator: 'or'
             // }
+            {
+              type: 'text',
+              value: 'task'
+            }
           ],
-          entities: ['super-block-content']
+          entities: ['SUPERBLOCK']
         }
         // {
         //   type: 'query',

@@ -220,7 +220,12 @@ export class EntityParser {
           }
         }
       ],
-      entities: []
+      entities: [
+        {
+          id: `MENTION_${block.value}`,
+          text: alias
+        }
+      ]
     }
   }
 
@@ -242,7 +247,12 @@ export class EntityParser {
           }
         }
       ],
-      entities: []
+      entities: [
+        {
+          id: `TAG_${block.value}`,
+          text: block.value
+        }
+      ]
     }
   }
 

@@ -182,10 +182,10 @@ export class SearchX {
             query: '',
             index: 'title',
             tag: [`TAG_${opt.value}`, ...(entities ?? [])],
-            bool: 'and'
+            bool: 'or'
           })
           .reduce((acc, curr) => {
-            return [...acc, ...(curr?.result ?? [])]
+            return unionMultiple(acc, curr?.result ?? [])
           }, [])
       case 'mention':
         return this._indexMap[indexKey]
@@ -196,10 +196,9 @@ export class SearchX {
             bool: 'and'
           })
           .reduce((acc, curr) => {
-            return [...acc, ...(curr?.result ?? [])]
+            return unionMultiple(acc, curr?.result ?? [])
           }, [])
       case 'heirarchy':
-        
         return this._graphX.findChildGraph(opt.value, condition)
       case 'origin':
         return this._indexMap[indexKey]
@@ -210,7 +209,7 @@ export class SearchX {
             bool: 'and'
           })
           .reduce((acc, curr) => {
-            return [...acc, ...(curr?.result ?? [])]
+            return unionMultiple(acc, curr?.result ?? [])
           }, [])
       case 'text':
         return this._indexMap[indexKey]
@@ -221,7 +220,9 @@ export class SearchX {
             bool: 'or'
           })
           .reduce((acc, curr) => {
-            return [...acc, ...(curr?.result ?? [])]
+            console.log(curr)
+
+            return intersectMultiple(acc, curr?.result ?? [])
           }, [])
       case 'query':
         return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })
