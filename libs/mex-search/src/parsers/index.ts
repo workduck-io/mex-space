@@ -38,7 +38,7 @@ export class EntityParser {
 
   superblockParser = (content: SuperBlockContent) => {
     const { type, id, metadata, properties, children } = content
-    const { entity, title, tags, ...otherProperties } = properties
+    const { entity, title, tags } = properties
     let blockText = ''
     const graphNodes: GNode[] = [
       {
@@ -50,7 +50,24 @@ export class EntityParser {
         }
       }
     ]
-    const graphLinks: GLink[] = []
+    const graphLinks: GLink[] = entity?.active
+      ? [
+          {
+            from: id,
+            to: entity.values[entity.active].parent!,
+            metadata: {
+              type: entity.active
+            }
+          },
+          {
+            from: id,
+            to: entity.active,
+            metadata: {
+              type: entity.active
+            }
+          }
+        ]
+      : []
 
     tags?.forEach((tag) => {
       graphNodes.push({
@@ -90,7 +107,7 @@ export class EntityParser {
     })
     entities.push({
       id,
-      title: title ?? Entities.SUPERBLOCK,
+      title: title ?? type,
       text: blockText,
       entity: type as SuperBlocksType<any>,
       parent: this._ID,
@@ -258,7 +275,7 @@ export class EntityParser {
             text: blockText,
             parent: parentBlockID,
             data: block.metadata,
-            tags: this._getFlexsearchTags([Entities.LINK])
+            tags: this._getFlexsearchTags()
           }
         ],
         graphNodes: [
@@ -408,7 +425,7 @@ export class EntityParser {
 
       const taskGLink: GLink = {
         from: topLevelBlockID,
-        to: 'TASK',
+        to: Entities.TASK,
         metadata: { type: 'TASK' }
       }
       associatedLinks.push(taskGLink)
@@ -434,10 +451,10 @@ export class EntityParser {
       graphNodes: [],
       graphLinks: [
         {
-          to: 'REMINDER',
           from: parentBlockID,
+          to: Entities.REMINDER,
           metadata: {
-            tpye: Entities.REMINDER
+            type: Entities.REMINDER
           }
         }
       ]
@@ -459,8 +476,8 @@ export class EntityParser {
       graphNodes: [],
       graphLinks: [
         {
-          to: 'ACTION',
           from: parentBlockID,
+          to: Entities.ACTION,
           metadata: {
             type: Entities.ACTION
           }
@@ -490,8 +507,8 @@ export class EntityParser {
       graphNodes: [],
       graphLinks: [
         {
-          to: 'IMAGE',
           from: parentBlockID,
+          to: Entities.IMAGE,
           metadata: {
             type: Entities.IMAGE
           }

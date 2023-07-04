@@ -1,8 +1,8 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
+import { Entities } from './src'
 // import { Entities } from './src/utils'
-
 
 const superBlockContent = [
   {
@@ -13,6 +13,15 @@ const superBlockContent = [
       updatedAt: 1688408142849
     },
     properties: {
+      entity: {
+        active: 'HIGHLIGHT',
+        values: {
+          HIGHLIGHT: {
+            id: 'HIGLIGHT_COPY',
+            parent: 'HIGHLIGHT_ORI'
+          }
+        }
+      },
       tags: [
         {
           value: 'actions'
@@ -631,6 +640,8 @@ export const generateEntities = () => {
     title,
     options: { extra: extra }
   })
+
+  console.log(searchIdx._graphX.getLinks('TEMP_EcYcC'))
   // searchIdx.addOrUpdateDocument({
   //   id: noteID2,
   //   contents: newContent,
@@ -644,17 +655,18 @@ export const generateEntities = () => {
         {
           type: 'query',
           query: [
-            // {
-            //   type: 'tag',
-            //   value: 'actions',
-            //   nextOperator: 'or'
-            // }
             {
-              type: 'text',
-              value: 'task'
+              type: 'tag',
+              value: 'actions',
+              nextOperator: 'or'
             }
+            // {
+            //   type: 'text',
+            //   value: 'task'
+            // }
           ],
-          entities: ['super-block-task', 'super-block-content']
+          entities: [ 'super-block-content'],
+          contains: [Entities.HIGHLIGHT]
         }
         // {
         //   type: 'query',

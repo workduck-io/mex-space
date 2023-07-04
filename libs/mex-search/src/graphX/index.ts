@@ -12,7 +12,7 @@ export class GraphX {
   }
 
   addNode = (node: GNode) => {
-    this._graph.addNode(node.id, node.metadata)
+    this._graph.addNode(node.id, node.metadata ? node.metadata : this._graph.getNode(node.id)?.data)
   }
 
   getNode = (nodeId: string) => {
@@ -24,11 +24,15 @@ export class GraphX {
   }
 
   addLink = (from: string, to: string, data?: any) => {
-    this._graph.addLink(from, to, data)
+    this._graph.addLink(from, to, data ? data : this._graph.getLink(from, to)?.data)
   }
 
   getLink = (fromId: string, toId: string) => {
     return this._graph.getLink(fromId, toId)
+  }
+
+  getLinks = (id: string) => {
+    return this._graph.getLinks(id)
   }
 
   removeLink = (from: string, to: string) => {
@@ -41,7 +45,7 @@ export class GraphX {
     this._graph.forEachLinkedNode(
       nodeId,
       (node) => {
-        if (condition(node.data)) {
+        if (condition(node)) {
           results.push({ id: node.id as string, metadata: node.data })
         }
       },
@@ -91,7 +95,7 @@ export class GraphX {
       false
     )
 
-    if (children.length > 0) {
+    if (children.length > 0 || items.length > 0) {
       level++
       return [
         ...items,

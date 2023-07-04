@@ -30,7 +30,8 @@ export interface ISimpleQueryUnit {
   nextOperator?: 'and' | 'or'
   type: SimpleQueryType
   value: string
-  entities?: Entities[]
+  entities?: string[]
+  contains?: Entities[]
 }
 
 export interface IQueryUnit {
@@ -38,55 +39,12 @@ export interface IQueryUnit {
   type: NestedQueryType
   query: ISearchQuery
   entities?: string[]
+  contains?: Entities[]
 }
 
 export type QueryUnit = ISimpleQueryUnit | IQueryUnit
 
 export type ISearchQuery = QueryUnit[]
-
-export const a: ISearchQuery = [
-  {
-    type: 'tag',
-    value: 'something',
-    entities: [Entities.TASK, Entities.CONTENT_BLOCK],
-    nextOperator: 'and'
-  },
-  {
-    type: 'query',
-    query: [
-      {
-        type: 'mention',
-        value: 'me',
-        nextOperator: 'or'
-      },
-      {
-        type: 'mention',
-        value: 'you',
-        nextOperator: 'and'
-      },
-      {
-        type: 'mention',
-        value: 'else'
-      }
-    ],
-    nextOperator: 'and'
-  },
-  {
-    type: 'heirarchy',
-    value: 'NS_123',
-    nextOperator: 'or'
-  },
-  {
-    type: 'text',
-    value: 'something',
-    entities: [Entities.CONTENT_BLOCK]
-  },
-  {
-    type: 'heirarchy',
-    value: 'NS_123',
-    nextOperator: 'or'
-  }
-]
 
 export interface SearchResult {
   id: string

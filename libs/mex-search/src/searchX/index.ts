@@ -167,12 +167,19 @@ export class SearchX {
     })
   }
 
-  eval(evalConfig: { opt: QueryUnit; entities?: string[]; indexKey?: Indexes }) {
-    const { opt, entities, indexKey = Indexes.MAIN } = evalConfig
+  eval(evalConfig: { opt: QueryUnit; entities?: string[]; contains?: Entities[]; indexKey?: Indexes }) {
+    const { opt, entities, contains, indexKey = Indexes.MAIN } = evalConfig
+
     const condition = (node) => {
-      if (opt.entities) return opt.entities.includes(node.type)
-      else if (entities) return entities.includes(node.type)
-      return true
+      let satisfies = true
+      if (opt.contains ?? contains)
+        satisfies = [...(this._graphX.getLinks(node.id) ?? [])].some((item) => {
+          return (opt.contains ?? contains ?? []).includes(item.toId as Entities)
+        })
+      if (!satisfies) return false
+      if (opt.entities ?? entities) satisfies = satisfies && (opt.entities || entities || []).includes(node.data.type)
+
+      return satisfies
     }
 
     switch (opt.type) {
@@ -196,7 +203,13 @@ export class SearchX {
             return unionMultiple(acc, curr?.result ?? [])
           }, [])
       case 'query':
-        return this.search({ options: opt.query, expand: false, entities: opt.entities, indexKey })
+        return this.search({
+          options: opt.query,
+          expand: false,
+          contains: opt.contains,
+          entities: opt.entities,
+          indexKey
+        })
       default:
         return []
     }
@@ -206,19 +219,20 @@ export class SearchX {
     options: ISearchQuery
     expand?: boolean
     entities?: string[]
+    contains?: Entities[]
     indexKey?: Indexes
   }): Array<SearchResult> => {
-    const { options, expand = true, entities, indexKey = Indexes.MAIN } = searchConfig
+    const { options, expand = true, entities, contains, indexKey = Indexes.MAIN } = searchConfig
     let result = []
     let firstPass = true
     let prevOperator = 'and'
     options.forEach((qu) => {
       if (firstPass) {
-        result = this.eval({ opt: qu, entities, indexKey })
+        result = this.eval({ opt: qu, entities, contains, indexKey })
         firstPass = false
       } else {
         const join = prevOperator === 'and' ? intersectMultiple : unionMultiple
-        result = join(result, this.eval({ opt: qu, entities, indexKey }))
+        result = join(result, this.eval({ opt: qu, entities, contains, indexKey }))
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
