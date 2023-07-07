@@ -237,8 +237,9 @@ export class SearchX {
       prevOperator = qu.nextOperator ?? 'and'
     })
 
-    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text)
-    return result.filter((item) => item)
+    if (expand)
+      return [...new Set(result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text))]
+    return [...new Set(result.filter((item) => item))]
   }
 
   addOrUpdateDocument: UpdateDocFn = (doc) => {
