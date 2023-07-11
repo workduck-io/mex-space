@@ -428,36 +428,6 @@ const superBlockContent = [
       },
       {
         type: 'action_item',
-        id: 'TEMP_TF8CC',
-        metadata: {},
-        children: [
-          {
-            type: 'p',
-            id: 'TEMP_xHQwf',
-            metadata: {},
-            text: 'Quick Capture '
-          },
-          {
-            type: 'tag',
-            children: [
-              {
-                text: '',
-                id: 'TEMP_3G4UX'
-              }
-            ],
-            value: 'quickcapture',
-            id: 'TEMP_ydpx3'
-          },
-          {
-            type: 'p',
-            id: 'TEMP_tL7Fm',
-            metadata: {},
-            text: ''
-          }
-        ]
-      },
-      {
-        type: 'action_item',
         id: 'TEMP_jtg6j',
         metadata: {},
         children: [
@@ -894,7 +864,7 @@ export const generateEntities = () => {
     options: { extra: extra }
   })
 
-  prettyPrint(searchIdx.findRelatedEntities('NODE_ENLNwH3AecWtPfdtxbdbz', 'TAG'))
+  prettyPrint(searchIdx.findRelatedBlocks('TAG_quickcapture', 'super-block-content'))
 
   // console.log(searchIdx._graphX.getLinks('TEMP_EcYcC'))
   // searchIdx.addOrUpdateDocument({

@@ -312,4 +312,12 @@ export class SearchX {
     }
     return []
   }
+
+  findRelatedBlocks = (id: string, blockType?: string) => {
+    return this._graphX
+      .getRelatedNodes(id, (node) => {
+        return blockType ? node?.data?.type === blockType : node.data.type.startsWith('super-block-')
+      })
+      .map((item) => this._indexMap[Indexes.MAIN].get(item.id))
+  }
 }
