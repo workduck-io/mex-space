@@ -1,7 +1,6 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
-import { Entities } from './src'
 // import { Entities } from './src/utils'
 
 const superBlockContent = [
@@ -31,6 +30,260 @@ const superBlockContent = [
         },
         {
           value: 'quickcapture'
+        }
+      ]
+    },
+    children: [
+      {
+        type: 'h3',
+        id: 'TEMP_ihmQt',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_XGnDC',
+            metadata: {},
+            text: 'What is Mex?'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_6gFhk',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_H3Hxm',
+            metadata: {},
+            text: 'Mex is your all-in-one context hub which stays with you wherever you work!'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_a8HQQ',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_gU4wg',
+            metadata: {},
+            text: "It allows you to aggregate action items along with it's relevant context across your tools while automating boring repetitive task, so that you stay in flow! a"
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_YtjyA',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_GBEHn',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_DAFRa',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_hVqCc',
+            metadata: {},
+            text: 'To unlock the of Mex you need to give two permissions:'
+          }
+        ]
+      },
+      {
+        type: 'ul',
+        id: 'TEMP_fgJiw',
+        metadata: {},
+        children: [
+          {
+            type: 'li',
+            id: 'TEMP_3whxy',
+            metadata: {},
+            children: [
+              {
+                type: 'lic',
+                id: 'TEMP_qJEJP',
+                metadata: {},
+                children: [
+                  {
+                    type: 'p',
+                    id: 'TEMP_PPNht',
+                    metadata: {},
+                    text: 'Accesbility'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'li',
+            id: 'TEMP_iRKM6',
+            metadata: {},
+            children: [
+              {
+                type: 'lic',
+                id: 'TEMP_crX7x',
+                metadata: {},
+                children: [
+                  {
+                    type: 'p',
+                    id: 'TEMP_zwhdi',
+                    metadata: {},
+                    text: 'Screen Recording'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        type: 'h4',
+        id: 'TEMP_HAanw',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_jrLpH',
+            metadata: {},
+            text: 'Onboarding Checklist'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        id: 'TEMP_LA68a',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_HfrLM',
+            metadata: {},
+            text: 'Here are few quick things we would be focussing on:'
+          }
+        ]
+      },
+      {
+        type: 'action_item',
+        id: 'TEMP_TF8CC',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_xHQwf',
+            metadata: {},
+            text: 'Quick Capture '
+          },
+          {
+            type: 'tag',
+            children: [
+              {
+                text: '',
+                id: 'TEMP_3G4UX'
+              }
+            ],
+            value: 'quickcapture',
+            id: 'TEMP_ydpx3'
+          },
+          {
+            type: 'p',
+            id: 'TEMP_tL7Fm',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'action_item',
+        id: 'TEMP_jtg6j',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_U887j',
+            metadata: {},
+            text: 'Actions '
+          },
+          {
+            type: 'tag',
+            children: [
+              {
+                text: '',
+                id: 'TEMP_KrKpa'
+              }
+            ],
+            value: 'actions',
+            id: 'TEMP_kr4aB'
+          },
+          {
+            type: 'p',
+            id: 'TEMP_kakz4',
+            metadata: {},
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'action_item',
+        id: 'TEMP_bU9rC',
+        metadata: {},
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_83wrP',
+            metadata: {},
+            text: 'Snippets and Backlinks '
+          },
+          {
+            type: 'tag',
+            children: [
+              {
+                text: '',
+                id: 'TEMP_DeqVJ'
+              }
+            ],
+            value: 'snippets',
+            id: 'TEMP_aMGNi'
+          },
+          {
+            type: 'p',
+            id: 'TEMP_nrUQN',
+            metadata: {},
+            text: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'super-block-content',
+    id: 'TEMP_DytcW',
+    metadata: {
+      updatedBy: 'fdb177fb-64e6-4185-8b56-82dde6a73112',
+      updatedAt: 1688408142849
+    },
+    properties: {
+      entity: {
+        active: 'HIGHLIGHT',
+        values: {
+          HIGHLIGHT: {
+            id: 'HIGHLIGHT_COPY',
+            parent: 'HIGHLIGHT_ORI'
+          }
+        }
+      },
+      tags: [
+        {
+          value: 'honeybadger'
         }
       ]
     },
@@ -641,7 +894,9 @@ export const generateEntities = () => {
     options: { extra: extra }
   })
 
-  console.log(searchIdx._graphX.getLinks('TEMP_EcYcC'))
+  prettyPrint(searchIdx.findRelatedEntities('NODE_ENLNwH3AecWtPfdtxbdbz', 'TAG'))
+
+  // console.log(searchIdx._graphX.getLinks('TEMP_EcYcC'))
   // searchIdx.addOrUpdateDocument({
   //   id: noteID2,
   //   contents: newContent,
@@ -649,56 +904,56 @@ export const generateEntities = () => {
   //   options: { extra: extra }
   // })
   // searchIdx.moveBlocks('NODE_89DimrxF7h6HmmDGxDM9h', 'NODE_jjtnMNJwLJ6bMaBMLApM4', ['TEMP_fcD7H'])
-  prettyPrint(
-    searchIdx.search({
-      options: [
-        {
-          type: 'query',
-          query: [
-            {
-              type: 'tag',
-              value: 'actions',
-              nextOperator: 'or'
-            }
-            // {
-            //   type: 'text',
-            //   value: 'task'
-            // }
-          ],
-          entities: [ 'super-block-content'],
-          contains: [Entities.HIGHLIGHT]
-        }
-        // {
-        //   type: 'query',
-        //   query: [
-        //     {
-        //       type: 'tag',
-        //       value: 'TAG_code',
-        //       entities: [Entities.TASK],
-        //       nextOperator: 'or'
-        //     },
-        //     {
-        //       type: 'tag',
-        //       value: 'TAG_wowtag',
-        //       entities: [Entities.TASK]
-        //     }
-        //   ],
-        //   nextOperator: 'or'
-        // },
-        // {
-        //   type: 'mention',
-        //   value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
-        //   entities: [Entities.TASK],
-        //   nextOperator: 'or'
-        // },
-        // {
-        //   type: 'text',
-        //   value: 'we',
-        //   entities: [Entities.TASK]
-        // }
-      ]
-    })
-  )
+  // prettyPrint(
+  //   searchIdx.search({
+  //     options: [
+  //       {
+  //         type: 'query',
+  //         query: [
+  //           {
+  //             type: 'tag',
+  //             value: 'actions',
+  //             nextOperator: 'or'
+  //           }
+  //           // {
+  //           //   type: 'text',
+  //           //   value: 'task'
+  //           // }
+  //         ],
+  //         entities: [ 'super-block-content'],
+  //         contains: [Entities.HIGHLIGHT]
+  //       }
+  //       // {
+  //       //   type: 'query',
+  //       //   query: [
+  //       //     {
+  //       //       type: 'tag',
+  //       //       value: 'TAG_code',
+  //       //       entities: [Entities.TASK],
+  //       //       nextOperator: 'or'
+  //       //     },
+  //       //     {
+  //       //       type: 'tag',
+  //       //       value: 'TAG_wowtag',
+  //       //       entities: [Entities.TASK]
+  //       //     }
+  //       //   ],
+  //       //   nextOperator: 'or'
+  //       // },
+  //       // {
+  //       //   type: 'mention',
+  //       //   value: 'USER_cfcf50de-d37e-41f2-b650-829d540f2d26',
+  //       //   entities: [Entities.TASK],
+  //       //   nextOperator: 'or'
+  //       // },
+  //       // {
+  //       //   type: 'text',
+  //       //   value: 'we',
+  //       //   entities: [Entities.TASK]
+  //       // }
+  //     ]
+  //   })
+  // )
 
   // console.log(
   //   searchIdx.newSearch([{

@@ -56,7 +56,7 @@ export interface SuperBlockContent {
   type: string
   id: string
   properties: {
-    entity: {
+    entity?: {
       active: string
       values: Record<
         string,

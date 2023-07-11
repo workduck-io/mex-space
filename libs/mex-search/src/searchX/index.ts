@@ -292,4 +292,24 @@ export class SearchX {
     const index = this._indexMap[indexKey]
     deletedBlocks.forEach((id) => index.remove(id))
   }
+
+  findRelatedEntities = (id: string, type: string) => {
+    if (id.startsWith('TEMP_'))
+      return this._graphX
+        .getRelatedNodes(id, (node) => {
+          return node?.data?.type === type
+        })
+        .map((item) => item.id)
+    if (id.startsWith('NODE_')) {
+      const result = new Set<string>()
+      this._graphX.getRelatedNodes(id, (node) => {
+        if (node?.data?.type.startsWith('super-block-')) {
+          this.findRelatedEntities(node.id, type).forEach((e) => result.add(e))
+        }
+        return false
+      })
+      return [...result].map((item) => this._graphX.getNode(item)?.data)
+    }
+    return []
+  }
 }

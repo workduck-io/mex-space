@@ -37,7 +37,7 @@ export class EntityParser {
   private _systemTags: DEFAULT_SYSTEM_TAGS[] | undefined
 
   superblockParser = (content: SuperBlockContent) => {
-    const { type, id, metadata, properties, children } = content
+    const { type, id, metadata, properties = {}, children } = content
     const { entity, title, tags } = properties
     let blockText = ''
     const graphNodes: GNode[] = [
@@ -48,17 +48,33 @@ export class EntityParser {
           title: title,
           properties: { properties, metadata }
         }
-      }
+      },
+      ...(entity?.values
+        ? [
+            {
+              id: entity.values[entity.active].parent!,
+              metadata: {
+                type: entity.active,
+                properties: entity.values[entity.active]
+              }
+            }
+          ]
+        : [])
     ]
     const graphLinks: GLink[] = entity?.active
       ? [
-          {
-            from: id,
-            to: entity.values[entity.active].parent!,
-            metadata: {
-              type: entity.active
-            }
-          },
+          ...(entity?.values
+            ? [
+                {
+                  from: id,
+                  to: entity.values[entity.active].parent!,
+                  metadata: {
+                    type: entity.active,
+                    properties: entity.values[entity.active]
+                  }
+                }
+              ]
+            : []),
           {
             from: id,
             to: entity.active,
@@ -73,6 +89,7 @@ export class EntityParser {
       graphNodes.push({
         id: `TAG_${tag.value}`,
         metadata: {
+          value: tag.value,
           type: Entities.TAG
         }
       })
@@ -244,7 +261,7 @@ export class EntityParser {
   tagParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     const gNode: GNode = {
       id: `TAG_${block.value}`,
-      metadata: { ...block, type: Entities.TAG }
+      metadata: {value: block.value, type: Entities.TAG }
     }
 
     return {
