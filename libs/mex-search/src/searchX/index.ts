@@ -195,7 +195,7 @@ export class SearchX {
         return this._indexMap[indexKey]
           .search({
             query: opt.value?.split(' ') ?? '',
-            index: 'text',
+            index: ['text', 'title'],
             tag: entities ?? opt.entities ?? Object.values(Entities),
             bool: 'or'
           })

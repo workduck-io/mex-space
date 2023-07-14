@@ -40,6 +40,8 @@ export class EntityParser {
     const { type, id, metadata, properties = {}, children } = content
     const { entity, title, tags } = properties
     let blockText = ''
+    const entityValue = entity?.values?.[entity?.active]
+
     const graphNodes: GNode[] = [
       {
         id,
@@ -49,13 +51,13 @@ export class EntityParser {
           properties: { properties, metadata }
         }
       },
-      ...(entity?.values
+      ...(entityValue
         ? [
             {
-              id: entity.values[entity.active].parent!,
+              id: entityValue.parent!,
               metadata: {
                 type: entity.active,
-                properties: entity.values[entity.active]
+                properties: entityValue
               }
             }
           ]
@@ -63,14 +65,14 @@ export class EntityParser {
     ]
     const graphLinks: GLink[] = entity?.active
       ? [
-          ...(entity?.values
+          ...(entityValue
             ? [
                 {
                   from: id,
-                  to: entity.values[entity.active].parent!,
+                  to: entityValue.parent!,
                   metadata: {
                     type: entity.active,
-                    properties: entity.values[entity.active]
+                    properties: entityValue
                   }
                 }
               ]
@@ -261,7 +263,7 @@ export class EntityParser {
   tagParser: EntityParserFn = (block: BlockType, parentBlockID: string) => {
     const gNode: GNode = {
       id: `TAG_${block.value}`,
-      metadata: {value: block.value, type: Entities.TAG }
+      metadata: { value: block.value, type: Entities.TAG }
     }
 
     return {

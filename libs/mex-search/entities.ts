@@ -21,6 +21,7 @@ const superBlockContent = [
           }
         }
       },
+      title: 'Kimchi',
       tags: [
         {
           value: 'actions'
@@ -864,7 +865,7 @@ export const generateEntities = () => {
     options: { extra: extra }
   })
 
-  prettyPrint(searchIdx.findRelatedBlocks('TAG_quickcapture', 'super-block-content'))
+  // prettyPrint(searchIdx.findRelatedBlocks('TAG_quickcapture', 'super-block-content'))
 
   // console.log(searchIdx._graphX.getLinks('TEMP_EcYcC'))
   // searchIdx.addOrUpdateDocument({
@@ -925,28 +926,16 @@ export const generateEntities = () => {
   //   })
   // )
 
-  // console.log(
-  //   searchIdx.newSearch([{
-  //     type: 'text',
-  //     value: 'we'
-  //   }])
-  // )
-
-  // console.log(
-  //   JSON.stringify(
-  //     searchIdx.search(
-  //       { text: '', entityTypes: [Entities.CONTENT_BLOCK, Entities.TASK] }
-  //       // {
-  //       //   heirarchy: ['NODE_jjtnMNJwLJ6bMaBMLApM4']
-  //       //   //   query: { tag: ['TAG_wowtag'], mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d2'], operator: 'and' },
-  //       //   //   mention: ['USER_cfcf50de-d37e-41f2-b650-829d540f2d26'],
-  //       //   //   operator: 'or'
-  //       // }
-  //     ),
-  //     null,
-  //     2
-  //   )
-  // )
+  prettyPrint(
+    searchIdx.search({
+      options: [
+        {
+          type: 'text',
+          value: 'Kim'
+        }
+      ]
+    })
+  )
 
   return 'Hello'
 }
