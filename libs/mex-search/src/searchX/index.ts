@@ -4,9 +4,19 @@ import { ILink, InitData } from '@workduck-io/mex-utils'
 import { GraphX } from '../graphX'
 import { EntityParser } from '../parsers'
 import { GenericEntitySearchData } from '../parsers/types'
-import { Entities, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
+import { Entities, expressionEval, getNodeParent, Indexes, intersectMultiple, unionMultiple } from '../utils'
 
-import { Highlight, IndexMap, ISearchQuery, Link, QueryUnit, Reminder, SearchResult, UpdateDocFn } from './types'
+import {
+  Highlight,
+  IndexMap,
+  ISearchQuery,
+  Link,
+  PropertyQueryUnit,
+  QueryUnit,
+  Reminder,
+  SearchResult,
+  UpdateDocFn
+} from './types'
 
 export class SearchX {
   _graphX: GraphX
@@ -167,9 +177,9 @@ export class SearchX {
     })
   }
 
-  eval(evalConfig: { opt: QueryUnit; entities?: string[]; contains?: Entities[]; indexKey?: Indexes }) {
+  eval(evalConfig: { opt: QueryUnit; entities?: PropertyQueryUnit[]; contains?: Entities[]; indexKey?: Indexes }) {
     const { opt, entities, contains, indexKey = Indexes.MAIN } = evalConfig
-
+    const entityTypes = entities?.map((e) => e.type) ?? opt.entities?.map((e) => e.type)
     const condition = (node) => {
       let satisfies = true
       if (opt.contains ?? contains)
@@ -177,8 +187,15 @@ export class SearchX {
           return (opt.contains ?? contains ?? []).includes(item.toId as Entities)
         })
       if (!satisfies) return false
-      if (opt.entities ?? entities) satisfies = satisfies && (opt.entities || entities || []).includes(node.data.type)
-
+      if (entities || opt.entities) {
+        satisfies = satisfies && (entityTypes?.includes(node?.type) ?? false)
+        satisfies =
+          satisfies &&
+          ((entities || opt.entities)
+            ?.map((e) => e.propertyExpr?.every((exp) => expressionEval(node.properties?.properties, exp)))
+            .every((expRes) => expRes) ??
+            false)
+      }
       return satisfies
     }
 
@@ -196,7 +213,7 @@ export class SearchX {
           .search({
             query: opt.value?.split(' ') ?? '',
             index: ['text', 'title'],
-            tag: entities ?? opt.entities ?? Object.values(Entities),
+            tag: entityTypes,
             bool: 'or'
           })
           .reduce((acc, curr) => {
@@ -218,7 +235,7 @@ export class SearchX {
   search = (searchConfig: {
     options: ISearchQuery
     expand?: boolean
-    entities?: string[]
+    entities?: PropertyQueryUnit[]
     contains?: Entities[]
     indexKey?: Indexes
   }): Array<SearchResult> => {
@@ -236,9 +253,7 @@ export class SearchX {
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
-
-    if (expand)
-      return [...new Set(result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text))]
+    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text!==undefined)
     return [...new Set(result.filter((item) => item))]
   }
 

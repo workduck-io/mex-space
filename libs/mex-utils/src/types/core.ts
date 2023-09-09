@@ -68,6 +68,7 @@ export interface SuperBlockContent {
     }
     title?: string
     tags?: Tag[]
+    template?: Record<string, any[]>
     [key: string]: any
   }
   metadata: {

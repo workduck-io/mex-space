@@ -26,11 +26,28 @@ export type UpdateDocFn = (doc: IUpdateDoc) => void
 
 export type SimpleQueryType = 'tag' | 'mention' | 'heirarchy' | 'text' | 'origin'
 export type NestedQueryType = 'query'
+
+export enum Operation {
+  EQUAL = 'EQ'
+}
+
+export type Expression = {
+  field: string
+  value: string
+  op: Operation
+}
+
+export interface PropertyQueryUnit {
+  type: string
+  propertyExpr?: Expression[]
+  unionOperator?: 'and' | 'or'
+}
+
 export interface ISimpleQueryUnit {
   nextOperator?: 'and' | 'or'
   type: SimpleQueryType
   value: string
-  entities?: string[]
+  entities?: PropertyQueryUnit[]
   contains?: Entities[]
 }
 
@@ -38,7 +55,7 @@ export interface IQueryUnit {
   nextOperator?: 'and' | 'or'
   type: NestedQueryType
   query: ISearchQuery
-  entities?: string[]
+  entities?: PropertyQueryUnit[]
   contains?: Entities[]
 }
 

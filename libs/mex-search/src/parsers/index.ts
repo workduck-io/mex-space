@@ -38,16 +38,22 @@ export class EntityParser {
 
   superblockParser = (content: SuperBlockContent) => {
     const { type, id, metadata, properties = {}, children } = content
-    const { entity, title, tags } = properties
+    const { entity, title, tags, template } = properties
     let blockText = ''
     const entityValue = entity?.values?.[entity?.active]
-
+    if (template) {
+      Object.values(template).map((labelArr) => {
+        return labelArr.forEach((labels) => {
+          if (labels.field) properties[`template.${labels.field}`] = labels.value
+        })
+      })
+    }
     const graphNodes: GNode[] = [
       {
         id,
         metadata: {
           type,
-          title: title,
+          title,
           properties: { properties, metadata }
         }
       },

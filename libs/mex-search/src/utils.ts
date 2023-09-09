@@ -1,6 +1,7 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { KEY_DELIMITER } from './constants'
+import { Expression, Operation } from '.'
 
 export enum Entities {
   TAG = 'TAG',
@@ -64,4 +65,12 @@ export const getNodeParent = (iLink: ILink, iLinks: ILink[]) => {
 
   const parent = iLinks.find((n) => n.path === parentPath && iLink.namespace === n.namespace)
   return parent?.nodeid
+}
+
+export const expressionEval = (data, expression: Expression) => {
+  if (!data[expression.field] || !expression.value) return false
+  switch (expression.op) {
+    case Operation.EQUAL:
+      return data[expression.field].toLowerCase() === expression.value.toLowerCase()
+  }
 }

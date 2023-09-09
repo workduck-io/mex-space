@@ -1,6 +1,7 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
+import { Operation } from './src'
 // import { Entities } from './src/utils'
 
 const superBlockContent = [
@@ -490,6 +491,189 @@ const superBlockContent = [
     ]
   }
 ]
+
+const newBlockContent = [
+  {
+    type: 'super-block-capture',
+    id: 'TEMP_DBRhx',
+    properties: {
+      template: {
+        contact: [
+          {
+            id: 'LABEL_1001',
+            label: 'Title',
+            field: 'heading',
+            value: '(1) Rowan Cheung | LinkedIn',
+            properties: {
+              type: 'p'
+            }
+          },
+          {
+            id: 'LABEL_1001',
+            label: 'Email',
+            field: 'email',
+            value: 'example@gmail.com',
+            properties: {
+              icon: 'email',
+              type: 'p'
+            }
+          },
+          {
+            id: 'LABEL_IMGp',
+            label: 'Picture',
+            field: 'imgUrl',
+            value:
+              'https://media.licdn.com/dms/image/D5603AQGjPlKXbvWYbw/profile-displayphoto-shrink_200_200/0/1674364221181?e=1698883200&v=beta&t=Q8QSsYgS1l-BKToFCK7_MWdG0tg3fMHYe4tsCsSHIDY',
+            properties: {
+              type: 'img',
+              row: 0
+            }
+          },
+          {
+            id: 'LABEL_JFAa',
+            label: 'Name',
+            field: 'title',
+            value: 'Rowan Cheung',
+            properties: {
+              type: 'p',
+              row: 0
+            }
+          },
+          {
+            id: 'LABEL_37Xb',
+            label: 'Headline',
+            field: 'description',
+            value: 'Founder & CEO of The Rundown | 300k+ on Twitter',
+            properties: {
+              type: 'p',
+              row: 0
+            }
+          },
+          {
+            id: 'LABEL_38CJ',
+            label: 'Location',
+            value: 'Vancouver, British Columbia, Canada',
+            properties: {
+              type: 'p',
+              row: 0
+            }
+          },
+          {
+            id: 'LABEL_rPag',
+            label: 'Conections',
+            value: '500+ connections',
+            properties: {
+              type: 'p',
+              row: 0
+            }
+          },
+          {
+            id: 'LABEL_yXR7',
+            label: 'Mutual Connections',
+            value: 'Vladimir Iglovikov is a mutual connectionVladimir Iglovikov is a mutual connection',
+            properties: {
+              type: 'p',
+              row: 0
+            }
+          }
+        ]
+      },
+      tags: [
+        {
+          value: 'Linkedin'
+        },
+        {
+          value: 'super-blocks'
+        }
+      ],
+      url: 'https://www.linkedin.com/in/rowancheung/',
+      title: 'Linkedin',
+      stage: 'stage-2'
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_4jWfD',
+        children: [
+          {
+            type: 'p',
+            id: 'defaultValue',
+            text: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    type: 'super-block-meet',
+    id: 'TEMP_g8WeP',
+    properties: {
+      title: 'Demo call',
+      entity: {
+        active: 'super-block-meet'
+      },
+      tags: [
+        {
+          value: 'outreach'
+        }
+      ]
+    },
+    children: [
+      {
+        type: 'p',
+        id: 'TEMP_cKiPA',
+        children: [
+          {
+            type: 'p',
+            id: 'TEMP_7W97p',
+            text: ''
+          }
+        ]
+      },
+      {
+        type: 'ul',
+        id: 'TEMP_UVfG4',
+        children: [
+          {
+            type: 'li',
+            id: 'TEMP_pDkaY',
+            children: [
+              {
+                type: 'lic',
+                id: 'TEMP_4hMtw',
+                children: [
+                  {
+                    type: 'p',
+                    id: 'TEMP_DGyWB',
+                    text: 'Eu ex in qui cillutetur dolor id labore incididunt do quis enim officia voluptate mollit minim. Do id ut anim nulla sunt labore.'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'li',
+            id: 'TEMP_bg7eC',
+            children: [
+              {
+                type: 'lic',
+                id: 'TEMP_TTVdx',
+                children: [
+                  {
+                    type: 'p',
+                    id: 'TEMP_DGyWB',
+                    text: 'Elit do aliquip essemodo. Tempor fugiat veniam qui ut elit aliqua est culpa amet irure amet occaecat consectetur veniam proident. Ut anim est eu eiusmods'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+
 const extra = {
   ilink: {
     keyToIndex: 'value',
@@ -860,7 +1044,7 @@ export const generateEntities = () => {
   // writeFileSync('./graph.dot', graphX.exportToDot())
   searchIdx.addOrUpdateDocument({
     id: noteID,
-    contents: superBlockContent,
+    contents: newBlockContent,
     title,
     options: { extra: extra }
   })
@@ -930,8 +1114,14 @@ export const generateEntities = () => {
     searchIdx.search({
       options: [
         {
-          type: 'text',
-          value: 'Kim'
+          type: 'heirarchy',
+          value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
+          entities: [
+            {
+              type: 'super-block-capture',
+              propertyExpr: [{ field: 'title', value: 'Linkedin', op: Operation.EQUAL }]
+            }
+          ]
         }
       ]
     })
