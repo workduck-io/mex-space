@@ -1,7 +1,6 @@
 import { ILink } from '@workduck-io/mex-utils'
 
 import { SearchX } from './src/searchX'
-import { Operation } from './src'
 // import { Entities } from './src/utils'
 
 const superBlockContent = [
@@ -1112,16 +1111,16 @@ export const generateEntities = () => {
 
   prettyPrint(
     searchIdx.search({
+      entities: [
+        {
+          type: 'super-block-capture'
+          // propertyExpr: [{ field: 'title', value: 'Linkedin', op: Operation.EQUAL }]
+        }
+      ],
       options: [
         {
           type: 'heirarchy',
-          value: 'NODE_ENLNwH3AecWtPfdtxbdbz',
-          entities: [
-            {
-              type: 'super-block-capture',
-              propertyExpr: [{ field: 'title', value: 'Linkedin', op: Operation.EQUAL }]
-            }
-          ]
+          value: 'NODE_ENLNwH3AecWtPfdtxbdbz'
         }
       ]
     })

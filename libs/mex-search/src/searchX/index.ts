@@ -192,9 +192,10 @@ export class SearchX {
         satisfies =
           satisfies &&
           ((entities || opt.entities)
+            ?.filter((item) => item.propertyExpr)
             ?.map((e) => e.propertyExpr?.every((exp) => expressionEval(node.properties?.properties, exp)))
             .every((expRes) => expRes) ??
-            false)
+            true)
       }
       return satisfies
     }
@@ -253,7 +254,8 @@ export class SearchX {
       }
       prevOperator = qu.nextOperator ?? 'and'
     })
-    if (expand) return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text!==undefined)
+    if (expand)
+      return result.map((item) => this._indexMap[indexKey].get(item)).filter((item) => item?.text !== undefined)
     return [...new Set(result.filter((item) => item))]
   }
 
